@@ -8,7 +8,6 @@ const initialState = {
   error: null
 };
 
-
 export function tokenReducers(state = initialState, action) {
   switch (action.type) {
 

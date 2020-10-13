@@ -4,31 +4,26 @@ import { takeLatest, call, put, take } from "redux-saga/effects";
 import axios from "axios";
 
 
-
 // watcher saga: watches for actions dispatched to the store, starts worker saga
-export function* watcherSaga() {
-  yield takeLatest(consts.API_TOKEN_REQUEST, workerSaga)
+export function* watcherDataSaga() {
+  yield takeLatest(consts.INIT_DATA, workerSaga)
 }
-
-// function that makes the api request and returns a Promise for response
-
 
 
 // worker saga: makes the api call when watcher saga sees the action
-export function* workerSaga(request) {
+export function* workerDataSaga(request) {
+
+  token = request.token.access
 
   try {
-    const config = {
+
+    let config = {
       method: 'post',
-      url: `${consts.WORKLIST_API}/token`,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data : {
-        "username": request.config.username,
-        "password": request.config.password,
+      url: `${consts.WORKLIST_API}/appls-list/`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
       }
-    };
+    }
   
     const response = yield call(axios, config);
     const data = response.data;

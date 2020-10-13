@@ -4,8 +4,7 @@ import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button} from 'rea
 import axios from 'axios';
 import { connect } from "react-redux";
 
-import { actGetToken, getNews } from "../actions/index"
-
+import { actGetToken, getNews, actloginUser } from "../actions/index"
 import { WORKLIST_API } from "../consts"
 
 
@@ -17,32 +16,31 @@ import * as consts from "../consts"
 
 function Login(props) {
 
- 
-  const username = useFormInput('')
-  const password = useFormInput('')
-
-  let data = {
-    'username': username.value, 
-    'password': password.value
-  }
-
+  const useFormInput = initialValue => {
+    const [value, setValue] = useState(initialValue);
   
+    const handleChange = e => {
+      setValue(e.target.value);
+    }
+    return {
+      value,
+      onChange: handleChange
+    }
+  }
+  const username = useFormInput('be_min')
+  const password = useFormInput('1')
+
 
   const fetchUsers = () => {
     const config = {
-      method: 'post',
-      url: `${consts.WORKLIST_API}/token`,
-      headers: {},
-      data : {
-        'username': username.value, 
-        'password': password.value
-      }
+      "username": username.value,
+      "password": password.value,
     };
-    
-    props.fetchProducts()
+    props.login(config)
+
   };
 
-  
+
 
   return (
     <View style={styles.container}>
@@ -76,17 +74,6 @@ function Login(props) {
   );
 }
 
-const useFormInput = initialValue => {
-  const [value, setValue] = useState(initialValue);
- 
-  const handleChange = e => {
-    setValue(e.target.value);
-  }
-  return {
-    value,
-    onChange: handleChange
-  }
-}
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -97,12 +84,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchProducts: () => dispatch({ type: "API_TOKEN_REQUEST" }), 
-
+    login: (config) => {
+      dispatch(actloginUser(config))
+    }
   };
 };
-
-
 
 
 const styles = StyleSheet.create({

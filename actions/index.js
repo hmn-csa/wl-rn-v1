@@ -51,3 +51,11 @@ export const actTakeUserPassword = (config) => {
 		config,
 	}
 };
+
+
+export const actloginUser = (config) => {
+  return {
+    type: constAction.API_TOKEN_REQUEST,
+    config
+  }
+};

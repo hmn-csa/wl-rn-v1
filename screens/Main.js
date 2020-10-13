@@ -31,9 +31,9 @@ function MainApp(props) {
       }
       const response = await axios(config)
       const responseData = response.data
+      
       props.initData(responseData)
       props.initDashboard(responseData)
-      //const all_list = responseData.map(appl => appl.appl_id)
       props.updateShowlist(responseData.map(appl => appl.appl_id))
       console.log(responseData);
 
