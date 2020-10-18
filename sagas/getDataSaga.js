@@ -1,39 +1,33 @@
 
-import * as consts from '../consts'
+import * as constAction from '../consts'
 import { takeLatest, call, put, take } from "redux-saga/effects";
 import axios from "axios";
 
 
+
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export function* watcherDataSaga() {
-  yield takeLatest(consts.INIT_DATA, workerSaga)
+  yield takeLatest(constAction.API_DATA_REQUEST, workerGetData);
 }
 
 
-// worker saga: makes the api call when watcher saga sees the action
-export function* workerDataSaga(request) {
-
-  token = request.token.access
-
+export function* workerGetData(request) {
   try {
-
     let config = {
       method: 'post',
-      url: `${consts.WORKLIST_API}/appls-list/`,
+      url: `${WORKLIST_API}/appls-list/`,
       headers: { 
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${request.token}`
       }
     }
-  
     const response = yield call(axios, config);
     const data = response.data;
-
-
+    console.log('getdata')
     // dispatch a success action to the store with the new dog
-    yield put({ type: consts.API_TOKEN_SUCCESS, content: data });
+    yield put({ type: constAction.API_DATA_SUCCESS, content: data });
 
   } catch (error) {
     // dispatch a failure action to the store with the error
-    yield put({ type: consts.API_TOKEN_FAILURE, error });
+    yield put({ type: constAction.API_DATA_FAILURE, error });
   }
 }

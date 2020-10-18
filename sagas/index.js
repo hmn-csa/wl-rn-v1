@@ -7,12 +7,13 @@ import { all, fork } from 'redux-saga/effects';
 // Imports: Redux Sagas
 // import { watchIncreaseCounter, watchDecreaseCounter } from './counterSaga';
 import { watcherSaga } from  './loginSaga'
-import { watchUserAuthentication } from  './authenticationSaga'
+
 
 // Redux Saga: Root Saga
 export function* rootSaga () {
   yield all([
     fork(watcherSaga),
+    
   ]);
 };
 

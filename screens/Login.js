@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button} from 'react-native';
+import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 
 import axios from 'axios';
 import { connect } from "react-redux";
 
-import { actGetToken, getNews, actloginUser } from "../actions/index"
+import { actGetToken, actGetDataSaga, actloginUser } from "../actions/index"
 import { WORKLIST_API } from "../consts"
 
 
@@ -30,6 +30,7 @@ function Login(props) {
   const username = useFormInput('be_min')
   const password = useFormInput('1')
 
+  const access = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjAzMDI2NTUzLCJqdGkiOiI3OTNjMDE4MGU0ZTA0ZDRiOWJiOWNjMjE0NzYwMzA5OSIsInVzZXJuYW1lIjoiTXJzSGEifQ.AUPnZWmZytl_qU5m-iZD451z3B4O30mhb1dvVblPP1k"
 
   const fetchUsers = () => {
     const config = {
@@ -37,11 +38,21 @@ function Login(props) {
       "password": password.value,
     };
     props.login(config)
-
+    props.getData(access)
+     
   };
 
+  
 
+  //const [token, setTocken] = useState()
 
+  if (props.token.fetching)
+    return (
+      <View>
+        <Text>Loading ... </Text>
+      </View>
+    )
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>HMN APP</Text>
@@ -54,6 +65,7 @@ function Login(props) {
           {...username}
           />
       </View>
+      
       <View style={styles.inputView} >
         <TextInput  
           secureTextEntry
@@ -79,16 +91,20 @@ function Login(props) {
 const mapStateToProps = (state, ownProps) => {
   return {
     token: state.token,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (config) => {
       dispatch(actloginUser(config))
+    },
+    getData: (token) => {
+      dispatch(actGetDataSaga(token))
     }
-  };
-};
+
+  }
+}
 
 
 const styles = StyleSheet.create({
@@ -122,18 +138,20 @@ const styles = StyleSheet.create({
     fontSize:11
   },
   loginBtn:{
-    width:"80%",
+    width:"10%",
     backgroundColor:"#fb5b5a",
-    borderRadius:25,
+    borderRadius:50,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:10,
     marginBottom:10
   },
   loginText:{
     color:"white"
   }
-});
+})
+
+
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

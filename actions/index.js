@@ -44,18 +44,23 @@ export const actUpdateShowlist = (content) => {
 
 
 
-export const actTakeUserPassword = (config) => {
-	console.log(config)
-	return {
-		type: "TAKE_USERPASSWORD",
-		config,
-	}
-};
-
-
 export const actloginUser = (config) => {
   return {
     type: constAction.API_TOKEN_REQUEST,
     config
+  }
+};
+
+
+export const actlogoutUser = () => {
+  return {
+    type: constAction.TOKEN_REMOVE
+  }
+};
+
+export const actGetDataSaga = (token) => {
+  return {
+    type: constAction.API_DATA_REQUEST,
+    token
   }
 };

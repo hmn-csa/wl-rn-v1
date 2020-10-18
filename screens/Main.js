@@ -13,6 +13,8 @@ import { WORKLIST_API } from "../consts"
 
 import Dashboard from './Dashboard'
 import ListAppls from './ListAppls'
+import User from './User'
+
 
 //import Maps from './Maps'
 
@@ -29,6 +31,7 @@ function MainApp(props) {
           'Authorization': `Bearer ${props.token.token.access}`
         }
       }
+
       const response = await axios(config)
       const responseData = response.data
       
@@ -36,7 +39,6 @@ function MainApp(props) {
       props.initDashboard(responseData)
       props.updateShowlist(responseData.map(appl => appl.appl_id))
       console.log(responseData);
-
     }
     fetchList();
   }, [])
@@ -54,8 +56,9 @@ function MainApp(props) {
                 ? 'ios-information-circle' : 'ios-information-circle-outline';
             } else if (route.name === 'ListAppls') {
               iconName = focused ? 'ios-list-box' : 'ios-list';
+            } else if (route.name === 'User') {
+              iconName = focused ? 'ios-person' : 'ios-person';
             }
-
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -68,6 +71,7 @@ function MainApp(props) {
 
         <Tab.Screen name="Dashboard" component={Dashboard} />
         <Tab.Screen name="ListAppls" component={ListAppls} />
+        <Tab.Screen name="User" component={User} />
     
       </Tab.Navigator>
     </NavigationContainer>
@@ -100,10 +104,7 @@ const mapDispatchToProps = (dispatch) => {
  
 const styles = StyleSheet.create({
   container: {
-    
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

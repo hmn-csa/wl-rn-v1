@@ -7,13 +7,13 @@ import { connect } from "react-redux"
 
 
 import ShowAppl from '../components/ShowAppl'
-
+import styles from '../styles'
 
 
 function ListAppls(props) {
   return (
     <ScrollView>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={ styles.container }>
         {
           props.appls.filter((appl) => {
             return props.showlists.includes(appl.appl_id)
