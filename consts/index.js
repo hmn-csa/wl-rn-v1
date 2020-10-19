@@ -9,7 +9,8 @@ export const GET_TOKEN = "GET_TOKEN"
 
 export const CHANGE_TODO = "CHANGE_TODO"
 export const INIT_DATA = "INIT_DATA"
-export const INIT_DASHBOARD = "INIT_DATA"
+export const INIT_DASHBOARD = "INIT_DASHBOARD"
+export const INIT_TREE = "INIT_TREE"
 
 export const UPDATE_SHOWLIST = "UPDATE_SHOWLIST"
 
@@ -20,9 +21,11 @@ export const API_TOKEN_FAILURE = "API_TOKEN_FAILURE"
 export const TOKEN_REMOVE = "TOKEN_REMOVE"
 
 
-
 export const API_DATA_REQUEST = "API_DATA_REQUEST"
 export const API_DATA_SUCCESS = "API_DATA_SUCCESS"
 export const API_DATA_FAILURE = "API_DATA_FAILURE"
 
 
+export const API_TODO_REQUEST = "API_TODO_REQUEST"
+export const API_TODO_SUCCESS = "API_TODO_SUCCESS"
+export const API_TODO_FAILURE = "API_TODO_FAILURE"

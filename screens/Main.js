@@ -20,10 +20,12 @@ import User from './User'
 
 const Tab = createBottomTabNavigator();
 
-function MainApp(props) {
+function MainApp() {
   
+  /*
   useEffect( () => {
     async function fetchList() {
+
       let config = {
         method: 'post',
         url: `${WORKLIST_API}/appls-list/`,
@@ -31,18 +33,18 @@ function MainApp(props) {
           'Authorization': `Bearer ${props.token.token.access}`
         }
       }
-
       const response = await axios(config)
       const responseData = response.data
-      
       props.initData(responseData)
+
       props.initDashboard(responseData)
       props.updateShowlist(responseData.map(appl => appl.appl_id))
-      console.log(responseData);
+
     }
     fetchList();
   }, [])
   
+  */
 
   return (
     <NavigationContainer style={styles.container}>
@@ -78,12 +80,13 @@ function MainApp(props) {
   );
 }
 
-
+/*
 const mapStateToProps = (state, ownProps) => {
   return {
     appls: state.appls,
     token: state.token,
     dash: state.dash,
+    data: state.data,
     showlist: state.showlist
   };
 };
@@ -101,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   };
 };
- 
+*/
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
@@ -110,5 +113,5 @@ const styles = StyleSheet.create({
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainApp);
+export default MainApp;
 

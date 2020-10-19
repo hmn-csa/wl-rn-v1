@@ -4,7 +4,7 @@ import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button, Alert} fr
 import axios from 'axios';
 import { connect } from "react-redux";
 
-import { actGetToken, actGetDataSaga, actloginUser } from "../actions/index"
+import { actloginUser } from "../actions/index"
 import { WORKLIST_API } from "../consts"
 
 
@@ -30,16 +30,19 @@ function Login(props) {
   const username = useFormInput('be_min')
   const password = useFormInput('1')
 
-  const access = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjAzMDI2NTUzLCJqdGkiOiI3OTNjMDE4MGU0ZTA0ZDRiOWJiOWNjMjE0NzYwMzA5OSIsInVzZXJuYW1lIjoiTXJzSGEifQ.AUPnZWmZytl_qU5m-iZD451z3B4O30mhb1dvVblPP1k"
-
+  const token = {
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYwMzE4MjUyNiwianRpIjoiMTY1ZWEwMDQzZjFkNGM5Y2I5YzY5MjU0MjQ5MzAzYzQiLCJ1c2VybmFtZSI6Ik1yc0hhIn0.9w5RpgYD3oGXppkROnDAiMJ0NU4uCLHMuOZ5J12TTuE",
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjAzMDk5NzI2LCJqdGkiOiIwYTczYTFiZWE0NTU0Zjg2Yjg5MWI1MzI1YjQzMDAxMCIsInVzZXJuYW1lIjoiTXJzSGEifQ.H2850OQDy8mEwVTX5QTWlNu4s9X3E_1kJKMZBd13giE"
+  }
+  
   const fetchUsers = () => {
     const config = {
       "username": username.value,
       "password": password.value,
-    };
-    props.login(config)
-    props.getData(access)
-     
+    }
+
+    props.login(config) 
+
   };
 
   
@@ -52,6 +55,14 @@ function Login(props) {
         <Text>Loading ... </Text>
       </View>
     )
+
+  if (props.data.fetching)
+    return (
+      <View>
+        <Text>Loading data... </Text>
+      </View>
+    )
+ 
  
   return (
     <View style={styles.container}>
@@ -91,6 +102,7 @@ function Login(props) {
 const mapStateToProps = (state, ownProps) => {
   return {
     token: state.token,
+    data: state.data
   }
 }
 
@@ -98,11 +110,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: (config) => {
       dispatch(actloginUser(config))
-    },
-    getData: (token) => {
-      dispatch(actGetDataSaga(token))
     }
-
   }
 }
 

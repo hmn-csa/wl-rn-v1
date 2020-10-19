@@ -35,6 +35,9 @@ export function* workerGetToken(request) {
     // dispatch a success action to the store with the new dog
     yield put({ type: constAction.API_TOKEN_SUCCESS, content: data });
 
+    // get appls data
+    yield call(workerGetData, data.access);
+
   } catch (error) {
     // dispatch a failure action to the store with the error
     yield put({ type: constAction.API_TOKEN_FAILURE, error });
@@ -46,20 +49,30 @@ export function* workerGetData(token) {
   try {
     let config = {
       method: 'post',
-      url: `${WORKLIST_API}/appls-list/`,
+      url: `${constAction.WORKLIST_API}/appls-list/`,
       headers: { 
         'Authorization': `Bearer ${token}`
       }
     }
-  
+    
     const response = yield call(axios, config);
     const data = response.data;
-    console.log('getdata')
-    // dispatch a success action to the store with the new dog
-    yield put({ type: constAction.API_DATA_SUCCESS, content: data });
+    
+    // dispatch a success action to the store with the new content
+    yield put({ type: constAction.API_DATA_SUCCESS, content: response.data });
+
+    // dispatch INIT_DASHBOARD
+    yield put({ type: constAction.INIT_DASHBOARD, content: data });
+
+    // dispatch UPDATE_SHOWLIST
+    const allAppls = data.map(appl => appl.appl_id)
+    yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
 
   } catch (error) {
+    console.log(error)
     // dispatch a failure action to the store with the error
     yield put({ type: constAction.API_DATA_FAILURE, error });
   }
 }
+
+

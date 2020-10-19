@@ -105,7 +105,7 @@ const dashReducers = (state = defaultState, action) => {
       let initPtp = appls.filter((appl) => {
         return appl.ptp_flag > 0
       })
-
+      
       state = {
         ...state, 
         'todoCase':{

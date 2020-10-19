@@ -14,15 +14,12 @@ function ShowAppl(props){
 
   const [isTodo, setTodoContent] = useState(props.noteData.todo_flag)
   const [content, setContent] = useState(props.noteData) 
-  const noteID = props.noteData.appl_id
 
   const handleChangeTodo = () => {
-    props.changeTodo(noteID);
+    props.changeTodo(content.appl_id);
     setTodoContent(isTodo === 1 ? 0 : 1)
   }
-
   const todoColor = isTodo === 1 ? 'tomato' : 'white'
-  
 
   return (
     <View 
@@ -124,13 +121,11 @@ const mapDispatchToProps = (dispatch) => {
 }
  
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
-    appls: state.appls
+    appls: state.data.data
   }
 }
-
 
 
 const showstyles = StyleSheet.create({

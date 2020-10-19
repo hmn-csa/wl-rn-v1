@@ -2,20 +2,19 @@ import {
   View, Text, Image, ScrollView
 } from 'react-native'
 
-import React, { useState, useEffect} from "react"
+import React from "react"
 import { connect } from "react-redux"
 
 import ShowAppl from '../components/ShowAppl'
 import styles from '../styles'
 
 
-function ListAppls(props) {
-
+function Categories(props) {
   return (
     <ScrollView>
       <View style={ styles.container }>
         {
-          props.data.data.filter((appl) => {
+          props.appls.filter((appl) => {
             return props.showlists.includes(appl.appl_id)
           }).map(appl => 
             { return <ShowAppl noteData = {appl} key={appl.appl_id}/> }
@@ -28,12 +27,12 @@ function ListAppls(props) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    data: state.data,
+    appls: state.appls,
     showlists: state.showlists
   };
 };
 
 
  
-export default connect(mapStateToProps, null)(ListAppls);
+export default connect(mapStateToProps, null)(Categories);
 
