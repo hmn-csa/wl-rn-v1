@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
+    paddingTop: 20,
   },
 
   row: {
@@ -33,19 +34,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
     paddingTop: 8,
-    flex:5
   },
   indexValueSmall: {
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 30,
-    paddingTop: 8,
-    flex:5,
+    paddingTop: 12,
   },
   indexLabel: {
     textAlign: 'center', // <-- the magic
     fontSize: 10,
-    flex:3
+    paddingBottom: 12,
   },
 
   logo:{

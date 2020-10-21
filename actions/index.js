@@ -16,13 +16,6 @@ export const actChangeToDo = (appl_id) => {
 	};
 };
 
-export const actGetToken = (content) => {
-	//console.log(`get token ${content}`)
-	return {
-		type: constAction.GET_TOKEN,
-		content,
-	};
-};
 
 
 export const actInitDashboard = (content) => {
@@ -64,3 +57,17 @@ export const actGetDataSaga = (token) => {
     token
   }
 };
+
+export const actChangeTodoSaga = (config) => {
+  return {
+    type: constAction.API_TODO_REQUEST,
+    config
+  }
+};
+
+export const actTodoViewSuccess = () => {
+  return {
+    type: constAction.VIEW_TODO_SUCCESS,
+  }
+};
+

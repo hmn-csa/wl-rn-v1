@@ -62,11 +62,14 @@ export function* workerGetData(token) {
     yield put({ type: constAction.API_DATA_SUCCESS, content: response.data });
 
     // dispatch INIT_DASHBOARD
-    yield put({ type: constAction.INIT_DASHBOARD, content: data });
+    //yield put({ type: constAction.INIT_DASHBOARD, content: data });
+    yield put({ type: constAction.DATA_INIT_DASHBOARD });
 
     // dispatch UPDATE_SHOWLIST
     const allAppls = data.map(appl => appl.appl_id)
     yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
+
+    
 
   } catch (error) {
     console.log(error)

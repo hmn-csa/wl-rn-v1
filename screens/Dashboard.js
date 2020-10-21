@@ -1,4 +1,4 @@
-import React, { useState } from 'react' 
+import React, { useState, useEffect } from 'react' 
 import {
   View, Text, Image, Button, TouchableOpacity, StyleSheet, Dimensions, ScrollView
 } from 'react-native' 
@@ -12,9 +12,8 @@ import styles from '../styles'
 
 
 function Dashboard(props){
-
+  
   const navigation = useNavigation()
-  const listApplIds = props.dash.paidAll.applIds
   
   const handleShow = list => {
     props.updateShowlist(list)
@@ -37,7 +36,8 @@ function Dashboard(props){
           <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoCase.applIds)}>{props.dash.todoCase.case}
+              onPress={() => handleShow(props.dash.todoCase.applIds)}>
+              {props.dash.todoCase.case}
             </Text>
             <Text style={styles.indexLabel}>Plan</Text>
           </View>
@@ -164,9 +164,9 @@ function Dashboard(props){
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    appls: state.appls,
+    //data: state.data,
     showlists: state.showlists,
-    dash: state.dash,
+    dash: state.data.dash,
   };
 };
 
@@ -179,9 +179,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-const { height } = Dimensions.get('window');
-const box_count = 3;
-const box_height = height / box_count;
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

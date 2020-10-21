@@ -16,7 +16,8 @@ import ListAppls from './ListAppls'
 import User from './User'
 
 
-//import Maps from './Maps'
+// import Maps from './Maps'
+//<Tab.Screen name="Maps" component={Maps} />
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +44,6 @@ function MainApp() {
     }
     fetchList();
   }, [])
-  
   */
 
   return (
@@ -74,40 +74,17 @@ function MainApp() {
         <Tab.Screen name="Dashboard" component={Dashboard} />
         <Tab.Screen name="ListAppls" component={ListAppls} />
         <Tab.Screen name="User" component={User} />
+        
     
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
-/*
-const mapStateToProps = (state, ownProps) => {
-  return {
-    appls: state.appls,
-    token: state.token,
-    dash: state.dash,
-    data: state.data,
-    showlist: state.showlist
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initData: (content) => {
-      dispatch(actInitData(content))
-    },
-    initDashboard: (content) => {
-      dispatch(actInitDashboard(content))
-    },
-    updateShowlist: (content) => {
-      dispatch(actUpdateShowlist(content))
-    }
-  };
-};
-*/
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
+    paddingTop: 15,
   },
 });
 

@@ -27,7 +27,8 @@ function ShowAppl(props){
     }
     
     props.apiChangeTodo(config)
-  
+    
+    
     if (props.data.changeTodo) {
       console.log('change view')
       setTodoContent(todo_new)

@@ -8,7 +8,7 @@ import axios from "axios";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export function* watcherSetTodo() {
-  yield takeLatest(constAction.UPDATE_TODO, workerSetTodo);
+  yield takeLatest(constAction.API_TODO_REQUEST, workerSetTodo);
 }
 
 
@@ -19,25 +19,30 @@ export function* workerSetTodo(request) {
       method: 'put',
       url: `${constAction.WORKLIST_API}/appls-list/`,
       headers: { 
-        'Authorization': `Bearer ${request.token.access}`
+        'Authorization': `Bearer ${request.config.token_value}`
       },
       data : {
-        'appl_id': request.appl_id
+        'appl_id': request.config.appl_id,
+        'todo_value': request.config.todo_value
       }
     }
-    
+    console.log(config)
     const response = yield call(axios, config);
     const data = response.data;
     
-
     console.log(data)
-    yield put({ type: constAction.API_DATA_SUCCESS, content: data });
-
     
+    yield put({ type: constAction.API_TODO_SUCCESS, content: {
+        'appl_id': request.config.appl_id,
+        'todo_value': request.config.todo_value
+      }
+    });
 
+    yield put({ type: constAction.DATA_INIT_DASHBOARD });
+  
   } catch (error) {
     console.log(error)
     // dispatch a failure action to the store with the error
-    yield put({ type: constAction.API_DATA_FAILURE, error });
+    yield put({ type: constAction.API_TODO_FAILURE, error });
   }
 }

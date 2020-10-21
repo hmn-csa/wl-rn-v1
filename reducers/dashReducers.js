@@ -47,8 +47,6 @@ const defaultState = {
     'value': 0,
     'applIds': []
   }
-  
-  
 }
 
 const dashReducers = (state = defaultState, action) => {
@@ -58,7 +56,7 @@ const dashReducers = (state = defaultState, action) => {
     case constAction.INIT_DASHBOARD:
 
       let appls = action.content
-      
+
       // ======== todos ==========
       let todoAppls = appls.filter((appl) => {
         return appl.todo_flag == 1
