@@ -56,7 +56,7 @@ const initialState = {
   data: null,
   error: null,
   dash: defaultDash,
-  changeTodo: false,
+ 
 };
 
 const applsReducers = (state = initialState, action) => {
@@ -78,14 +78,10 @@ const applsReducers = (state = initialState, action) => {
       if (indexOfEdit !== -1) {
         state.data[indexOfEdit].todo_flag = action.content.todo_value
       }
-
-      return { ...state, changeTodo : true}
+      return state
   
-    case constAction.VIEW_TODO_SUCCESS:
-      return { ...state, changeTodo : false}
-
     case constAction.API_TODO_FAILURE:
-      return { ...state, changeTodo : false}
+      return { ...state, error: action.error}
       
 
     // dash 

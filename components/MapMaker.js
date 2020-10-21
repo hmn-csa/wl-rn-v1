@@ -10,7 +10,9 @@ import {  actTodoViewSuccess, actChangeTodoSaga, actInitDashboard } from "../act
 import styles from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function ShowAppl(props){
+import MapView, { Marker } from 'react-native-maps';
+
+function ShowMeker(props){
 
   const [isTodo, setTodoContent] = useState(props.noteData.todo_flag)
   const [content, setContent] = useState(props.noteData) 

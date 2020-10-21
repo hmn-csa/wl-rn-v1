@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet} from 'react-native';
+import { createAppContainer } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from "react-redux";
@@ -10,6 +12,7 @@ import axios from 'axios'
 import { actInitData, actInitDashboard, actUpdateShowlist } from "../actions"
 import { WORKLIST_API } from "../consts"
 
+import { Home, List, Item } from '../components';
 
 import Dashboard from './Dashboard'
 import ListAppls from './ListAppls'
@@ -19,9 +22,16 @@ import User from './User'
 // import Maps from './Maps'
 //<Tab.Screen name="Maps" component={Maps} />
 
-const Tab = createBottomTabNavigator();
+const ListItemStack = createStackNavigator({
+  'List': ListAppls,
+  'Item': Item
+});
 
-function MainApp() {
+const Tab = createBottomTabNavigator({
+
+});
+
+function MainApp () {
   
   /*
   useEffect( () => {
@@ -72,7 +82,7 @@ function MainApp() {
       >
 
         <Tab.Screen name="Dashboard" component={Dashboard} />
-        <Tab.Screen name="ListAppls" component={ListAppls} />
+        <Tab.Screen name="ListAppls" component={ListItemStack} />
         <Tab.Screen name="User" component={User} />
         
     
@@ -87,6 +97,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
 });
+
 
 
 

@@ -20,7 +20,7 @@ function ListAppls(props) {
           props.data.data.filter((appl) => {
             return props.showlists.includes(appl.appl_id)
           }).map(appl => 
-            { return <ShowAppl noteData = {appl} key={appl.appl_id}/> }
+            { return <ShowAppl noteData = {appl} navigation={props.navigation} key={appl.appl_id}/> }
           )
         }
       </View>

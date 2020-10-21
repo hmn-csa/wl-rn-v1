@@ -1,12 +1,7 @@
 import * as constAction from "../consts/index";
 
 
-export const actInitData = (content) => {
-	return {
-		type: constAction.INIT_DATA,
-		content
-	};
-}
+
 
 //change status
 export const actChangeToDo = (appl_id) => {
@@ -17,7 +12,6 @@ export const actChangeToDo = (appl_id) => {
 };
 
 
-
 export const actInitDashboard = (content) => {
 	//console.log(`actInitDashboard`)
 	return {
@@ -26,7 +20,6 @@ export const actInitDashboard = (content) => {
 	}
 };
 
-
 export const actUpdateShowlist = (content) => {
 	//console.log(`actInitSHOWLIST`)
 	return {
@@ -34,7 +27,6 @@ export const actUpdateShowlist = (content) => {
 		content,
 	}
 };
-
 
 
 export const actloginUser = (config) => {
@@ -65,9 +57,20 @@ export const actChangeTodoSaga = (config) => {
   }
 };
 
-export const actTodoViewSuccess = () => {
+export const actGetVsfSaga = (config) => {
   return {
-    type: constAction.VIEW_TODO_SUCCESS,
+    type: constAction.API_VSF_REQUEST,
+    config
   }
 };
+
+export const actSetActiveApplId= (appl_id) => {
+  return {
+    type: constAction.APPLID_VSF_ACTIVE,
+    appl_id
+  }
+};
+
+
+
 

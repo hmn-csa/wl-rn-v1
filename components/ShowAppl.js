@@ -4,9 +4,11 @@ import {
 
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {  actTodoViewSuccess, actChangeTodoSaga, actInitDashboard } from "../actions"
+import { useNavigation } from '@react-navigation/native';
+import { 
+  actGetVsfSaga, actSetActiveApplId,
+  actTodoViewSuccess, actChangeTodoSaga, actInitDashboard 
+} from "../actions"
 import styles from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -18,23 +20,45 @@ function ShowAppl(props){
   //const [token, setToken] = useState(props.token)
 
   //console.log(token.token.access)
+
+
   const handleChangeTodo = () => {
     const todo_new = isTodo === 1 ? 0 : 1
+   
     const config = {
       'appl_id': content.appl_id, 
       'todo_value': todo_new,
       'token_value': props.token.token.access
     }
-    
     props.apiChangeTodo(config)
-  
-    if (props.data.changeTodo) {
-      console.log('change view')
-      setTodoContent(todo_new)
-      props.viewChangeTodoSuccess()
+    setTodoContent(todo_new)
+    
+  }
+
+  const handleGetVsf = () => {
+    if (props.vsf.vsfs.map(appl => appl.appl_id).includes(content.appl_id)){
+      props.setActiveVsf(content.appl_id)
+      props.navigation.navigate('Vsf')
+    }
+    else {
+      const config = {
+        'appl_id': content.appl_id, 
+        'token_value': props.token.token.access
+      }
+      props.apiGetVsf(config)
+      props.navigation.navigate('Vsf')
     }
   }
 
+  const handleRemark = () => {
+    props.navigation.navigate('Remark')
+  }
+
+  const handleSkip = () => {
+    props.navigation.navigate('Skip')
+  }
+  
+  
   const todoColor = isTodo === 1 ? 'tomato' : 'white'
 
   return (
@@ -77,7 +101,7 @@ function ShowAppl(props){
             <Ionicons
               name='ios-document' 
               style={showstyles.logo} 
-              onPress={handleChangeTodo}
+              onPress={handleGetVsf}
             />
         </View>
 
@@ -85,7 +109,7 @@ function ShowAppl(props){
             <Ionicons
               name='ios-search' 
               style={showstyles.logo} 
-              onPress={handleChangeTodo}
+              onPress={handleSkip}
             />
         </View>
 
@@ -100,7 +124,7 @@ function ShowAppl(props){
             <Ionicons
               name="ios-brush" 
               style={showstyles.logo} 
-              onPress={handleChangeTodo}
+              onPress={handleRemark}
             />
         </View>
         <View style={[styles.box]}>
@@ -126,15 +150,18 @@ function ShowAppl(props){
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    apiChangeTodo: (config)=> {
+    apiChangeTodo: (config) => {
       dispatch(actChangeTodoSaga(config));
     },
-    // confirm that view just change
-    viewChangeTodoSuccess: ()=> {
-      dispatch(actTodoViewSuccess());
-    },
+
     initDashboard: (content) => {
       dispatch(actInitDashboard(content))
+    },
+    apiGetVsf: (config) => {
+      dispatch(actGetVsfSaga(config));
+    },
+    setActiveVsf: (appl_id) => {
+      dispatch(actSetActiveApplId(appl_id));
     },
   }
 }
@@ -144,6 +171,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     data: state.data,
     token: state.token,
+    vsf: state.vsf
   }
 }
 

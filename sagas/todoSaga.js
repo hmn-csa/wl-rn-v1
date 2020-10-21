@@ -38,6 +38,7 @@ export function* workerSetTodo(request) {
       }
     });
 
+  
     yield put({ type: constAction.DATA_INIT_DASHBOARD });
   
   } catch (error) {

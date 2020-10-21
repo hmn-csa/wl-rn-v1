@@ -16,8 +16,7 @@ const treeReducers = (state = defaultState, action) => {
 
     case constAction.INIT_TREE:
 
-      
-
+    
       let appls = action.content
 
       let tree0 = appls.filter((appl) => {

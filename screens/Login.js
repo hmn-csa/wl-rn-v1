@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button, Alert} from 'react-native';
+import { 
+  StyleSheet, Text, View ,
+  TextInput, TouchableOpacity, 
+  Button, Alert
+} from 'react-native';
 
-import axios from 'axios';
 import { connect } from "react-redux";
-
 import { actloginUser } from "../actions/index"
-import { WORKLIST_API } from "../consts"
 
-
-import * as consts from "../consts"
-
-
-
-//https://reactnavigation.org/docs/getting-started
 
 function Login(props) {
 
@@ -30,11 +25,6 @@ function Login(props) {
   const username = useFormInput('be_min')
   const password = useFormInput('1')
 
-  const token = {
-    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYwMzE4MjUyNiwianRpIjoiMTY1ZWEwMDQzZjFkNGM5Y2I5YzY5MjU0MjQ5MzAzYzQiLCJ1c2VybmFtZSI6Ik1yc0hhIn0.9w5RpgYD3oGXppkROnDAiMJ0NU4uCLHMuOZ5J12TTuE",
-    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjAzMDk5NzI2LCJqdGkiOiIwYTczYTFiZWE0NTU0Zjg2Yjg5MWI1MzI1YjQzMDAxMCIsInVzZXJuYW1lIjoiTXJzSGEifQ.H2850OQDy8mEwVTX5QTWlNu4s9X3E_1kJKMZBd13giE"
-  }
-  
   const fetchUsers = () => {
     const config = {
       "username": username.value,
@@ -51,14 +41,14 @@ function Login(props) {
 
   if (props.token.fetching)
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Loading ... </Text>
       </View>
     )
 
   if (props.data.fetching)
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Loading data... </Text>
       </View>
     )
@@ -113,7 +103,6 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {

@@ -13,12 +13,14 @@ import styles from '../styles'
 
 function Dashboard(props){
   
-  const navigation = useNavigation()
   
+  //const navigation = useNavigation()
   const handleShow = list => {
     props.updateShowlist(list)
-    navigation.navigate('ListAppls')
+    //navigation.navigate('ListAppls')
+    props.navigation.navigate('ListAppls');
   }
+  
 
   const moneyFormat = amount => {
     return Number(amount)
