@@ -6,7 +6,7 @@ import React from "react"
 import { connect } from "react-redux"
 
 import ShowAppl from '../components/ShowAppl'
-import styles from '../styles'
+import { styles } from '../styles'
 
 
 function Categories(props) {

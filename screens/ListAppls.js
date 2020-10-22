@@ -7,7 +7,7 @@ import { connect } from "react-redux"
 
 import {  actChangeToDo, actChangeTodoSaga, actInitDashboard } from "../actions"
 import ShowAppl from '../components/ShowAppl'
-import styles from '../styles'
+import { styles } from '../styles'
 
 
 

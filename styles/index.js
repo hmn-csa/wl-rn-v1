@@ -1,11 +1,17 @@
 
 import { StyleSheet } from 'react-native'
 
+const MAIN_COLOR1 = "#003f5c"
+const MAIN_COLOR2 = "#fb5b5a"
+const BACKGROUND_LOGIN =  '#003f5c'
+const BACKGROUND_COLOR =  'white'
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
+    backgroundColor: BACKGROUND_COLOR, 
   },
   row: {
     flex: 1,
@@ -25,19 +31,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     margin: 8,
     justifyContent: 'center',
-    color: "#fb5b5a"
+    color: MAIN_COLOR1,
+    
   },
   indexValue: {
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 35,
     paddingTop: 8,
+    color: MAIN_COLOR1
   },
   indexValueSmall: {
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 30,
     paddingTop: 12,
+    color: MAIN_COLOR1
   },
   indexLabel: {
     textAlign: 'center', // <-- the magic
@@ -48,13 +57,28 @@ const styles = StyleSheet.create({
   logo:{
     fontWeight:"bold",
     fontSize:25,
-    color:"#fb5b5a",
+    color:MAIN_COLOR2,
     padding: 3,
   },
-  
+  sologan :{
+    fontWeight:"bold",
+    fontSize:50,
+    color:MAIN_COLOR2,
+    padding: 3,
+  },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#465881",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
+  // Login
   loginBtn:{
     width:"80%",
-    backgroundColor:"#fb5b5a",
+    backgroundColor:MAIN_COLOR1,
     borderRadius:50,
     height:50,
     alignItems:"center",
@@ -64,7 +88,20 @@ const styles = StyleSheet.create({
   },
   loginText:{
     color:"white"
-  }
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+
 })
 
-export default styles
+
+
+export {  
+  styles,
+  MAIN_COLOR1,
+  MAIN_COLOR2,
+  BACKGROUND_LOGIN,
+  BACKGROUND_COLOR,
+}

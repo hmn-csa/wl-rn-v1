@@ -13,18 +13,93 @@ import {Remark, Vsf, Skip} from '../components';
 import Dashboard from './Dashboard'
 import ListAppls from './ListAppls'
 import User from './User'
+import Maps from './Maps'
+import { MAIN_COLOR2 } from '../styles'
 
 
 enableScreens();
 const Stack = createNativeStackNavigator();
 
-function MyStack() {
+
+function MyStack(props) {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="ListAppls" component={ListAppls} />
-      <Stack.Screen name="Remark" component={Remark} />
-      <Stack.Screen name="Vsf" component={Vsf} />
-      <Stack.Screen name="Skip" component={Skip} />
+    <Stack.Navigator >
+      <Stack.Screen 
+        name="List" 
+        component={ListAppls}  
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                //alert('This is a button!')
+                props.navigation.navigate('Maps');
+                }}
+              title="Maps"
+              backgroundColor="#465881"
+            />
+          ),
+        }}
+      />
+      <Stack.Screen 
+        name="Remark" 
+        component={Remark} 
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+      <Stack.Screen 
+        name="Vsf" 
+        component={Vsf} 
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+      <Stack.Screen 
+        name="Skip" 
+        component={Skip}
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+      <Stack.Screen 
+        name="Maps" 
+        component={Maps}
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+
     </Stack.Navigator>
   );
 }

@@ -9,7 +9,7 @@ import {
   actGetVsfSaga, actSetActiveApplId,
   actTodoViewSuccess, actChangeTodoSaga, actInitDashboard 
 } from "../actions"
-import styles from '../styles'
+import { styles, MAIN_COLOR2 } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function ShowAppl(props){
@@ -59,7 +59,8 @@ function ShowAppl(props){
   }
   
   
-  const todoColor = isTodo === 1 ? 'tomato' : 'white'
+  const todoColor = isTodo === 1 ?  'white' : '#dee2e6'
+  const todoIconColor = isTodo === 1 ? MAIN_COLOR2 : 'white' 
 
   return (
     <View 
@@ -116,7 +117,8 @@ function ShowAppl(props){
         <View style={[styles.box]}>
             <Ionicons
               name='ios-add-circle' 
-              style={showstyles.logo} 
+              
+              style={[showstyles.logo, {color:todoIconColor}]} 
               onPress={handleChangeTodo}
             />
         </View>

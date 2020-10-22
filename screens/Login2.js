@@ -37,8 +37,6 @@ function Login(props) {
 
   
 
-  //const [token, setTocken] = useState()
-
   if (props.token.fetching)
     return (
       <View style={styles.container}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import { connect } from "react-redux";
 
 
@@ -10,17 +10,24 @@ function Maps(props) {
     return props.showlists.includes(appl.appl_id)
   })
 
-  const meanLat = listAppls.map(appl => appl.lat).reduce(function(sum, pay){
+  const listLat = listAppls.map(appl => appl.lat)
+  const listLon = listAppls.map(appl => appl.lon)
+  const meanLat = listLat.reduce(function(sum, pay){
     return sum = sum+pay;
   },0) / listAppls.length
 
-  const maxLat = listAppls.map(appl => appl.lat).max
+  //const latDetal = (Math.max(listAppls.map(appl => appl.lat)) - Math.min(listAppls.map(appl => appl.lat))) / 2
+  const latDetal = Math.max.apply(Math, listLat) - Math.min.apply(Math, listLat)  + 0.05
+  const lonDetal = Math.max.apply(Math, listLon) - Math.min.apply(Math, listLon)  + 0.05
 
   const meanLon = listAppls.map(appl => appl.lon).reduce(function(sum, pay){
     return sum = sum+pay;
   },0) / listAppls.length
 
-  const mean_lat = listAppls
+  //const maxLat = listAppls.map(appl => abs(appl.lat - meanLat)).max
+  //const maxLon = listAppls.map(appl => abs(appl.lon - meanLat)).max
+
+  
   return (
     <View style={styles.container}>
       <MapView  
@@ -28,15 +35,20 @@ function Maps(props) {
         initialRegion={{
           latitude: meanLat,
           longitude: meanLon ,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: latDetal,
+          longitudeDelta: lonDetal,
         }}
       >
       {
         listAppls.map(appl => 
           <Marker  
             coordinate = {{latitude:appl.lat, longitude: appl.lon}}
-            key={appl.appl_id}/> 
+            key={appl.appl_id}
+            onPress = {() => {
+              Alert.alert(`This is a ${appl.appl_id}`)
+              
+              }}
+            /> 
         )
       }
       

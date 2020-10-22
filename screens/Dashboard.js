@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { actUpdateShowlist } from "../actions"
 
-import styles from '../styles'
+import{ styles } from '../styles'
 
 
 function Dashboard(props){
@@ -19,7 +19,7 @@ function Dashboard(props){
     props.updateShowlist(list)
     //navigation.navigate('ListAppls')
     props.navigation.navigate('Portfolio');
-    props.navigation.navigate('ListAppls');
+    props.navigation.navigate('List');
   }
   
 
@@ -35,8 +35,8 @@ function Dashboard(props){
       <View style={{flex: 1.618}}> 
         {/* BEGIN Todos */}
         <Text style={styles.header}>Todos</Text>
-        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#fb5b5a'}]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.todoCase.applIds)}>
@@ -53,7 +53,7 @@ function Dashboard(props){
           </View>
         </View>
         <View style={[styles.row]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.todoPaid.applIds)}>
@@ -63,7 +63,7 @@ function Dashboard(props){
             <Text style={styles.indexLabel}>Paid</Text>
           </View>
 
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.todoPtp.applIds)}>
@@ -73,7 +73,7 @@ function Dashboard(props){
             <Text style={styles.indexLabel}>Ptp</Text>
           </View>
 
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.todoBptp.applIds)}>
@@ -100,9 +100,9 @@ function Dashboard(props){
 
         <Text style={styles.header}>Collections</Text>
 
-        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#fb5b5a'}]}>
+        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
           
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValue} 
               onPress={() => handleShow(props.dash.totalCase.applIds)}>{props.dash.totalCase.case}
@@ -118,8 +118,8 @@ function Dashboard(props){
           </View>
         </View>
 
-        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#fb5b5a'}]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+        <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.paidMtd.applIds)}>{props.dash.paidMtd.case}
@@ -136,7 +136,7 @@ function Dashboard(props){
         </View>
 
         <View style={styles.row}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#fb5b5a'}]}>
+          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
             <Text 
               style={styles.indexValueSmall} 
               onPress={() => handleShow(props.dash.paidToday.applIds)}>{props.dash.paidToday.case}
