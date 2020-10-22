@@ -18,6 +18,7 @@ function Dashboard(props){
   const handleShow = list => {
     props.updateShowlist(list)
     //navigation.navigate('ListAppls')
+    props.navigation.navigate('Portfolio');
     props.navigation.navigate('ListAppls');
   }
   

@@ -1,92 +1,73 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { 
-  StyleSheet, Text, View ,
-  TextInput, TouchableOpacity, 
-  Button, Alert
-} from 'react-native';
+  Text, View, StyleSheet, 
+  TextInput, Button, Alert 
+} from 'react-native'
+import { useForm, Controller } from 'react-hook-form'
+
 
 import { connect } from "react-redux";
 import { actloginUser } from "../actions/index"
 
-
 function Login(props) {
 
-  const useFormInput = initialValue => {
-    const [value, setValue] = useState(initialValue);
-  
-    const handleChange = e => {
-      setValue(e.target.value);
-    }
-    return {
-      value,
-      onChange: handleChange
-    }
-  }
-  const username = useFormInput('be_min')
-  const password = useFormInput('1')
-
-  const fetchUsers = () => {
-    const config = {
-      "username": username.value,
-      "password": password.value,
-    }
-
-    props.login(config) 
-
+  const { register, setValue, handleSubmit, control } = useForm();
+  const onSubmit = data => {
+    console.log(data)
+    props.login(data)
   };
 
-  
+  const onChange = arg => {
+    return {
+      value: arg.nativeEvent.text,
+    };
+  };
 
-  //const [token, setTocken] = useState()
-
-  if (props.token.fetching)
-    return (
-      <View style={styles.container}>
-        <Text>Loading ... </Text>
-      </View>
-    )
-
-  if (props.data.fetching)
-    return (
-      <View style={styles.container}>
-        <Text>Loading data... </Text>
-      </View>
-    )
- 
- 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>HMN APP</Text>
+      <View style={styles.inputView} >
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <TextInput
+              placeholder="User..." 
+              style={styles.inputText}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="username"
+        />
+      </View>
       
       <View style={styles.inputView} >
-        <TextInput  
-          style={styles.inputText}
-          placeholder="User..." 
-          placeholderTextColor="#003f5c"
-          {...username}
-          />
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <TextInput
+              secureTextEntry
+              placeholder="Password..." 
+              style={styles.inputText}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="password"
+        />
       </View>
       
-      <View style={styles.inputView} >
-        <TextInput  
-          secureTextEntry
-          style={styles.inputText}
-          placeholder="Password..." 
-          placeholderTextColor="#003f5c"
-          {...password}
-          />
-      </View>
-
-      <Button 
-        style={styles.loginBtn}
-        title='LOGIN'
-        onPress={fetchUsers}
-      />
-
-      </View>
+      
+        <Button
+          style={styles.loginBtn}
+          title="Button"
+          onPress={handleSubmit(onSubmit)}
+        />
+      
+    </View>
   );
-}
-
+};
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -130,12 +111,17 @@ const styles = StyleSheet.create({
     height:50,
     color:"white"
   },
+  label: {
+    color: 'white',
+    margin: 20,
+    marginLeft: 0,
+  },
   forgot:{
     color:"white",
     fontSize:11
   },
   loginBtn:{
-    width:"10%",
+    width:"30%",
     backgroundColor:"#fb5b5a",
     borderRadius:50,
     height:50,
@@ -148,6 +134,7 @@ const styles = StyleSheet.create({
     color:"white"
   }
 })
+
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { View, StyleSheet} from 'react-native';
 //import ContainerShow from './containers/ContainerShow'
 
-import Login from './Login3'
+import Login from './Login'
 import MainApp from './MainApp'
 
 
