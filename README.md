@@ -16,3 +16,6 @@ https://viblo.asia/p/ket-hop-stacks-tabs-va-drawers-cua-react-navigation-4x-tron
 # Form
 
 https://react-hook-form.com/get-started
+
+# config map
+https://docs.expo.io/versions/latest/sdk/map-view/

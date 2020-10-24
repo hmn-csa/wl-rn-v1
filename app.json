@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "StoreApp",
-    "slug": "StoreApp",
+    "name": "Worklist App",
+    "slug": "worklist-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,12 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "package": "io.expo.client"
+      "package": "com.glx.wlapp", 
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBziEaKJvR3y3Z6pxzX54vTSCcPpFsr8f0"
+        }
+      }
     }
   }
 }
