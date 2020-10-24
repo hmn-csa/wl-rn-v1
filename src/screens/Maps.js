@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import { connect } from "react-redux";
 
@@ -32,6 +32,7 @@ function Maps(props) {
     <View style={styles.container}>
       <MapView  
         style={styles.mapStyle} 
+        provider={PROVIDER_GOOGLE} 
         initialRegion={{
           latitude: meanLat,
           longitude: meanLon ,

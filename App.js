@@ -4,9 +4,9 @@ import { View, StyleSheet} from 'react-native';
 
 import { Provider } from 'react-redux'
 // Imports: Redux Store
-import { store } from './store/store';
+import { store } from './src/store/store'
 
-import MyApp from './screens'
+import MyApp from './src/screens'
 
 export default function App() {
   return (
