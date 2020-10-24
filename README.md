@@ -19,3 +19,6 @@ https://react-hook-form.com/get-started
 
 # config map
 https://docs.expo.io/versions/latest/sdk/map-view/
+
+
+expo build:android -t apk
