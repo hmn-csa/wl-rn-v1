@@ -30,7 +30,8 @@ export function* workerGetVsf(request) {
     const response = yield call(axios, config);
     const data = response.data;
     
-    console.log(data)
+    console.log('API_VSF_SUCCESS')
+    console.log(data[0])
     
     yield put({ type: constAction.API_VSF_SUCCESS, content: data });
 

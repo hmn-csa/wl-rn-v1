@@ -12,21 +12,19 @@ import {
 import { styles, MAIN_COLOR2 } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function ShowAppl(props){
+function ApplDetail(props){
 
-  const [isTodo, setTodoContent] = useState(props.noteData.todo_flag)
-  const [content, setContent] = useState(props.noteData) 
-
-  //const [token, setToken] = useState(props.token)
-
-  //console.log(token.token.access)
-
+  const [isTodo, setTodoContent] = useState(props.todo_flag)
+  const [appl_id,setApplContent] = useState(props.appl_id)
+  const [cust_name, setNameContent] = useState(props.cust_name) 
+  const [total_pay_amount, setPaidContent] = useState(props.total_pay_amount)
+  const [reg_address, setAddressContent] = useState(props.reg_address) 
 
   const handleChangeTodo = () => {
     const todo_new = isTodo === 1 ? 0 : 1
    
     const config = {
-      'appl_id': content.appl_id, 
+      'appl_id': appl_id, 
       'todo_value': todo_new,
       'token_value': props.token.token.access
     }
@@ -37,14 +35,14 @@ function ShowAppl(props){
 
   const handleGetVsf = () => {
     
-    if (props.vsf.vsfs.map(appl => appl.appl_id).includes(content.appl_id)){
-      props.setActiveVsf(content.appl_id)
+    if (props.vsf.vsfs.map(appl => appl.appl_id).includes(appl_id)){
+      props.setActiveVsf(appl_id)
       props.navigation.navigate('Vsf')
       Alert.alert(`exist VSF`)
     }
     else {
       const config = {
-        'appl_id': content.appl_id, 
+        'appl_id': appl_id, 
         'token_value': props.token.token.access
       }
       props.apiGetVsf(config)
@@ -79,7 +77,7 @@ function ShowAppl(props){
           <Text>appl id:</Text>
         </View>
         <View style={[styles.box, {flex:3}]}>
-          <Text>{content.appl_id}</Text>
+          <Text>{appl_id}</Text>
         </View>
       </View>
       <View style={[styles.row]}>
@@ -87,7 +85,7 @@ function ShowAppl(props){
           <Text>cust name:</Text>
         </View>
         <View style={[styles.box, {flex:3}]}>
-          <Text>{content.cust_name}</Text>
+          <Text>{cust_name}</Text>
         </View>
       </View> 
       <View style={[styles.row]}>
@@ -95,19 +93,20 @@ function ShowAppl(props){
           <Text>paid:</Text>
         </View>
         <View style={[styles.box, {flex:3}]}>
-          <Text>{content.total_pay_amount}</Text>
+          <Text>{total_pay_amount}</Text>
         </View>
-      </View>
+      </View> 
+
       <View style={[styles.row]}>
         <View style={styles.box}>
           <Text>address:</Text>
         </View>
         <View style={[styles.box, {flex:3}]}>
-          <Text>{content.reg_address}</Text>
+          <Text>{reg_address}</Text>
         </View>
       </View>
 
-    
+  
        {/* BEGIN BUTTONS */}
       <View style={[styles.row]}>
         <View style={[styles.box]}>
@@ -200,4 +199,4 @@ const showstyles = StyleSheet.create({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowAppl);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplDetail);

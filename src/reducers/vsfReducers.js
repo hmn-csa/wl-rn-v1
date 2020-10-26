@@ -8,7 +8,9 @@ const initialState = {
   vsfs: [],
   activeApplId: {
     'appl_id': '',
-    'reg_address': ''
+    'reg_address': '',
+    'cust_name': '',
+    'act_mobile': '',
   }
 };
 
@@ -23,6 +25,7 @@ export function vsfReducers(state = initialState, action) {
 
     case constAction.API_VSF_SUCCESS:
       state.vsfs.push(action.content[0])
+      console.log(action.content[0])
       return { ...state, activeApplId: action.content[0]};
 
     case constAction.API_VSF_FAILURE:

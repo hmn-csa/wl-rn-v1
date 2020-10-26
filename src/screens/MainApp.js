@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { enableScreens } from 'react-native-screens';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+//import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
@@ -18,8 +19,8 @@ import { MAIN_COLOR2 } from '../styles'
 
 
 enableScreens();
-const Stack = createNativeStackNavigator();
-
+//const Stack = createNativeStackNavigator();
+const Stack =  createStackNavigator();
 
 function MyStack(props) {
   return (
@@ -39,7 +40,7 @@ function MyStack(props) {
             <Button
               onPress={() => {
                 //alert('This is a button!')
-                props.navigation.navigate('Maps');
+                props.navigation.navigate('Portfolio', { screen: 'Maps' });
                 }}
               title="Maps"
               backgroundColor="#465881"
@@ -86,6 +87,8 @@ function MyStack(props) {
           }
         }}
       />
+      
+     
       <Stack.Screen 
         name="Maps" 
         component={Maps}
@@ -99,7 +102,9 @@ function MyStack(props) {
           }
         }}
       />
-
+       
+      
+      
     </Stack.Navigator>
   );
 }

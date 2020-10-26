@@ -1,5 +1,7 @@
 import React from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+//import { MapView, Marker, PROVIDER_GOOGLE  } from 'expo'
+
 import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import { connect } from "react-redux";
 
@@ -24,8 +26,6 @@ function Maps(props) {
     return sum = sum+pay;
   },0) / listAppls.length
 
-  //const maxLat = listAppls.map(appl => abs(appl.lat - meanLat)).max
-  //const maxLon = listAppls.map(appl => abs(appl.lon - meanLat)).max
 
   
   return (

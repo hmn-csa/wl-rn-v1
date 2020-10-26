@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 
 const MAIN_COLOR1 = "#003f5c"
 const MAIN_COLOR2 = "#fb5b5a"
+const MAIN_COLOR3 = "#dee2e6"
 const BACKGROUND_LOGIN =  '#003f5c'
 const BACKGROUND_COLOR =  'white'
 
@@ -23,6 +24,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
+    margin: 2
+  },
+
+  box2: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
 
   header: {
@@ -32,7 +40,14 @@ const styles = StyleSheet.create({
     margin: 8,
     justifyContent: 'center',
     color: MAIN_COLOR1,
-    
+  },
+  header2: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 10,
+    margin: 8,
+    justifyContent: 'center',
+    color: MAIN_COLOR1,
   },
   indexValue: {
     textAlign: 'center', // <-- the magic
@@ -102,6 +117,7 @@ export {
   styles,
   MAIN_COLOR1,
   MAIN_COLOR2,
+  MAIN_COLOR3,
   BACKGROUND_LOGIN,
   BACKGROUND_COLOR,
 }

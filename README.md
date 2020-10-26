@@ -22,3 +22,5 @@ https://docs.expo.io/versions/latest/sdk/map-view/
 
 
 expo build:android -t apk
+
+https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md

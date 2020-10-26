@@ -4,7 +4,6 @@ import {
 } from 'react-native' 
 
 import { connect } from "react-redux"
-import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { actUpdateShowlist } from "../actions"
 
@@ -16,10 +15,11 @@ function Dashboard(props){
   
   //const navigation = useNavigation()
   const handleShow = list => {
+    props.navigation.navigate('Portfolio',  { screen: 'List' });
     props.updateShowlist(list)
     //navigation.navigate('ListAppls')
-    props.navigation.navigate('Portfolio');
-    props.navigation.navigate('List');
+    
+   //props.navigation.navigate('List');
   }
   
 

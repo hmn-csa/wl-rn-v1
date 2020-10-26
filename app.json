@@ -24,7 +24,7 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "package": "com.glx.wlapp", 
+      "package": "com.lgm.wlapp", 
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBziEaKJvR3y3Z6pxzX54vTSCcPpFsr8f0"
