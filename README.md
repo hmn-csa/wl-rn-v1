@@ -3,6 +3,7 @@
 https://code.tutsplus.com/vi/tutorials/get-started-with-layouts-in-react-native--cms-27418
 
 
+
 # Kết hợp Stacks, Tabs
 **install**
 https://reactnavigation.org/docs/getting-started/
@@ -24,3 +25,7 @@ https://docs.expo.io/versions/latest/sdk/map-view/
 expo build:android -t apk
 
 https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md
+
+
+# redux keys index
+https://kipalog.com/posts/Su-dung-Redux-store-nhu-1-database

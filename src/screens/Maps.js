@@ -8,7 +8,11 @@ import { connect } from "react-redux";
 
 function Maps(props) {
 
-  const listAppls = props.data.data.filter((appl) => {
+  //const listAppls = props.data.data.filter((appl) => {
+  //  return props.showlists.includes(appl.appl_id)
+  //})
+
+  const listAppls = Object.values(props.data.data).filter((appl) => {
     return props.showlists.includes(appl.appl_id)
   })
 
@@ -27,7 +31,6 @@ function Maps(props) {
   },0) / listAppls.length
 
 
-  
   return (
     <View style={styles.container}>
       <MapView  

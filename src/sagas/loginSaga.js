@@ -33,6 +33,7 @@ export function* workerGetToken(request) {
     const data = response.data;
 
     // dispatch a success action to the store with the new dog
+
     yield put({ type: constAction.API_TOKEN_SUCCESS, content: data });
 
     // get appls data
@@ -49,7 +50,7 @@ export function* workerGetData(token) {
   try {
     let config = {
       method: 'post',
-      url: `${constAction.WORKLIST_API}/appls-list/`,
+      url: `${constAction.WORKLIST_API}/portfolio-list/`,
       headers: { 
         'Authorization': `Bearer ${token}`
       }
@@ -66,7 +67,7 @@ export function* workerGetData(token) {
     yield put({ type: constAction.DATA_INIT_DASHBOARD });
 
     // dispatch UPDATE_SHOWLIST
-    const allAppls = data.map(appl => appl.appl_id)
+    const allAppls =  Object.values(data).map(appl => appl.appl_id)
     yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
 
     

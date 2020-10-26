@@ -74,7 +74,10 @@ const applsReducers = (state = initialState, action) => {
 
     // todo 
     case constAction.API_TODO_SUCCESS:
-      state.data[action.content.appl_id].todo_flag = action.content.todo_value
+      const indexOfEdit= state.data.findIndex((note) => note.appl_id === action.content.appl_id)
+      if (indexOfEdit !== -1) {
+        state.data[indexOfEdit].todo_flag = action.content.todo_value
+      }
       return state
   
     case constAction.API_TODO_FAILURE:
@@ -84,7 +87,7 @@ const applsReducers = (state = initialState, action) => {
     // dash 
     case constAction.DATA_INIT_DASHBOARD:
 
-      let appls = Object.values(state.data)
+      let appls = state.data
       // ======== todos ==========
       let todoAppls = appls.filter((appl) => {
         return appl.todo_flag == 1

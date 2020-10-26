@@ -89,6 +89,7 @@ function MyStack(props) {
       />
       
      
+     
       <Stack.Screen 
         name="Maps" 
         component={Maps}
@@ -102,7 +103,8 @@ function MyStack(props) {
           }
         }}
       />
-       
+      
+    
       
       
     </Stack.Navigator>
