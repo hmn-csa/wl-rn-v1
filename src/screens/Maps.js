@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 //import { MapView, Marker, PROVIDER_GOOGLE  } from 'expo'
-
-import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
+import { Button, Dialog, Portal, } from 'react-native-paper';
+import { StyleSheet, Text, View, Dimensions, ScrollView, FlatList } from 'react-native';
 import { connect } from "react-redux";
+import { styles as masterStyle, BACKGROUND_LOGIN } from '../styles'
+import ContractDetail from '../components/ContractDetail'
 
 
 function Maps(props) {
@@ -12,8 +14,8 @@ function Maps(props) {
   //  return props.showlists.includes(appl.appl_id)
   //})
 
-  const listAppls = Object.values(props.data.data).filter((appl) => {
-    return props.showlists.includes(appl.appl_id)
+  const listAppls = Object.values(props.data).filter((appl) => {
+    return props.showlists.applIds.includes(appl.appl_id)
   })
 
   const listLat = listAppls.map(appl => appl.lat)
@@ -30,9 +32,17 @@ function Maps(props) {
     return sum = sum+pay;
   },0) / listAppls.length
 
+  const [visible, setVisible] = useState(false);
+  const [appl_id, setAppl_id] = useState(listAppls[0].appl_id);
+  
+  const showDialog = () => {
+    setVisible(true)
+  };
+  const hideDialog = () => setVisible(false);
 
   return (
     <View style={styles.container}>
+      <Text>{appl_id}</Text>
       <MapView  
         style={styles.mapStyle} 
         provider={PROVIDER_GOOGLE} 
@@ -48,15 +58,27 @@ function Maps(props) {
           <Marker  
             coordinate = {{latitude:appl.lat, longitude: appl.lon}}
             key={appl.appl_id}
-            onPress = {() => {
-              Alert.alert(`This is a ${appl.appl_id}`)
-              
-              }}
+            onPress = {() => {setAppl_id(appl.appl_id); showDialog()}}
             /> 
         )
       }
       
     </MapView>
+
+    <Dialog style={{height:250,}} visible={visible} onDismiss={hideDialog}>
+      <FlatList 
+        data = {[appl_id]}
+        renderItem={appl_id => 
+          <ContractDetail 
+            key={appl_id}
+            contractId={appl_id}
+            navigation={props.navigation}/>}
+      />
+      
+      <Dialog.Actions>
+        <Button onPress={hideDialog}>Done</Button>
+      </Dialog.Actions>
+    </Dialog>
     </View>
   );
 }
@@ -77,7 +99,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => {
   return {
     showlists: state.showlists,
-    data: state.data
+    data: state.data.data,
+    token: state.token,
+    vsf: state.vsf
   }
 }
 

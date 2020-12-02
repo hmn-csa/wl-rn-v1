@@ -1,29 +1,78 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { 
   Text, View, StyleSheet, 
-  TextInput, Button, Alert 
+  TextInput, Button, Alert, ActivityIndicator
 } from 'react-native'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
-
-
+import * as Location from 'expo-location';
+import * as Device from 'expo-device';
 import { connect } from "react-redux";
-import { actloginUser } from "../actions/index"
+import { actloginUser, actLocationSet } from "../actions/index"
 import { styles, BACKGROUND_LOGIN } from '../styles'
 
 function Login(props) {
 
+  const getLocation = async() => {
+    let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        // setErrorMsg('Permission to access location was denied');
+        alert('Vui lòng bật định vị và cấp quyền để tiếp tục');
+      }
+      let locationC = await Location.getCurrentPositionAsync({});
+      props.locationSet(locationC.coords)
+  }
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        // setErrorMsg('Permission to access location was denied');
+        Alert.alert('Vui lòng bật định vị và cấp quyền để tiếp tục');
+      }
+      let locationC = await Location.getCurrentPositionAsync({});
+      props.locationSet(locationC.coords)
+    })();
+  }, []);
+
   const { register, setValue, handleSubmit, control } = useForm();
-  const onSubmit = data => {
+
+  const onSubmit = async(data) => {
+    // console.log(data)
+
+    data = {...data, 
+      lat: props.token.lat, 
+      lon: props.token.lon,
+      device_brand: Device.brand,
+      device_os: Device.osName,
+      device_name: Device.modelName,
+    }
     console.log(data)
-    props.login(data)
+    if (data.username == null || data.password == null)
+    Alert.alert('username, password không được để trống')
+    else if  (data.lat == null || data.lon == null) {
+      getLocation()
+    }
+    else {
+      await props.login(data)
+      if (props.token.token != null) 
+        Alert.alert('username hoặc password không đúng')
+    }
   };
 
-  const onChange = arg => {
-    return {
-      value: arg.nativeEvent.text,
-    };
-  };
 
+  if (props.token.fetching)
+    return (
+      <View style={[styles.container, {alignItems: 'center'}]}>
+        <Text>Loading ... </Text>
+        <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
+      </View>
+    )
+  if (props.data.fetching)
+    return (
+      <View style={[styles.container, {alignItems: 'center'}]}>
+        <Text>Loading data... </Text>
+        <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
+      </View>
+    )
   return (
     <View style={[styles.container, 
       {alignItems: 'center', backgroundColor: BACKGROUND_LOGIN}]}>
@@ -68,6 +117,7 @@ function Login(props) {
           title="Button"
           onPress={handleSubmit(onSubmit)}
         />
+        
       
     </View>
   );
@@ -85,7 +135,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: (config) => {
       dispatch(actloginUser(config))
-    }
+    }, 
+    locationSet: (content) => {
+      dispatch(actLocationSet(content))
+    }, 
   }
 }
 

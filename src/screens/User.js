@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },

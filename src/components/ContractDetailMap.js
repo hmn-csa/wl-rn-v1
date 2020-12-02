@@ -13,14 +13,9 @@ import { styles, MAIN_COLOR2 } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
 
-function ContractDetail(props) {
-  // with FlatList: props.contractId.item
-  // const id = props.contractId === undefined ? props.contractId.item : props.contractId
-  // const [contractId, setcontractId] = useState(props.contractId.item)
-  const [contractId, setcontractId] = useState(props.contractId.item)
-    
-  // console.log(contractId2), 
-  // const contractId = "20190218-5984762"
+function ContractDetailMap(props) {
+
+  const [contractId, setcontractId] = useState(props.contractId)
   const [content, setContent] = useState(props.data[contractId])
   const [isTodo, setTodoContent] = useState(props.data[contractId].todo_flag)
   const [todoColor, setTodoColor] = useState(props.data[contractId].todo_flag === 1 ? 'white' : '#f7f7f7')
@@ -315,4 +310,4 @@ const showstyles = StyleSheet.create({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContractDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ContractDetailMap);

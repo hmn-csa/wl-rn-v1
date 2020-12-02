@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { 
   StyleSheet, Text, View ,
   TextInput, TouchableOpacity, 
-  Button, Alert
+  Button, Alert, ActivityIndicator
 } from 'react-native';
 
 import { connect } from "react-redux";
@@ -46,8 +46,9 @@ function Login(props) {
 
   if (props.data.fetching)
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {alignItems: 'center'}]}>
         <Text>Loading data... </Text>
+        <ActivityIndicator size="large" color="#00ff00" />
       </View>
     )
  

@@ -1,5 +1,5 @@
 import {
-  View, Text, Image, Button, StyleSheet, ScrollView
+  View, Text, Image, Button, StyleSheet, ScrollView, ActivityIndicator
 } from 'react-native'
 
 import React, { useState, useEffect} from "react"
@@ -9,8 +9,21 @@ import { styles, MAIN_COLOR2, MAIN_COLOR3 } from '../styles'
 
 function Vsf(props){
     
+  const moneyFormat = (n) => {
+    //return  n.toLocaleString().split(".")[0]
+    const  money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
+    return money.substring(0, money.length -2)
+  }
+
+  if (props.vsf.fetching)
+    return (
+      <View style={[styles.container, {alignItems: 'center'}]}>
+        <Text>Loading ... </Text>
+        <ActivityIndicator size="large" color={MAIN_COLOR2} />
+      </View>
+    )
+
   return (  
-    
     <ScrollView >
       <View style={styles.container}>
         <View style={[styles.row, {backgroundColor: MAIN_COLOR3}]}>
@@ -161,7 +174,7 @@ function Vsf(props){
           </View>
           <View style={[styles.box2]}>
             <Text style={{color: MAIN_COLOR2}}>
-              {props.vsf.activeApplId.principle_outstanding}
+              {moneyFormat(props.vsf.activeApplId.principle_outstanding)}
             </Text>
           </View>   
         </View>  
@@ -172,7 +185,7 @@ function Vsf(props){
           </View>
           <View style={[styles.box2]}>
             <Text style={{color: MAIN_COLOR2}}>
-              {props.vsf.activeApplId.amount_overdue}
+              {moneyFormat(props.vsf.activeApplId.amount_overdue)}
             </Text>
           </View>   
         </View>  
@@ -182,7 +195,7 @@ function Vsf(props){
             <Text>Gốc quá hạn:</Text>
           </View>
           <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.principle_overdue}</Text>
+            <Text>{moneyFormat(props.vsf.activeApplId.principle_overdue)}</Text>
           </View>   
         </View>  
 
@@ -191,7 +204,7 @@ function Vsf(props){
             <Text>Lãi quá hạn:</Text>
           </View>
           <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.interest_overdue}</Text>
+            <Text>{moneyFormat(props.vsf.activeApplId.interest_overdue)}</Text>
           </View>   
         </View>  
         <View style={[styles.row]}>
@@ -199,31 +212,16 @@ function Vsf(props){
             <Text>Phí bảo hiểm:</Text>
           </View>
           <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.insurance_fee} </Text>
+            <Text>{moneyFormat(props.vsf.activeApplId.insurance_fee)} </Text>
           </View>   
         </View>  
+        
         <View style={[styles.row]}>
           <View style={[styles.box]}>
             <Text>VAT:</Text>
           </View>
           <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.vat} </Text>
-          </View>   
-        </View>  
-        <View style={[styles.row]}>
-          <View style={[styles.box]}>
-            <Text>Phí bảo hiểm:</Text>
-          </View>
-          <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.insurance_fee} </Text>
-          </View>   
-        </View>  
-        <View style={[styles.row]}>
-          <View style={[styles.box]}>
-            <Text>VAT:</Text>
-          </View>
-          <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.vat} </Text>
+            <Text>{moneyFormat(props.vsf.activeApplId.vat)} </Text>
           </View>   
         </View>  
 
@@ -273,7 +271,7 @@ function Vsf(props){
             <Text>Tổng thanh toán:</Text>
           </View>
           <View style={[styles.box2]}>
-            <Text>{props.vsf.activeApplId.total_paid} </Text>
+            <Text>{moneyFormat(props.vsf.activeApplId.total_paid)} </Text>
           </View>   
         </View>  
 

@@ -1,30 +1,7 @@
 import * as constAction from "../consts/index";
 
-const defaultState = {
-  'todoCase':{
-    'case': 0,
-    'applIds': []
-  },
-  'todoFollowed':{
-    'case': 0,
-    'applIds': []
-  },
-  'todoPaid':{
-    'case': 0,
-    'applIds': []
-  },
-  'todoPtp':{
-    'case': 0,
-    'applIds': []
-  },
-  'todoBptp':{
-    'case': 0,
-    'applIds': []
-  },
-  'todoRevisit':{
-    'case': 0,
-    'applIds': []
-  },
+
+const initialState = {
   'totalCase':{
     'case': 0,
     'applIds': []
@@ -39,7 +16,7 @@ const defaultState = {
     'applIds': []
   },
   'ptpCase': {
-    'value': 0,
+    'case': 0,
     'applIds': []
   },
   'paidToday': {
@@ -49,32 +26,14 @@ const defaultState = {
   }
 }
 
-const dashReducers = (state = defaultState, action) => {
+const totalReducers = (state = initialState, action) => {
 
   switch(action.type) {
-
-    case constAction.INIT_DASHBOARD:
-
-      let appls = action.content
-
+    // get data 
+    case constAction.CAL_TODO_DASH:
+      let appls = Object.values(action.data)
+      let totalCase = appls.length
       // ======== todos ==========
-      let todoAppls = appls.filter((appl) => {
-        return appl.todo_flag == 1
-      })
-
-      let todoFollowedAppls = todoAppls.filter((appl) => {
-        return appl.followed == 1 
-      })
-      
-      let todoPaidAppls = todoAppls.filter((appl) => {
-        return appl.total_pay_amount > 0
-      })
-
-      let todoPtpAppls = todoAppls.filter((appl) => {
-        return appl.ptp_flag > 0
-      })
-
-      // ======== paids ==========
       let initPaidAppls = appls.filter((appl) => {
         return appl.full_paid == 1
       })
@@ -82,17 +41,14 @@ const dashReducers = (state = defaultState, action) => {
       let initPaidMtd = appls.filter((appl) => {
         return appl.total_pay_amount > 0
       })
-
       let paidMtdValue = initPaidMtd.map(function (appl){
         return appl.total_pay_amount
       }).reduce(function(sum, pay){
         return sum = sum+pay;
       },0);
-
       let initPaidTodayAppls = appls.filter((appl) => {
         return appl.paid_today == 1
       })
-
       let paidTodayValue = initPaidTodayAppls.map((appl) => {
         return appl.paid_today_amt 
       }).reduce(function(sum, pay){
@@ -103,27 +59,10 @@ const dashReducers = (state = defaultState, action) => {
       let initPtp = appls.filter((appl) => {
         return appl.ptp_flag > 0
       })
-      
       state = {
         ...state, 
-        'todoCase':{
-          'case': todoAppls.length,
-          'applIds': todoAppls.map(appl => appl.appl_id)
-        },
-        'todoFollowed': {
-          'case': todoFollowedAppls.length,
-          'applIds': todoFollowedAppls.map(appl => appl.appl_id)
-        },
-        'todoPaid': {
-          'case': todoPaidAppls.length,
-          'applIds': todoPaidAppls.map(appl => appl.appl_id)
-        },
-        'todoPtp': {
-          'case': todoPtpAppls.length,
-          'applIds': todoPtpAppls.map(appl => appl.appl_id)
-        },
         'totalCase':{
-          'case': appls.length,
+          'case': totalCase,
           'applIds': appls.map(appl => appl.appl_id)
         },
         'paidAll': {
@@ -145,14 +84,13 @@ const dashReducers = (state = defaultState, action) => {
           'applIds':  initPaidTodayAppls.map(appl => appl.appl_id)
         },
       }
-
-      console.log(state)
       return state;
-    
+
     default:
-        return state;
+      return state;
+
   }
 };
 
 
-export default dashReducers;
+export default totalReducers;

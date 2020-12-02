@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 const MAIN_COLOR1 = "#003f5c"
 const MAIN_COLOR2 = "#fb5b5a"
 const MAIN_COLOR3 = "#dee2e6"
-const BACKGROUND_LOGIN =  '#003f5c'
+const BACKGROUND_LOGIN =  "white"
 const BACKGROUND_COLOR =  'white'
 
 const styles = StyleSheet.create({
@@ -90,6 +90,24 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     padding:20
   },
+  inputViewRemark:{
+    width:"90%",
+    backgroundColor: MAIN_COLOR3,
+    borderRadius:5,
+    height:40,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20,
+  },
+  inputViewConst:{
+    width:"90%",
+    backgroundColor: MAIN_COLOR3,
+    borderRadius:5,
+    height:40,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
   // Login
   loginBtn:{
     width:"80%",
@@ -107,6 +125,10 @@ const styles = StyleSheet.create({
   inputText:{
     height:50,
     color:"white"
+  },
+  inputTextBlack:{
+    height:50,
+    color:"black"
   },
 
 })

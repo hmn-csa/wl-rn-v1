@@ -2,28 +2,18 @@ import * as constAction from "../consts/index";
 
 
 
-
-//change status
-export const actChangeToDo = (appl_id) => {
-	return {
-		type: constAction.CHANGE_TODO,
-		appl_id,
-	};
-};
-
-
-export const actInitDashboard = (content) => {
-	//console.log(`actInitDashboard`)
-	return {
-		type: constAction.INIT_DASHBOARD,
-		content,
-	}
-};
-
 export const actUpdateShowlist = (content) => {
 	//console.log(`actInitSHOWLIST`)
 	return {
 		type: constAction.UPDATE_SHOWLIST,
+		content,
+	}
+};
+
+export const actSetTodoShowlist = (content) => {
+	//console.log(`actInitSHOWLIST`)
+	return {
+		type: constAction.SET_TODO_SHOWLIST,
 		content,
 	}
 };
@@ -36,6 +26,13 @@ export const actloginUser = (config) => {
   }
 };
 
+
+export const actLocationSet = (content) => {
+  return {
+    type: constAction.LOCATION_SET,
+    content
+  }
+};
 
 export const actlogoutUser = () => {
   return {
@@ -64,13 +61,55 @@ export const actGetVsfSaga = (config) => {
   }
 };
 
-export const actSetActiveApplId= (appl_id) => {
+export const actSetActiveApplId= (content) => {
   return {
     type: constAction.APPLID_VSF_ACTIVE,
-    appl_id
+    content
   }
 };
 
 
+// summary actions
+export const calTodoDash = (data) => {
+  return {
+    type: constAction.CAL_TODO_DASH,
+    data
+  }
+};
+
+export const calTreeDash = (data) => {
+  return {
+    type: constAction.CAL_TREE_DASH,
+    data
+  }
+};
+
+export const calTotalDash = (data) => {
+  return {
+    type: constAction.CAL_TOTAL_DASH,
+    data
+  }
+};
+
+export const calCateDash = (data) => {
+  return {
+    type: constAction.CAL_CATE_DASH,
+    data
+  }
+};
 
 
+//change status
+export const actChangeToDo = (content) => {
+	return {
+		type: constAction.CHANGE_TODO,
+		content,
+	};
+};
+
+export const actChangeFollow = (content) => {
+	return {
+		type: constAction.CHANGE_FOLLOW,
+		content,
+	};
+};

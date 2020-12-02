@@ -1,97 +1,129 @@
 import React, { useState, useEffect } from 'react' 
 import {
-  View, Text, Image, Button, TouchableOpacity, StyleSheet, Dimensions, ScrollView
+  View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView
 } from 'react-native' 
+
+import { Button } from 'react-native-paper';
 
 import { connect } from "react-redux"
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { actUpdateShowlist } from "../actions"
+import { actUpdateShowlist, actSetTodoShowlist} from "../actions"
 
 import{ styles } from '../styles'
+//import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 
 
 function Dashboard(props){
-  
-  
   //const navigation = useNavigation()
-  const handleShow = list => {
+  const [loading, setLoading] = useState(false)
+
+  const handleShowTodo = () => {
+
+    const list_todo = Object.values(props.data).filter(appl => appl.todo_flag == 1 ).map(a => a.appl_id); 
     props.navigation.navigate('Portfolio',  { screen: 'List' });
-    props.updateShowlist(list)
+    props.updateShowlist(list_todo)
+    console.log('show list:', list_todo)
     //navigation.navigate('ListAppls')
-    
    //props.navigation.navigate('List');
   }
-  
 
+  const handleShow = async (list, isTodo) => {
+    await props.navigation.navigate('Portfolio',  { screen: 'List' })
+    props.updateShowlist(list)
+    props.setTodoShowlist(isTodo)
+  }
+  
+  const moneyFormat = n => {
+    //return  n.toLocaleString().split(".")[0]
+    const  money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
+    return money.substring(0, money.length -2)
+  }
+
+  /*
   const moneyFormat = amount => {
     return Number(amount)
       .toFixed(1)
       .replace(/\d(?=(\d{3})+\.)/g, '$&,').replace(/.0/g, '');
   }
+  */
 
-  
   return (
     <View style={styles.container}>
       <View style={{flex: 1.618}}> 
         {/* BEGIN Todos */}
         <Text style={styles.header}>Todos</Text>
         <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          activeOpacity={0.5}
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.todoCal.todoCase.applIds, true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoCase.applIds)}>
-              {props.dash.todoCase.case}
+              >
+              {props.todoCal.todoCase.case}
             </Text>
             <Text style={styles.indexLabel}>Plan</Text>
-          </View>
-          <View style={[styles.box]}>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          style={[styles.box]}
+          onPress={() => handleShow(props.todoCal.todoFollowed.applIds , true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoFollowed.applIds)}>{props.dash.todoFollowed.case}
+              >{props.todoCal.todoFollowed.case}
             </Text>
             <Text style={styles.indexLabel}>Followed</Text>
-          </View>
+          </TouchableOpacity>
         </View>
+
         <View style={[styles.row]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.todoCal.todoPaid.applIds, true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoPaid.applIds)}>
+              >
               <Ionicons name='ios-checkmark-circle' style={styles.logo} />
-              {props.dash.todoPaid.case}
+              {props.todoCal.todoPaid.case}
             </Text>
             <Text style={styles.indexLabel}>Paid</Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.todoCal.todoPtp.applIds, true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoPtp.applIds)}>
+              >
               <Ionicons name='ios-heart' style={styles.logo} />
-              {props.dash.todoPtp.case}
+              {props.todoCal.todoPtp.case}
             </Text>
             <Text style={styles.indexLabel}>Ptp</Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.todoCal.todoBptp.applIds, true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoBptp.applIds)}>
+              >
               <Ionicons name='ios-close-circle' style={styles.logo} />
-              {props.dash.todoBptp.case}
+              {props.todoCal.todoBptp.case}
             </Text>
             <Text style={styles.indexLabel}>B-Ptp</Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={[styles.box]}>
+          <TouchableOpacity 
+          style={[styles.box]} 
+          onPress={() => handleShow(props.todoCal.todoRevisit.applIds, true)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.todoRevisit.applIds)}>
+              >
               <Ionicons name='ios-cash' style={styles.logo} />
-              {props.dash.todoRevisit.case}
+              {props.todoCal.todoRevisit.case}
             </Text>
             <Text style={styles.indexLabel}>Re Visit</Text>
-          </View>
+          </TouchableOpacity>
    
         </View>
         {/* END Todos */}
@@ -101,59 +133,71 @@ function Dashboard(props){
         <Text style={styles.header}>Collections</Text>
 
         <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
-          
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.totalCal.totalCase.applIds, false)}>
             <Text 
               style={styles.indexValue} 
-              onPress={() => handleShow(props.dash.totalCase.applIds)}>{props.dash.totalCase.case}
+              >{props.totalCal.totalCase.case}
             </Text>
             <Text style={styles.indexLabel}>Total Case</Text>
-          </View>
-          <View style={[styles.box]}>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          style={[styles.box]} 
+          onPress={() => handleShow(props.totalCal.ptpCase.applIds, false)}>
             <Text 
               style={styles.indexValue} 
-              onPress={() => handleShow(props.dash.ptpCase.applIds)}>{props.dash.ptpCase.case}
+              >{props.totalCal.ptpCase.case}
             </Text>
             <Text style={styles.indexLabel}>PTP</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={[styles.row, {borderBottomWidth: 1, borderColor: '#dee2e6'}]}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.totalCal.paidMtd.applIds, false)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.paidMtd.applIds)}>{props.dash.paidMtd.case}
+              >{props.totalCal.paidMtd.case}
             </Text>
             <Text style={styles.indexLabel}>Paid Mtd</Text>
-          </View>
-          <View style={[styles.box]}>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          style={[styles.box]} 
+          onPress={() => handleShow(props.totalCal.paidMtd.applIds, false)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.paidMtd.applIds)}>{moneyFormat(props.dash.paidMtd.value)}
+              >{moneyFormat(props.totalCal.paidMtd.value)}
             </Text>
             <Text style={styles.indexLabel}>Collected Mtd</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.row}>
-          <View style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}>
+          <TouchableOpacity 
+          style={[styles.box, {borderRightWidth: 1,  borderColor: '#dee2e6'}]}
+          onPress={() => handleShow(props.totalCal.paidToday.applIds, false)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.paidToday.applIds)}>{props.dash.paidToday.case}
+              >{props.totalCal.paidToday.case}
             </Text>
             <Text style={styles.indexLabel}>Paid Today</Text>
-          </View>
-          <View style={[styles.box]}>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.box]} 
+            onPress={() => handleShow(props.totalCal.paidToday.applIds, false)}>
             <Text 
               style={styles.indexValueSmall} 
-              onPress={() => handleShow(props.dash.paidToday.applIds)}>{moneyFormat(props.dash.paidToday.value)}
+              >{moneyFormat(props.totalCal.paidToday.value)}
             </Text>
             <Text style={styles.indexLabel}>Collected Today</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         
         {/* END Paid */}
 
+      
       </View>
       <View style={{flex:1}}> 
         <ScrollView>
@@ -167,9 +211,10 @@ function Dashboard(props){
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    //data: state.data,
-    showlists: state.showlists,
-    dash: state.data.dash,
+    data: state.data.data,
+    showlists: state.showlists.applIds,
+    todoCal: state.todoCal,
+    totalCal: state.totalCal,
   };
 };
 
@@ -177,7 +222,13 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateShowlist: (content) => {
       dispatch(actUpdateShowlist(content))
-    }
+    },
+    setTodoShowlist: (content) => {
+      dispatch(actSetTodoShowlist(content))
+    },
+    initDashboard: () => {
+      dispatch(actInitDashboard())
+    },
   };
 };
 

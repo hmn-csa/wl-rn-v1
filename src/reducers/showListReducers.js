@@ -1,12 +1,17 @@
 import * as constAction from "../consts/index";
 
-const showListReducers = (state = ["20150111-100165-0001"], action) => {
+const showListReducers = (state = {applIds :[], isTodoClass: false}, action) => {
 
   switch(action.type) {
+
     case constAction.UPDATE_SHOWLIST:
-      state =  action.content
+      state = {...state, applIds: action.content}
       return state;
-      
+
+    case constAction.SET_TODO_SHOWLIST:
+      state = {...state, isTodoClass: action.content}
+      return state;
+
     default:
       return state;
   }
