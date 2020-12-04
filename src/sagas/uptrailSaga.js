@@ -2,92 +2,83 @@
 import * as constAction from '../consts'
 import { takeLatest, call, put, take } from "redux-saga/effects";
 import axios from "axios";
-import {decode as atob, encode as btoa} from 'base-64'
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
-export function* watcherSaga() {
-  yield takeLatest(constAction.API_TOKEN_REQUEST, workerGetToken);
+export function* watcherSagaUptrail() {
+  yield takeLatest(constAction.API_UPTRAIL_REQUEST, workerGetUptrail);
+  yield takeLatest(constAction.USER_UPTRAIL_REQUEST, workerUserUptrail);
 }
 
 // function that makes the api request and returns a Promise for response
 
 
-
 // worker saga: makes the api call when watcher saga sees the action
-export function* workerGetToken(request) {
+export function* workerGetUptrail(request) {
   try {
     const config = {
-      method: 'post',
-      url: `${constAction.WORKLIST_API}/login`,
+      method: 'get',
+      url: `${constAction.WORKLIST_API}/uptrail`,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic '+btoa(request.config.username+ ":" + request.config.password)
+        'Authorization': `Bearer ${request.config.token}`
       },  
-      data : {
-        //"username": request.config.username,
-        //"password": request.config.password,
-        "lat": request.config.lat,
-        "lon": request.config.lon,
-        "device_brand": request.config.device_brand,
-        "device_os": request.config.device_os,
-        "device_name": request.config.device_name,
-      }
+      data : {}
     };
 
     const response = yield call(axios, config);
     const data = response.data;
 
     // dispatch a success action to the store with the new dog
-
-    yield put({ type: constAction.API_TOKEN_SUCCESS, content: data });
-
-    // get appls data
-    yield call(workerGetData, data.access);
+    yield put({ type: constAction.API_UPTRAIL_SUCCESS, content: data });
 
   } catch (error) {
     // dispatch a failure action to the store with the error
-    yield put({ type: constAction.API_TOKEN_FAILURE, error });
+    yield put({ type: constAction.API_UPTRAIL_FAILURE, error });
   }
 }
 
 
-export function* workerGetData(token) {
+export function* workerUserUptrail(request) {
   try {
+    
+    let dataContent =  {
+      'appl_id': request.config.appl_id,
+      'code': request.config.code,
+      'trust_address': request.config.trust_address,
+      'type_address': request.config.type_address,
+      'remark': request.config.remark,
+      'payamount': request.config.payamount,
+      'next_visit_time': request.config.next_visit_time,
+      'lat': request.config.lat,
+      'lon': request.config.lon,
+      'image1': request.config.image1,
+      'image2': request.config.image2,
+      'image3': request.config.image3,
+    }
+    
     let config = {
       method: 'post',
-      url: `${constAction.WORKLIST_API}/portfolio-list/`,
-      headers: { 
-        'Authorization': `Bearer ${token}`
-      }
+      url: `${constAction.WORKLIST_API}/uptrail`,
+      headers: {
+        'Authorization': `Bearer ${request.config.token_value}`
+      },
+      data: dataContent
     }
     
     const response = yield call(axios, config);
-    const data = response.data;
-    
+    const timedata = response.data.message;
     // dispatch a success action to the store with the new content
-    yield put({ type: constAction.API_DATA_SUCCESS, content: response.data });
-
-    // dispatch INIT_DASHBOARD
-    //yield put({ type: constAction.INIT_DASHBOARD, content: data });
-    // yield put({ type: constAction.DATA_INIT_DASHBOARD });
+    dataContent = {...dataContent, 'runtime' :timedata}
+    yield put({ type: constAction.USER_UPTRAIL_SUCCESS, content: dataContent});
 
     // dispatch CAL-DASH
-    yield put({ type: constAction.CAL_TOTAL_DASH, data: response.data});
-    yield put({ type: constAction.CAL_TODO_DASH, data: response.data});
-    yield put({ type: constAction.CAL_CATE_DASH, data: response.data});
-    yield put({ type: constAction.CAL_TREE_DASH, data: response.data});
-    
-    // dispatch UPDATE_SHOWLIST
-    const allAppls =  Object.values(data).map(appl => appl.appl_id)
-    yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
-
-   
+  
 
 
   } catch (error) {
     console.log(error)
     // dispatch a failure action to the store with the error
-    yield put({ type: constAction.API_DATA_FAILURE, error });
+    yield put({ type: constAction.USER_UPTRAIL_FAILURE, error });
   }
 }
 

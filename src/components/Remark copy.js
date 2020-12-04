@@ -11,9 +11,7 @@ import * as Location from 'expo-location';
 import axios from "axios";
 
 
-import { actUpdateShowlist, calTodoDash, calTotalDash,
-   calTreeDash, calCateDash, actChangeFollow, 
-   actUserUptrails } from "../actions"
+import { actUpdateShowlist, calTodoDash, calTotalDash, calTreeDash, calCateDash, actChangeFollow } from "../actions"
 
 
 
@@ -169,39 +167,49 @@ function Remark(props) {
     }
 
     let config = {
-      'token_value': props.token.token.access,
-      'appl_id': props.vsf.activeApplId.appl_id,
-      'code': code,
-      'trust_address': address,
-      'type_address': getAddressType(address),
-      'remark': remark,
-      'payamount': payAmount,
-      'next_visit_time': reDate,
-      'lat': location.coords.latitude,
-      'lon': location.coords.longitude,
-      'image1': image1 === null ? null : image1.base64,
-      'image2': image2 === null ? null : image2.base64,
-      'image3': image3 === null ? null : image3.base64,
+      method: 'post',
+      url: `https://beta-fc.lgm.com.vn/rn-ver/api/uptrail`,
+      headers: {
+        'Authorization': `Bearer ${props.token.token.access}`
+      },
+      data: {
+        'appl_id': props.vsf.activeApplId.appl_id,
+        'code': code,
+        'trust_address': address,
+        'type_address': getAddressType(address),
+        'remark': remark,
+        'payamount': payAmount,
+        'next_visit_time': reDate,
+        'lat': location.coords.latitude,
+        'lon': location.coords.longitude,
+        'image1': image1 === null ? null : image1.base64,
+        'image2': image2 === null ? null : image2.base64,
+        'image3': image3 === null ? null : image3.base64,
+      }
     }
     try {
-      console.log(config)
-      await props.userUptrails(config);
+      setUptrailStatus(true)
+      const response = await axios(config);
+      // console.log(config.data)
+      // setUptrailStatus(true)
+      setUptrailStatus(false)
       
-      await props.actChangeFollow({
+      props.actChangeFollow({
         'appl_id': props.vsf.activeApplId.appl_id,
         'code': code
       })
-      await props.calAll(props.data)
+      props.calAll(props.data)
       // props.updateShowlist(props.showlists )
       const curList = props.showlists;
-      await props.updateShowlist([])
-      await props.updateShowlist(curList)
+      props.updateShowlist([])
+      props.updateShowlist(curList)
       Alert.alert(`Cập nhâp Uptrail thành công !`)
 
-      await props.navigation.navigate('Portfolio',  { screen: 'List' });
+      props.navigation.navigate('Portfolio',  { screen: 'List' });
 
     } catch (error) {
       console.error(error);
+      setUptrailStatus(false)
       Alert.alert(`Có lỗi sảy ra, vui lòng thực hiện lại !!!`)
     }
   }
@@ -229,7 +237,7 @@ function Remark(props) {
     else return <Text> {address}</Text>
   }
 
-  if (props.uptrails.userFetching)
+  if (uptrailStatus)
      return <View style={[masterStyle.container, {alignItems: 'center'}]}>
       <Text>Up Loading ... </Text>
       <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
@@ -427,7 +435,6 @@ const mapStateToProps = (state, ownProps) => {
     vsf: state.vsf,
     data: state.data.data,
     showlists: state.showlists.applIds,
-    uptrails: state.uptrails,
   }
 }
 
@@ -442,9 +449,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     actChangeFollow: (content) => {
       dispatch(actChangeFollow(content));
-    },
-    userUptrails: (config) => {
-      dispatch(actUserUptrails(config));
     },
     updateShowlist: (content) => {
       dispatch(actUpdateShowlist(content))

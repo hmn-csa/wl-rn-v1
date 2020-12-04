@@ -16,7 +16,7 @@ import ProductCategories from './ProductCategories'
 import ListAppls from './ListAppls'
 import User from './User'
 import Test from './test'
-import Maps from './Maps'
+// import Maps from './Maps'
 import ListUptrail from './ListUptrail'
 
 import { MAIN_COLOR2 } from '../styles'
@@ -165,7 +165,7 @@ function MyStack(props) {
           }
         }}
       />
-      <Stack.Screen 
+      {/* <Stack.Screen 
         name="Maps" 
         component={Maps}
         options={{
@@ -177,7 +177,7 @@ function MyStack(props) {
             fontWeight: 'bold',
           }
         }}
-      />  
+      />   */}
       
     </Stack.Navigator>
   );

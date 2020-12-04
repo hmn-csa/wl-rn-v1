@@ -1,14 +1,59 @@
 import {
   View, Text, Image, ScrollView, Alert, FlatList , StyleSheet, TouchableOpacity
 } from 'react-native'
-import { Button } from 'react-native-paper';
+import { Button, Portal, Dialog} from 'react-native-paper';
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
 import { styles } from '../styles'
-import axios from "axios";
+import axios from "axios"
+import { actGetUptrails } from "../actions/index"
 
-function UptrailBeuty(props) {
-  const [item, setItem] = useState(props.item.item)
+function UptrailImage(props) {
+  const [image1, setimage1] = useState(props.image1)
+  const [image2, setimage2] = useState(props.image2)
+  const [image3, setimage3] = useState(props.image3)
+  
+  if(image1 !== null || image2 !== null || image3 !== null) {
+    return (
+      <View
+      style={[{
+        padding: 5,
+      }]}
+      > 
+      <Image 
+        style={[styles.row, {width: 250, height: 200, }]} 
+        source={{uri: image1}}/>
+       <Image 
+        style={[styles.row, {width: 250, height: 200, }]} 
+        source={{uri: image2}}/>
+       <Image 
+        style={[styles.row, {width: 250, height: 200, }]} 
+        source={{uri: image3}}/>
+      </View>
+    )
+  } 
+}
+
+function Uptrail(props) {
+
+  const [runtime, setRuntime] = useState(props.runtime)
+  const [code, setCode] = useState(props.code)
+  const [appl_id, setAppl_id] = useState(props.appl_id)
+  const [payamount, setPayamount] = useState(props.payamount)
+  const [remark, setRemark] = useState(props.remark)
+  const [trust_address, setTrust_address] = useState(props.trust_address)
+  const [next_visit_time, setnext_visit_time] = useState(props.next_visit_time)
+
+  const [image1, setimage1] = useState(props.image1  === null ? null : "data:image/png;base64," + props.image1)
+  const [image2, setimage2] = useState(props.image2  === null ? null :  "data:image/png;base64," + props.image2)
+  const [image3, setimage3] = useState(props.image3  === null ? null :  "data:image/png;base64," + props.image3)
+
+
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
+
+
   const splitTime = (t) => t.substring(0, 10) + " "+ t.substring(11, 19)
 
   const payAmount = (n) => {
@@ -17,87 +62,12 @@ function UptrailBeuty(props) {
       return <Text style={stylesTrail.description}>Hứa trả: {money.substring(0, money.length -2)} </Text>
     }
   }
-  
-  return (
-    <TouchableOpacity>
-      <View style={stylesTrail.eventBox}>
-        <View style={stylesTrail.eventDate}>
-          <Text  style={stylesTrail.eventDay}>{item.runtime.substring(8, 10)}</Text>
-          <Text  style={stylesTrail.eventMonth}>Th{item.runtime.substring(5,7)}</Text>
-          <Text  style={stylesTrail.remarkCode}>{item.code}</Text>
-          
-        </View>
-        <View style={stylesTrail.eventContent}>
-          <Text  style={stylesTrail.eventTime}>{splitTime(item.runtime)}</Text>
-          <Text  style={stylesTrail.userName}>{item.appl_id}</Text>
-          {payAmount(item.pay_amount)}
-        </View>
 
-      </View>
-    </TouchableOpacity>
-  )
-}
-function UptrailImage(props) {
-  const [item, setItem] = useState(props.item.item)
-  const image1 = "data:image/png;base64," + item.image1
-  const image2 = "data:image/png;base64," + item.image2
-  const image3 = "data:image/png;base64," + item.image3
-  
-  if(item.image1 !== null || item.image2 !== null || item.image3 !== null) {
-    return (
-      <View
-      style={[styles.row, {
-        padding: 5,
-      }]}
-      > 
-      <Image 
-        style={[styles.box, {width: 100, height: 100, }]} 
-        source={{uri: image1}}/>
-       <Image 
-        style={[styles.box, {width: 100, height: 100, }]} 
-        source={{uri: image2}}/>
-       <Image 
-        style={[styles.box, {width: 100, height: 100, }]} 
-        source={{uri: image3}}/>
-      </View>
-    )
-  } else {
-    return <View
-      style={{
-        padding: 5,
-      }}
-      > 
-      </View>
-  }
-}
-
-function UptrailText(props) {
-  const [item, setItem] = useState(props.item.item)
-  const image1 = "data:image/png;base64," + item.image1
-  const splitTime = (t) => t.substring(0, 10) + " "+ t.substring(11, 19)
   const nextTime = (t) => {
     if(t != null) 
       return t.substring(0, 10)
   }
-
-  const payAmount = (n) => {
-    if(n != null) {
-      const  money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
-      return <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text>Số tiền hứa/đã trả:</Text>
-        </View>
-        <View style={[styles.box, { flex: 2.5 }]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box, { flex:2 }]}>
-              <Text style={{fontWeight:"bold",}}>{money.substring(0, money.length -2)}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    }
-  }
-
+  
   const reVisit = (next_visit_time) => {
     if(next_visit_time != null) 
       return  <View style={[styles.row]}>
@@ -107,115 +77,149 @@ function UptrailText(props) {
       <View style={[styles.box, { flex: 3.5 }]}>
         <View style={[styles.row]}>
           <View style={[styles.box]}>
-            <Text style={{fontWeight:"bold",}}>{nextTime(item.next_visit_time)}</Text>
+            <Text style={{fontWeight:"bold",}}>{nextTime(next_visit_time)}</Text>
           </View>
         </View>
       </View>
     </View>
   }
   
+  const images = (image1, image2, image3) => {
+    if(image1 !== null || image2 !== null || image3 !== null)
+    return (
+      <View>
+         <Button mode="outlined" onPress={showDialog}>
+          Xem hình ảnh
+        </Button>
+        
+        <Portal style={[styles.container, ]}>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Content>
+            <ScrollView>
+              <UptrailImage image1={image1} image2={image2} image1={image3}/>
+            </ScrollView>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      </View>
+    )
+  }
   
+
   return (
-    <View
-      style={{
-        padding: 5,
-        backgroundColor: 'white',
-        borderRadius:10
-      }}
-    > 
+    <View style={{
+      padding: 5,
+      borderBottomWidth: 2,
+      borderRadius:10,
+      borderColor:"#87CEEB"
+    }}>
+        <View style={stylesTrail.eventBox}>
+          <View style={stylesTrail.eventDate}>
+            <Text  style={stylesTrail.eventDay}>{runtime.substring(8, 10)}</Text>
+            <Text  style={stylesTrail.eventMonth}>Th{runtime.substring(5,7)}</Text>
+            <Text  style={stylesTrail.remarkCode}>{code}</Text>
+          </View>
+          <View style={stylesTrail.eventContent}>
+            <Text style={stylesTrail.eventTime}>{splitTime(runtime)}</Text>
+            <Text style={stylesTrail.userName}>{appl_id}</Text>
+            {payAmount(payamount)}
+          </View>
+        </View>
+
+        <View style={[styles.row]}>
+          <View style={styles.box}>
+            <Text>ghi chú:</Text>
+          </View>
+          <View style={[styles.box, { flex: 3.5 }]}>
+            <View style={[styles.row]}>
+              <View style={[styles.box,]}>
+                <Text style={{fontWeight:"bold",}}>{remark}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        
+        <View style={[styles.row]}>
+          <View style={styles.box}>
+            <Text>Địa chỉ:</Text>
+          </View>
+          <View style={[styles.box, { flex: 3.5 }]}>
+            <View style={[styles.row]}>
+              <View style={[styles.box]}>
+                <Text style={{fontWeight:"bold",}}>{trust_address}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {reVisit(next_visit_time)}
+
+        {/* <UptrailImage image1={image1} image2={image2} image1={image3}/> */}
+        {images(image1, image2, image3)}
+
        
-      <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text>ghi chú:</Text>
-        </View>
-        <View style={[styles.box, { flex: 3.5 }]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box,]}>
-              <Text style={{fontWeight:"bold",}}>{item.remark}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      
-      <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text>Địa chỉ:</Text>
-        </View>
-        <View style={[styles.box, { flex: 3.5 }]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box]}>
-              <Text style={{fontWeight:"bold",}}>{item.trust_address}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      {reVisit(item.next_visit_time)}
-     
-
+        
     </View>
   )
 }
 
 
+
 function ListUptrail(props) {
-  const [listUptrail, setListUptrail] = useState([])
 
-  useEffect(async () => {    
+  useEffect( () => {    
     // Update the document title using the browser API  
-
-    let config = {
-      method: 'get',
-      url: `https://beta-fc.lgm.com.vn/rn-ver/api/uptrail`,
-      headers: {
-        'Authorization': `Bearer ${props.token.token.access}`
-      },
-      data: {
-      }
-    }
-    const response = await axios(config);
-    setListUptrail(response.data);
-    console.log(response.data)
+    props.getUptrails({token: props.token})
   }, []);
 
+  
+  const showText = () => {
+    if (props.uptrails.length > 0 )
+      return props.uptrails[0].runtime
+    return 0
+  }
+
   return (
+  
+  <ScrollView>
 
-   <FlatList 
-    data = {listUptrail}
-    renderItem={item => 
-      <View style={{
-        padding: 5,
-        borderBottomWidth: 2,
-        borderRadius:10,
-        borderColor:"#87CEEB"
-      }}>
-
-        <UptrailBeuty 
-          key={item.appl_id}
-          item={item}
-        />
-        <UptrailText 
-          key={item.appl_id}
-          item={item}
-        />
-        <UptrailImage 
-        key={item.appl_id}
-        item={item}
-        />
-        
-      </View>
-      
-      }
-    />
-  ) 
-
-}
+    {props.uptrails.map(item =>  
+      <Uptrail  
+      key={item.runtime} 
+      runtime={item.runtime} 
+      code={item.code}
+      appl_id={item.appl_id}
+      payamount={item.payamount}
+      remark={item.remark}
+      trust_address={item.trust_address}
+      next_visit_time={item.next_visit_time}
+      image1={item.image1}
+      image2={item.image2}
+      image3={item.image3}
+      />)
+    }
+  </ScrollView>
+  )
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    token: state.token,
+    token: state.token.token.access,
+    uptrails: state.uptrails.uptrails,
   };
 };
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUptrails: (config) => {
+      dispatch(actGetUptrails(config))
+    }, 
+  }
+}
 
 
 
@@ -275,5 +279,5 @@ const stylesTrail = StyleSheet.create({
   },
 });
  
-export default connect(mapStateToProps, null)(ListUptrail);
+export default connect(mapStateToProps, mapDispatchToProps)(ListUptrail);
 

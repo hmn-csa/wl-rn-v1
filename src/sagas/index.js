@@ -9,6 +9,7 @@ import { all, fork } from 'redux-saga/effects';
 import { watcherSaga } from './loginSaga'
 import { watcherSetTodo } from './todoSaga'
 import { watcherGetVsf } from './vsfSaga'
+import { watcherSagaUptrail } from './uptrailSaga'
 
 // Redux Saga: Root Saga
 export function* rootSaga () {
@@ -16,6 +17,7 @@ export function* rootSaga () {
     fork(watcherSaga),
     fork(watcherSetTodo),
     fork(watcherGetVsf),
+    fork(watcherSagaUptrail),
   ]);
 };
 

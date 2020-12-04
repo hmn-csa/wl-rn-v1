@@ -26,13 +26,29 @@ export const actloginUser = (config) => {
   }
 };
 
-
 export const actLocationSet = (content) => {
   return {
     type: constAction.LOCATION_SET,
     content
   }
 };
+
+// uptrail
+export const actGetUptrails = (config) => {
+  return {
+    type: constAction.API_UPTRAIL_REQUEST,
+    config
+  }
+};
+
+export const actUserUptrails = (config) => {
+  return {
+    type: constAction.USER_UPTRAIL_REQUEST,
+    config
+  }
+};
+// 
+
 
 export const actlogoutUser = () => {
   return {
