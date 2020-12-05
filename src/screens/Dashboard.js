@@ -28,8 +28,8 @@ function Dashboard(props){
    //props.navigation.navigate('List');
   }
 
-  const handleShow = async (list, isTodo) => {
-    await props.navigation.navigate('Portfolio',  { screen: 'List' })
+  const handleShow = (list, isTodo) => {
+    props.navigation.navigate('Portfolio',  { screen: 'List' })
     props.updateShowlist(list)
     props.setTodoShowlist(isTodo)
   }

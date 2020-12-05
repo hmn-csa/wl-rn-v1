@@ -9,6 +9,8 @@ export function* watcherSagaUptrail() {
   yield takeLatest(constAction.USER_UPTRAIL_REQUEST, workerUserUptrail);
 }
 
+
+
 // function that makes the api request and returns a Promise for response
 
 
@@ -47,7 +49,7 @@ export function* workerUserUptrail(request) {
       'trust_address': request.config.trust_address,
       'type_address': request.config.type_address,
       'remark': request.config.remark,
-      'payamount': request.config.payamount,
+      'pay_amount': request.config.payamount,
       'next_visit_time': request.config.next_visit_time,
       'lat': request.config.lat,
       'lon': request.config.lon,
@@ -66,9 +68,8 @@ export function* workerUserUptrail(request) {
     }
     
     const response = yield call(axios, config);
-    const timedata = response.data.message;
     // dispatch a success action to the store with the new content
-    dataContent = {...dataContent, 'runtime' :timedata}
+    dataContent = {...dataContent, runtime :response.data.message}
     yield put({ type: constAction.USER_UPTRAIL_SUCCESS, content: dataContent});
 
     // dispatch CAL-DASH

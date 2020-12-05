@@ -15,8 +15,8 @@ import Dashboard from './Dashboard'
 import ProductCategories from './ProductCategories'
 import ListAppls from './ListAppls'
 import User from './User'
-import Test from './test'
-// import Maps from './Maps'
+// import Test from './test'
+import Maps from './Maps'
 import ListUptrail from './ListUptrail'
 
 import { MAIN_COLOR2 } from '../styles'
@@ -27,8 +27,6 @@ import{ styles } from '../styles'
 enableScreens()
 
 
-
-
 // navigation.openDrawer();
 const Stack = createStackNavigator()
 function CategorieStack(props) {
@@ -36,7 +34,7 @@ function CategorieStack(props) {
   return (
     <Stack.Navigator
       initialRouteName="Tree"
-      screenOptions={{ headerShown: false,}}
+      screenOptions={{ headerShown: true,}}
     >
       <Stack.Screen 
         name="Tree" 
@@ -51,7 +49,17 @@ function CategorieStack(props) {
             fontWeight: 'bold',
           }, 
           //headerRight: CategorieStackMenu,
-          
+          headerRight: () => (
+            <View style={buttonStyles.buttons}>
+              <Button
+                mode="contained"
+                onPress={() => props.navigation.navigate('Categories', { screen: 'Product' })}
+                style={buttonStyles.button}
+              >
+                Product
+              </Button>
+          </View>
+          )
         }}
         
       />
@@ -66,7 +74,19 @@ function CategorieStack(props) {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          screenOptions: false
+          screenOptions: false,
+          headerRight: () => (
+            <View style={buttonStyles.buttons}>
+              <Button
+                  mode="contained"
+                  onPress={() => props.navigation.navigate('Categories', { screen: 'Tree' })}
+                  style={buttonStyles.button}
+              >
+                Tree
+              </Button>
+           
+          </View>
+          )
         }}
       />
     </Stack.Navigator>
@@ -74,7 +94,7 @@ function CategorieStack(props) {
 }
 
 
-function MyStack(props) {
+function PortStack(props) {
   return (
     
       <Stack.Navigator >
@@ -92,6 +112,14 @@ function MyStack(props) {
           
           headerRight: () => (
             <View style={buttonStyles.buttons}>
+               <Button
+                  mode="contained"
+                  onPress={() => props.navigation.navigate('Portfolio', { screen: 'Uptrail' })}
+                  style={buttonStyles.button}
+              >
+                Uptrail
+              </Button>
+
               <Button
                   mode="contained"
                   onPress={() => props.navigation.navigate('Portfolio', { screen: 'Search' })}
@@ -112,6 +140,21 @@ function MyStack(props) {
           )
         }}
       />
+
+      <Stack.Screen 
+        name="Uptrail" 
+        component={ListUptrail} 
+        options={{
+          headerStyle: {
+            backgroundColor: MAIN_COLOR2,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+
       <Stack.Screen 
         name="Remark" 
         component={Remark} 
@@ -165,7 +208,7 @@ function MyStack(props) {
           }
         }}
       />
-      {/* <Stack.Screen 
+      <Stack.Screen 
         name="Maps" 
         component={Maps}
         options={{
@@ -177,7 +220,7 @@ function MyStack(props) {
             fontWeight: 'bold',
           }
         }}
-      />   */}
+      />  
       
     </Stack.Navigator>
   );
@@ -188,7 +231,7 @@ const buttonStyles = StyleSheet.create({
     padding: 2,
   },
   button: {
-    margin: 2,
+    marginLeft: 2,
   },
 });
 
@@ -200,7 +243,8 @@ function MainApp () {
     <NavigationContainer style={styles.container}>
       
       <Tab.Navigator
-        screenOptions={({ route }) => ({
+        screenOptions={
+          ({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
@@ -213,13 +257,16 @@ function MainApp () {
               iconName = focused ? 'ios-person' : 'ios-person';
             } else if (route.name === 'Categories') {
               iconName = focused ? 'ios-folder' : 'ios-folder';
-            } else if (route.name === 'History') {
-              iconName = focused ? 'ios-checkbox-outline' : 'ios-checkbox-outline';
-            }
+            } 
+            // else if (route.name === 'History') {
+            //   iconName = focused ? 'ios-checkbox-outline' : 'ios-checkbox-outline';
+            // }
             // You can return any component that you like here! <ion-icon name="folder-open-outline"></ion-icon>
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-        })}
+          
+        })
+        }
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
@@ -227,8 +274,8 @@ function MainApp () {
       >
         <Tab.Screen name="Dashboard" component={Dashboard} />
         <Tab.Screen name="Categories" component={CategorieStack} />
-        <Tab.Screen name="Portfolio" component={MyStack} />
-        <Tab.Screen name="History" component={ListUptrail} />
+        <Tab.Screen name="Portfolio" component={PortStack} />
+        {/* <Tab.Screen name="History" component={ListUptrail} /> */}
         <Tab.Screen name="User" component={User} />
       </Tab.Navigator>
     </NavigationContainer>

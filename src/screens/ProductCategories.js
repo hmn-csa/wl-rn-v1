@@ -21,7 +21,7 @@ function ProductCategories(props) {
 
   return (
     <View style={ styles.container }>
-      <View style={styles.buttons}>
+      {/* <View style={styles.buttons}>
         <Button
             mode="outlined"
             onPress={() => props.navigation.navigate('Categories', { screen: 'Tree' })}
@@ -37,7 +37,7 @@ function ProductCategories(props) {
         >
           Product
         </Button>
-      </View>
+      </View> */}
 
       <FlatList 
       data = {props.categoryProduct}
@@ -52,7 +52,7 @@ function ProductCategories(props) {
             <View style={{ padding:2,}}>
               
               <View style={[styles.row]}>
-                <View style={[styles.box, {flex:1.3}]}>
+                <View style={[styles.box, {flex:1}]}>
                   <Text>Số lượng:</Text>
                 </View>
                 <View style={[styles.box, {flex:1}]}>
@@ -61,7 +61,7 @@ function ProductCategories(props) {
               </View>
 
               <View style={[styles.row]}>
-                <View style={[styles.box, {flex:1.3}]}>
+                <View style={[styles.box, {flex:1}]}>
                   <Text>Paid case:</Text>
                 </View>
                 <View style={[styles.box, {flex:1}]}>
@@ -70,7 +70,7 @@ function ProductCategories(props) {
               </View>
 
               <View style={[styles.row]}>
-                <View style={[styles.box, {flex:1.3}]}>
+                <View style={[styles.box, {flex:1}]}>
                   <Text>Thanh toán:</Text>
                 </View>
                 <View style={[styles.box, {flex:1}]}>
@@ -79,7 +79,7 @@ function ProductCategories(props) {
               </View>
 
               <View style={[styles.row]}>
-                <View style={[styles.box, {flex:1.3}]}>
+                <View style={[styles.box, {flex:1}]}>
                   <Text>Viếng thăm:</Text>
                 </View>
                 <View style={[styles.box, {flex:1}]}>
@@ -117,7 +117,7 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    marginTop:20,
+    marginTop:5,
   },
   row: {
     flex: 1,

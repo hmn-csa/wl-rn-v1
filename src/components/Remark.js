@@ -57,7 +57,7 @@ function Remark(props) {
   if (props.vsf.activeApplId.new_address != null && props.vsf.activeApplId.new_address != "")
     addressItems.push({label: newAddress, value: newAddress})
 
-  const [uptrailStatus, setUptrailStatus] = useState(null);
+  const [uptrailStatus, setUptrailStatus] = useState(false);
   // Location 
   const [location, setLocation] = useState(null);
 
@@ -155,6 +155,7 @@ function Remark(props) {
 
 
   const handleCommit = async () => {
+    setUptrailStatus(true)
     let locationCurrrent = await Location.getCurrentPositionAsync({});
     setLocation(locationCurrrent);
 
@@ -197,10 +198,11 @@ function Remark(props) {
       await props.updateShowlist([])
       await props.updateShowlist(curList)
       Alert.alert(`Cập nhâp Uptrail thành công !`)
-
+      setUptrailStatus(false)
       await props.navigation.navigate('Portfolio',  { screen: 'List' });
 
     } catch (error) {
+      setUptrailStatus(false)
       console.error(error);
       Alert.alert(`Có lỗi sảy ra, vui lòng thực hiện lại !!!`)
     }
@@ -229,7 +231,7 @@ function Remark(props) {
     else return <Text> {address}</Text>
   }
 
-  if (props.uptrails.userFetching)
+  if (props.uptrails.userFetching || uptrailStatus)
      return <View style={[masterStyle.container, {alignItems: 'center'}]}>
       <Text>Up Loading ... </Text>
       <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 

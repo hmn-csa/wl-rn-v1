@@ -36,8 +36,8 @@ function Tree(props) {
   }
 
   return (
-    <ScrollView style={{marginTop: 20,}}> 
-      <View style={buttonStyles.buttons}>
+    <ScrollView style={{marginTop: 5,}}> 
+      {/* <View style={buttonStyles.buttons}>
         <Button
             mode="contained"
             onPress={() => props.navigation.navigate('Categories', { screen: 'Tree' })}
@@ -53,7 +53,7 @@ function Tree(props) {
         >
           Product
         </Button>
-      </View>
+      </View> */}
       <TreeView
         data={props.tree} 
         initialExpanded={true}
