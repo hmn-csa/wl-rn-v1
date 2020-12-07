@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, View, Text, 
-  Platform, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import {
+  Image, ScrollView, View, Text,
+  Platform, StyleSheet, Alert, ActivityIndicator
+} from 'react-native';
 import { connect } from "react-redux"
-import { styles as masterStyle, BACKGROUND_LOGIN } from '../styles'
+import { styles as masterStyle, BACKGROUND_LOGIN, MAIN_COLOR2 } from '../styles'
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker'
 import * as ImagePicker from 'expo-image-picker';
@@ -11,11 +13,13 @@ import * as Location from 'expo-location';
 import axios from "axios";
 
 
-import { actUpdateShowlist, calTodoDash, calTotalDash,
-   calTreeDash, calCateDash, actChangeFollow, 
-   actUserUptrails } from "../actions"
+import {
+  actUpdateShowlist, calTodoDash, calTotalDash,
+  calTreeDash, calCateDash, actChangeFollow,
+  actUserUptrails
+} from "../actions"
 
-
+import { colors } from '../styles'
 
 
 const remarkCode = [
@@ -50,12 +54,12 @@ const remarkCode = [
 function Remark(props) {
   const [newAddress, setNewAddress] = useState(props.vsf.activeApplId.new_address)
   const addressItems = [
-    { label: props.vsf.activeApplId.reg_address, value: props.vsf.activeApplId.reg_address},
-    { label: props.vsf.activeApplId.act_address, value: props.vsf.activeApplId.act_address},
+    { label: props.vsf.activeApplId.reg_address, value: props.vsf.activeApplId.reg_address },
+    { label: props.vsf.activeApplId.act_address, value: props.vsf.activeApplId.act_address },
     //{ label: newAddress, value: newAddress},
   ]
   if (props.vsf.activeApplId.new_address != null && props.vsf.activeApplId.new_address != "")
-    addressItems.push({label: newAddress, value: newAddress})
+    addressItems.push({ label: newAddress, value: newAddress })
 
   const [uptrailStatus, setUptrailStatus] = useState(false);
   // Location 
@@ -151,20 +155,28 @@ function Remark(props) {
       setImage3(result);
     }
   };
-  
+
 
 
   const handleCommit = async () => {
+
+    if (address == '')
+      return Alert.alert('Vui lòng chọn địa chỉ viếng thăm')
+    if (remark == '')
+      return Alert.alert('Vui lòng nhập ghi chú')
+    if (code == null)
+      return Alert.alert('Vui lòng chọn mã viếng thăm')
+
     setUptrailStatus(true)
     let locationCurrrent = await Location.getCurrentPositionAsync({});
     setLocation(locationCurrrent);
 
     const getAddressType = (address) => {
-      if (address == addressItems[0].value && address == addressItems[1].value) 
+      if (address == addressItems[0].value && address == addressItems[1].value)
         return 'same_address';
-      if (address == addressItems[0].value) 
+      if (address == addressItems[0].value)
         return 'reg_address';
-      if (address == addressItems[1].value) 
+      if (address == addressItems[1].value)
         return 'act_address';
       return 'orther_address';
     }
@@ -187,7 +199,7 @@ function Remark(props) {
     try {
       console.log(config)
       await props.userUptrails(config);
-      
+
       await props.actChangeFollow({
         'appl_id': props.vsf.activeApplId.appl_id,
         'code': code
@@ -199,7 +211,7 @@ function Remark(props) {
       await props.updateShowlist(curList)
       Alert.alert(`Cập nhâp Uptrail thành công !`)
       setUptrailStatus(false)
-      await props.navigation.navigate('Portfolio',  { screen: 'List' });
+      await props.navigation.navigate('Portfolio', { screen: 'List' });
 
     } catch (error) {
       setUptrailStatus(false)
@@ -211,213 +223,228 @@ function Remark(props) {
 
   const moneyFormat = n => {
     //return  n.toLocaleString().split(".")[0]
-    const  money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
-    return money.substring(0, money.length -2)
+    const money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
+    return money.substring(0, money.length - 2)
   }
 
 
   const loading = (status) => {
     if (status)
-      return <ActivityIndicator size="large" color={BACKGROUND_LOGIN}/> 
+      return <View style={[styles.container, { alignItems: 'center' }]}>
+        <Text>Đang tải lên ... </Text>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
   }
-  
+
   const ortherAddress = () => {
     if (![props.vsf.activeApplId.act_address, props.vsf.activeApplId.reg_address].includes(address))
       return <TextInput
-      mode="flat"
-      label="Dia chi khac"
-      onChangeText={setAddress}
-    />
+        mode="flat"
+        label="Dia chi khac"
+        onChangeText={setAddress}
+      />
     else return <Text> {address}</Text>
   }
 
   if (props.uptrails.userFetching || uptrailStatus)
-     return <View style={[masterStyle.container, {alignItems: 'center'}]}>
+    return <View style={[masterStyle.container, { alignItems: 'center' }]}>
       <Text>Up Loading ... </Text>
-      <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
-    </View> 
-  else 
-  return (
-    <View style={[masterStyle.container, { alignItems: 'center' }]}>
-      <View>
-        <Text style={[masterStyle.header,  { alignItems: 'center' }]}>{props.vsf.activeApplId.cust_name}</Text>
-      </View>
+      <ActivityIndicator size={100} color={BACKGROUND_LOGIN} />
+    </View>
+  else
+    return (
+      <View style={[masterStyle.container, { alignItems: 'center' }]}>
+        <View>
+          <Text style={[masterStyle.header, { alignItems: 'center' }]}>{props.vsf.activeApplId.cust_name}</Text>
+        </View>
 
-      <View style={[masterStyle.inputViewConst, { alignItems: 'center' }]} >
-        <Text>Hợp đồng: {props.vsf.activeApplId.appl_id}</Text>
-      </View>
+        <View style={[masterStyle.indexValueSmall, { alignItems: 'center', color: colors.white }]} >
+          <Text>Hợp đồng: {props.vsf.activeApplId.appl_id}</Text>
+        </View>
 
-       {/* Ket qua vieng tham */}
+        {/* Ket qua vieng tham */}
 
-      <Button mode="outlined" onPress={showDialog} style={styles.container} >
-        Kết quả viếng thăm: {code}
-      </Button>
+        <Button 
+          mode="contained"
+          onPress={showDialog} 
+          style={[styles.container, buttonStyles.button]}  >
+          Kết quả viếng thăm: {code}
+        </Button>
 
-      <View style={styles.container} >
-         <Text>Số tiền hứa/đã thanh toán: {moneyFormat(payAmount)}</Text>
-      </View>
+        <View style={styles.container} >
+          <Text>Số tiền hứa/đã thanh toán: {moneyFormat(payAmount)}</Text>
+        </View>
 
-      <Portal style={[masterStyle.container, ]}>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Content>
-            <Button onPress={hideDialog}>Done</Button>
-            <ScrollView>
-              <RadioButton.Group 
-                onValueChange={
-                  newValue => {
-                    setCode(newValue); 
-                    if (['PTP','WFP','OBT','TER'].includes(newValue)) setVisiblePayamount(true);
+        <Portal style={[masterStyle.container,]}>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Content>
+              <Button onPress={hideDialog}>Done</Button>
+              <ScrollView>
+                <RadioButton.Group
+                  onValueChange={
+                    newValue => {
+                      setCode(newValue);
+                      if (['PTP', 'WFP', 'OBT', 'TER'].includes(newValue)) setVisiblePayamount(true);
+                    }
                   }
-                } 
-                value={code}>
-                {
-                  remarkCode.map(item =>
-                    <RadioButton.Item 
-                      key={item.value} 
-                      style={{ fontSize: 15 }} 
-                      value={item.value} 
-                      label={item.label} />
-                  )
-                }
-              </RadioButton.Group>
-     
-            </ScrollView>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+                  value={code}>
+                  {
+                    remarkCode.map(item =>
+                      <RadioButton.Item
+                        key={item.value}
+                        style={{ fontSize: 15 }}
+                        value={item.value}
+                        label={item.label} />
+                    )
+                  }
+                </RadioButton.Group>
 
-      <Portal style={[masterStyle.container, ]}>
-        <Dialog visible={visiblePayamount} onDismiss={hideDialogPayamount}>
-          <Dialog.Content>
-              <TextInput 
+              </ScrollView>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+
+        <Portal style={[masterStyle.container,]}>
+          <Dialog visible={visiblePayamount} onDismiss={hideDialogPayamount}>
+            <Dialog.Content>
+              <TextInput
                 mode="flat"
                 label="Nhập số tiền"
                 onChangeText={setPayAmount}
-                />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialogPayamount}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+              />
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialogPayamount}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
-      <Button mode="outlined" onPress={showDialogAddress} style={styles.container} >
-        Địa chỉ viếng thăm
+        <Button 
+          mode="contained"
+          onPress={showDialogAddress}
+          style={[styles.container, buttonStyles.button]}  >
+          Địa chỉ viếng thăm
       </Button>
-      <View style={styles.container} >
-        <Text>Địa chỉ: {address}</Text>
-      </View>
-     
-     
-      <Portal style={[masterStyle.container, ]}>
-        <Dialog visible={visibleAddress} onDismiss={hideDialogAddress}>
-          <Dialog.Content>
-            <ScrollView>
-              <RadioButton.Group onValueChange={newValue => setAddress(newValue)} value={address}>
-                {
-                  addressItems.map(item =>
-                    <RadioButton.Item 
-                    key={item.value} 
-                    style={{ fontSize: 15 }} 
-                    value={item.value} 
-                    label={item.label} />
-                  )
-                }
-              </RadioButton.Group>
+        <View style={styles.container} >
+          <Text>Địa chỉ: {address}</Text>
+        </View>
 
-              <TextInput 
-                mode="flat"
-                label="Dia chi khac"
-                onChangeText={setAddress}
+
+        <Portal style={[masterStyle.container,]}>
+          <Dialog visible={visibleAddress} onDismiss={hideDialogAddress}>
+            <Dialog.Content>
+              <ScrollView>
+                <RadioButton.Group 
+                onValueChange={newValue => setAddress(newValue)} value={address}>
+                  {
+                    addressItems.map(item =>
+                      <RadioButton.Item
+                        key={item.value}
+                        style={{ fontSize: 15 }}
+                        value={item.value}
+                        label={item.label} />
+                    )
+                  }
+                </RadioButton.Group>
+
+                <TextInput
+                  mode="flat"
+                  label="Dia chi khac"
+                  onChangeText={setAddress}
                 />
-            </ScrollView>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialogAddress}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+              </ScrollView>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialogAddress}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
-      <View style={styles.container} >
-        <TextInput
-          mode="flat"
-          label="Ghi chú"
-          onChangeText={setRemark}
+        <View style={styles.container} >
+          <TextInput
+            mode="flat"
+            style={{color: colors.primary}}
+            label="Ghi chú"
+            onChangeText={setRemark}
+          />
+        </View>
+
+        <DatePicker
+          style={masterStyle.inputViewConst}
+          date={reDate}
+          mode="date"
+          placeholder="Ngày viếng thăm lại"
+          format="YYYY-MM-DD"
+          // minDate="2016-05-01"
+          // maxDate="2016-06-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 4,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange={(date) => setRedate(date)}
         />
-      </View>
 
-      <DatePicker
-        style={masterStyle.inputViewConst}
-        date={reDate}
-        mode="date"
-        placeholder="Ngày viếng thăm lại"
-        format="YYYY-MM-DD"
-        // minDate="2016-05-01"
-        // maxDate="2016-06-01"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 4,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-        }}
-        onDateChange={(date) => setRedate(date)}
-      />
-     
 
-      <View style={[masterStyle.row, styles.container]}>
-        <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
-          <Button
-            icon="camera"
-            mode="outlined"
-            onPress={pickImage1}>
-            image1
+        <View style={[masterStyle.row, styles.container]}>
+          <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
+            <Button
+              icon="camera"
+              mode="contained"
+              style={buttonStyles.button}
+              onPress={pickImage1}>
+              image1
           </Button>
-          <View style={{ width: 100, height: 100 }}>
-            {image1 && <Image source={{ uri: image1.uri }} style={{ width: 100, height: 100 }} />}
+            <View style={{ width: 100, height: 100 }}>
+              {image1 && <Image source={{ uri: image1.uri }} style={{ width: 100, height: 100 }} />}
+            </View>
+          </View>
+          <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
+            <Button
+              icon="camera"
+              mode="contained"
+              style={buttonStyles.button}
+              onPress={pickImage2}>
+              image2
+          </Button>
+            <View style={{ width: 100, height: 100 }}>
+              {image2 && <Image source={{ uri: image2.uri }} style={{ width: 100, height: 100 }} />}
+            </View>
+          </View>
+          <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
+            <Button
+              icon="camera"
+              mode="contained"
+              style={buttonStyles.button}
+              onPress={pickImage3}>
+              image3
+          </Button>
+            <View style={{ width: 100, height: 100 }}>
+              {image3 && <Image source={{ uri: image3.uri }} style={{ width: 100, height: 100 }} />}
+            </View>
           </View>
         </View>
-        <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
-          <Button
-            icon="camera"
-            mode="outlined"
-            onPress={pickImage2}>
-            image2
-          </Button>
-          <View style={{ width: 100, height: 100 }}>
-            {image2 && <Image source={{ uri: image2.uri }} style={{ width: 100, height: 100 }} />}
-          </View>
-        </View>
-        <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
-          <Button
-            icon="camera"
-            mode="outlined"
-            onPress={pickImage3}>
-            image3
-          </Button>
-          <View style={{ width: 100, height: 100 }}>
-            {image3 && <Image source={{ uri: image3.uri }} style={{ width: 100, height: 100 }} />}
-          </View>
-        </View>
-      </View>
-               
-      <Button
-        mode="contained"
-        onPress={handleCommit}>
-        Xác nhận
+
+        <Button
+          mode="contained"
+          style={[buttonStyles.button]}
+          onPress={handleCommit}>
+          Xác nhận
       </Button>
 
-    </View>
-  )
+      </View>
+    )
 
 };
 
@@ -440,7 +467,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(calTotalDash(data))
       dispatch(calTreeDash(data))
       dispatch(calCateDash(data))
-      
+
     },
     actChangeFollow: (content) => {
       dispatch(actChangeFollow(content));
@@ -451,14 +478,30 @@ const mapDispatchToProps = (dispatch) => {
     updateShowlist: (content) => {
       dispatch(actUpdateShowlist(content))
     },
-    
+
   };
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%', 
+    width: '90%',
     marginVertical: 6
+  },
+});
+
+const buttonStyles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    padding: 2,
+    
+  },
+  button: {
+    marginLeft: 2,
+    borderRadius: 10,
+    fontSize: 10,
+    fontWeight: 'bold', 
+    color: colors.primary,
+    backgroundColor:colors.primary,
   },
 });
 

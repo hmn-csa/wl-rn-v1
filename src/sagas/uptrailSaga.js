@@ -3,6 +3,7 @@ import * as constAction from '../consts'
 import { takeLatest, call, put, take } from "redux-saga/effects";
 import axios from "axios";
 
+
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export function* watcherSagaUptrail() {
   yield takeLatest(constAction.API_UPTRAIL_REQUEST, workerGetUptrail);
@@ -11,27 +12,28 @@ export function* watcherSagaUptrail() {
 
 
 
+
 // function that makes the api request and returns a Promise for response
 
 
-// worker saga: makes the api call when watcher saga sees the action
+// worker saga: makes the api call when watcher saga sees the action ${request.config.start}
 export function* workerGetUptrail(request) {
   try {
     const config = {
       method: 'get',
-      url: `${constAction.WORKLIST_API}/uptrail`,
+      url: `${constAction.WORKLIST_API}/uptrail?start=${request.config.start}&end=${request.config.end}`,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${request.config.token}`
-      },  
-      data : {}
+        'Authorization': `Bearer ${request.config.token}`,
+      },
     };
 
+    console.log(config)
+
     const response = yield call(axios, config);
-    const data = response.data;
+    //const data = response.data;
 
     // dispatch a success action to the store with the new dog
-    yield put({ type: constAction.API_UPTRAIL_SUCCESS, content: data });
+    yield put({ type: constAction.API_UPTRAIL_SUCCESS, content: response.data});
 
   } catch (error) {
     // dispatch a failure action to the store with the error

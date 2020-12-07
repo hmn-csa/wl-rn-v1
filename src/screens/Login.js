@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Text, View, StyleSheet, 
-  TextInput, Button, Alert, ActivityIndicator
+  TextInput, Alert, ActivityIndicator
 } from 'react-native'
+import { Button } from 'react-native-paper';
 import { useForm, Controller, FormProvider } from 'react-hook-form'
 import * as Location from 'expo-location';
 import * as Device from 'expo-device';
 import { connect } from "react-redux";
 import { actloginUser, actLocationSet } from "../actions/index"
-import { styles, BACKGROUND_LOGIN } from '../styles'
+import { styles, BACKGROUND_LOGIN, colors } from '../styles'
 
 function Login(props) {
 
@@ -63,14 +64,14 @@ function Login(props) {
     return (
       <View style={[styles.container, {alignItems: 'center'}]}>
         <Text>Loading ... </Text>
-        <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
+        <ActivityIndicator size={100} color={colors.primary}/> 
       </View>
     )
   if (props.data.fetching)
     return (
       <View style={[styles.container, {alignItems: 'center'}]}>
         <Text>Loading data... </Text>
-        <ActivityIndicator size={100} color={BACKGROUND_LOGIN}/> 
+        <ActivityIndicator size={100} color={colors.primary}/> 
       </View>
     )
   return (
@@ -114,9 +115,11 @@ function Login(props) {
       
         <Button
           style={styles.loginBtn}
-          title="Button"
+          mode="contained"
           onPress={handleSubmit(onSubmit)}
-        />
+        >
+        Đăng nhập
+        </Button>
         
       
     </View>

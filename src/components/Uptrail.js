@@ -4,7 +4,7 @@ import {
 import { Button, Portal, Dialog} from 'react-native-paper';
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
-import { styles } from '../styles'
+import { styles, colors } from '../styles'
 import axios from "axios"
 import { actGetUptrails, actUpdateShowlist } from "../actions/index"
 
@@ -50,7 +50,7 @@ function Uptrail(props) {
   const payAmount = (n) => {
     if(n != null) {
       const money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
-      return <Text style={stylesTrail.description}>Hứa trả: {money.substring(0, money.length -2)} </Text>
+      return <Text style={[stylesTrail.description, {color:colors.green}]}>Hứa trả: {money.substring(0, money.length -2)} </Text>
     }
   }
 
@@ -84,26 +84,12 @@ function Uptrail(props) {
   const images = (image1, image2, image3) => {
     if(image1 !== null || image2 !== null || image3 !== null)
     return (
-      <View>
-         <Button mode="outlined" onPress={showDialog}>
-          Xem hình ảnh
-        </Button>
-        
-        <Portal style={[styles.container, {height: 700}]}>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Content>
-            <View style={{height: 600}}> 
-              <ImageShow image={image1}></ImageShow>
-              <ImageShow image={image2}></ImageShow>
-              <ImageShow image={image3}></ImageShow>
-            </View>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      </View>
+      <Button
+        mode="contained"
+        style={buttonStyles.button} 
+        onPress={showDialog}>
+        Xem hình ảnh
+      </Button>
     )
   }
  
@@ -112,7 +98,7 @@ function Uptrail(props) {
       padding: 5,
       borderBottomWidth: 2,
       borderRadius:10,
-      borderColor:"#87CEEB"
+      borderColor: colors.primary
     }}>
         <View style={stylesTrail.eventBox}>
           <View style={stylesTrail.eventDate}>
@@ -154,14 +140,40 @@ function Uptrail(props) {
         </View>
 
         {reVisit(next_visit_time)}
+        <View style={[styles.row]}>
+          <View style={[styles.box]}>
+            <Button 
+              mode="contained"
+              style={buttonStyles.button} 
+              onPress={() => handleShow([props.appl_id])}>
+              Xem hợp đồng
+            </Button>
+          </View>
 
-        <Button 
-          mode="outlined" 
-          onPress={() => handleShow([props.appl_id])}>
-          Xem hợp đồng
-        </Button>
-        {images(image1, image2, image3)}
+          <View style={[styles.box]}>
+            {images(image1, image2, image3)}
+          </View>
+        </View>
+       
         
+        
+        <Portal style={[styles.container, {height: 700}]}>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Content>
+              <View style={{height: 600}}> 
+                <ImageShow image={image1}></ImageShow>
+                <ImageShow image={image2}></ImageShow>
+                <ImageShow image={image3}></ImageShow>
+              </View>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button 
+                style={buttonStyles.button} 
+                mode="contained"
+                onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
     </View>
   )
 }
@@ -205,12 +217,12 @@ const stylesTrail = StyleSheet.create({
   },
   eventDay:{
     fontSize:30,
-    color: "#0099FF",
+    color: colors.green,
     fontWeight: "600",
   },
   eventMonth:{
     fontSize:14,
-    color: "#0099FF",
+    color: colors.green,
     fontWeight: "600",
   },
   eventContent: {
@@ -225,7 +237,7 @@ const stylesTrail = StyleSheet.create({
   remarkCode:{
     fontWeight: "bold",
     fontSize:25,
-    color: "#646464",
+    color: colors.green,
   },
   description:{
     paddingTop: 10,
@@ -240,6 +252,22 @@ const stylesTrail = StyleSheet.create({
     fontSize:18,
     color:"#151515",
     paddingTop: 10
+  },
+});
+
+const buttonStyles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    padding: 2,
+    
+  },
+  button: {
+    marginLeft: 2,
+    borderRadius: 10,
+    fontSize: 10,
+    fontWeight: 'bold', 
+    backgroundColor: colors.primary,
+    borderColor:colors.primary,
   },
 });
 

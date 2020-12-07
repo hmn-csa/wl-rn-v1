@@ -19,7 +19,9 @@ const uptrailReducers = (state = initialState, action) => {
 
     case constAction.API_UPTRAIL_SUCCESS:
       const initUptrails = state.uptrails.concat(action.content)
-      state = {... state,  fetching: false, uptrails: initUptrails, error: null, justFetching: true}
+      state = {... state, 
+        fetching: false, uptrails: initUptrails, 
+        error: null, justFetching: true}
       return state;
 
     case constAction.API_UPTRAIL_FAILURE:

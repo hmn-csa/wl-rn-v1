@@ -7,6 +7,7 @@ import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
 
 import { actUpdateShowlist } from "../actions"
+import { colors } from '../styles'
 
 function ProductCategories(props) {
   //console.log(props.data.categoryProduct)
@@ -47,7 +48,7 @@ function ProductCategories(props) {
         return (
           <TouchableOpacity style={styles.card} onPress={() => {handleShow(item.applIds)}}>
             <View style={styles.cardHeader}>
-              <Text style={styles.name}>{item.key}</Text>
+              <Text style={[styles.name, {color:colors.primary}]}>{item.key}</Text>
             </View>
             <View style={{ padding:2,}}>
               
@@ -73,7 +74,7 @@ function ProductCategories(props) {
                 <View style={[styles.box, {flex:1}]}>
                   <Text>Thanh toán:</Text>
                 </View>
-                <View style={[styles.box, {flex:1}]}>
+                <View style={[styles.box, {flex:1, color:colors.green}]}>
                   <Text>{moneyFormat(item.paidamt)}</Text>
                 </View>
               </View>

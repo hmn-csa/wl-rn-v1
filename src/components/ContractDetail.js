@@ -9,7 +9,7 @@ import {
   actGetVsfSaga, actSetActiveApplId, actChangeToDo,
   actChangeTodoSaga, calTodoDash,
 } from "../actions"
-import { styles, MAIN_COLOR2 } from '../styles'
+import { styles, colors } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
 
@@ -24,7 +24,7 @@ function ContractDetail(props) {
   const [content, setContent] = useState(props.data[contractId])
   const [isTodo, setTodoContent] = useState(props.data[contractId].todo_flag)
   const [todoColor, setTodoColor] = useState(props.data[contractId].todo_flag === 1 ? 'white' : '#f7f7f7')
-  const [todoIconColor, setTodoIconColor] = useState(props.data[contractId].todo_flag === 1 ? MAIN_COLOR2 : 'black')
+  const [todoIconColor, setTodoIconColor] = useState(props.data[contractId].todo_flag === 1 ? colors.secondary : 'black')
 
   
   //const [token, setToken] = useState(props.token)
@@ -51,7 +51,7 @@ function ContractDetail(props) {
       setTodoContent(responseTodo)
       props.changeTodo({ appl_id: content.appl_id, todo_flag: responseTodo })
       setTodoColor(responseTodo === 1 ? 'white' : '#f7f7f7')
-      setTodoIconColor(responseTodo === 1 ? MAIN_COLOR2 : 'black')
+      setTodoIconColor(responseTodo === 1 ? colors.secondary : 'black')
       props.calTodoDash(props.data)
       } catch (error) {
         console.error(error);
@@ -105,7 +105,7 @@ function ContractDetail(props) {
     if (istodo == 1)
       return <Ionicons
         name="ios-bulb"
-        style={[showstyles.logo, { color: 'green',textAlign: 'right' }]}
+        style={[showstyles.logo, { color: colors.primary, textAlign: 'right' }]}
       />
   }
   const paidIcon = (paid) => {
@@ -118,26 +118,33 @@ function ContractDetail(props) {
       style={{
         fontWeight:"bold",
         fontSize:15,
-        color:'green',
+        color: colors.green,
         }}>{value}</Text>
     }
     else return <Text 
-    style={{
-      fontWeight:"bold",
-      color:'red',
-      }}>{paid}</Text>
+      style={{
+        fontWeight:"bold",
+        color: colors.secondary
+        }}>{paid}</Text>
     
   }
 
-  const ptpIcon = (isPtp) => {
-    if (isPtp >0 )
+  const ptpIcon = (lastCode) => {
+    if (['PTP', 'OBT', 'WFP', 'TER'].includes(lastCode))
       return <Text 
       style={{
         fontWeight:"bold",
         fontSize:15,
-        color:'blue',
-        textAlign: 'right'}}>PTP</Text>
+        color: colors.green,
+        textAlign: 'right'}}>{lastCode}</Text>
+    else return <Text 
+      style={{
+        fontWeight:"bold",
+        fontSize:15,
+        color: colors.secondary,
+        textAlign: 'right'}}>{lastCode}</Text>
   }
+
   const followIcon = (isFollowed) => {
     if (isFollowed == 1)
       return <Text 
@@ -155,7 +162,7 @@ function ContractDetail(props) {
         padding: 5,
         borderBottomWidth: 1,
         borderTopWidth:2,
-        borderColor:"#87CEEB",
+        borderColor:colors.lightGray,
         borderRadius:10
       }}
     >
@@ -185,7 +192,7 @@ function ContractDetail(props) {
               <Text>{content.cust_name}</Text>
             </View>
             <View style={[styles.box, { flex: 0.5 }]}>
-              {ptpIcon(content.ptp_flag)}
+              {ptpIcon(content.last_action_code)}
             </View>
           </View>
         </View>

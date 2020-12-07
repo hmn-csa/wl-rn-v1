@@ -5,7 +5,7 @@ import TreeView from 'react-native-final-tree-view'
 import { Button } from 'react-native-paper';
 import { connect } from "react-redux"
 import { actUpdateShowlist } from "../actions"
-import { styles, MAIN_COLOR2 } from '../styles'
+import { styles, MAIN_COLOR2, colors } from '../styles'
 
 //ion-md-remove
 function getIndicator(isExpanded, hasChildrenNodes) {
@@ -16,14 +16,14 @@ function getIndicator(isExpanded, hasChildrenNodes) {
       style={{
         fontWeight:"bold",
         fontSize:20,
-        color:MAIN_COLOR2}}
+        color:colors.secondary}}
       name='ios-arrow-dropdown-circle' />
   } else {
     return <Ionicons  
       style={{
       fontWeight:"bold",
       fontSize:20,
-      color:MAIN_COLOR2}}
+      color:colors.secondary}}
       name='ios-arrow-dropright' />
   }
 }
@@ -36,7 +36,9 @@ function Tree(props) {
   }
 
   return (
-    <ScrollView style={{marginTop: 5,}}> 
+    <ScrollView 
+    style={{backgroundColor: '#edeff3', marginTop:5 }}
+    > 
       {/* <View style={buttonStyles.buttons}>
         <Button
             mode="contained"
@@ -65,7 +67,7 @@ function Tree(props) {
           return (
             <View style={{
               height:40,
-              backgroundColor:"#dee2e6", 
+              backgroundColor:colors.white, 
               marginBottom: 4,
               paddingBottom: 5,
               flexDirection: 'row',
@@ -118,6 +120,9 @@ const buttonStyles = StyleSheet.create({
   },
 });
 
+
+
  
 export default connect(mapStateToProps, mapDispatchToProps)(Tree);
+
 

@@ -28,30 +28,6 @@ const initialState = {
   },
 }
 
-const initialTotal = {
-  'totalCase':{
-    'case': 0,
-    'applIds': []
-  },
-  'paidAll':{
-    'value': 0,
-    'applIds': []
-  },
-  'paidMtd': {
-    'case': 0,
-    'value': 0,
-    'applIds': []
-  },
-  'ptpCase': {
-    'case': 0,
-    'applIds': []
-  },
-  'paidToday': {
-    'case': 0,
-    'value': 0,
-    'applIds': []
-  }
-}
 
 
 const todoReducers = (state = initialState, action) => {
@@ -71,9 +47,14 @@ const todoReducers = (state = initialState, action) => {
         return appl.total_pay_amount > 0
       })
       let todoPtpAppls = todoAppls.filter((appl) => {
-        return appl.ptp_flag > 0
+        return appl.last_action_code === 'PTP'
       })
-    
+
+      let reVisitAppls = todoAppls.filter((appl) => {
+        return ['NAH', 'LEM'].includes(appl.last_action_code)
+      })
+
+
       state = {
         ...state, 
         'todoCase':{
@@ -97,8 +78,8 @@ const todoReducers = (state = initialState, action) => {
           'applIds': []
         },
         'todoRevisit':{
-          'case': 0,
-          'applIds': []
+          'case': reVisitAppls.length,
+          'applIds': reVisitAppls.map(appl => appl.appl_id)
         },
       }
       return state;

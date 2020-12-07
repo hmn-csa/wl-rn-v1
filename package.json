@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^3.0.8",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/picker": "1.6.6",
     "@react-navigation/bottom-tabs": "^5.9.2",
@@ -32,7 +33,9 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-final-tree-view": "^2.0.3",
     "react-native-gesture-handler": "~1.7.0",
+    "react-native-map-clustering": "^3.3.9",
     "react-native-maps": "0.27.1",
+    "react-native-material-ui": "^1.30.1",
     "react-native-paper": "^4.4.0",
     "react-native-picker-select": "^8.0.2",
     "react-native-reanimated": "~1.13.0",

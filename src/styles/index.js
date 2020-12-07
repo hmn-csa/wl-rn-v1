@@ -1,18 +1,18 @@
 
 import { StyleSheet } from 'react-native'
-
+import colors from './colors'
 const MAIN_COLOR1 = "#003f5c"
 const MAIN_COLOR2 = "#fb5b5a"
 const MAIN_COLOR3 = "#dee2e6"
 const BACKGROUND_LOGIN =  "white"
-const BACKGROUND_COLOR =  'white'
+const BACKGROUND_COLOR =  '#edeff3'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: BACKGROUND_COLOR, 
+    backgroundColor: '#edeff3', 
   },
   row: {
     flex: 1,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     margin: 8,
     justifyContent: 'center',
-    color: MAIN_COLOR1,
+    color: colors.primary,
   },
   header2: {
     fontWeight: 'bold',
@@ -47,43 +47,43 @@ const styles = StyleSheet.create({
     marginTop: 10,
     margin: 8,
     justifyContent: 'center',
-    color: MAIN_COLOR1,
+    color: colors.primary,
   },
   indexValue: {
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 35,
-    paddingTop: 8,
-    color: MAIN_COLOR1
+    paddingTop: 2,
+    color: colors.black,
   },
   indexValueSmall: {
     textAlign: 'center', // <-- the magic
     fontWeight: 'bold',
     fontSize: 30,
-    paddingTop: 12,
-    color: MAIN_COLOR1
+    paddingTop: 2,
+    color: colors.black
   },
   indexLabel: {
     textAlign: 'center', // <-- the magic
     fontSize: 10,
-    paddingBottom: 12,
+    paddingBottom: 2,
   },
 
   logo:{
     fontWeight:"bold",
-    fontSize:25,
-    color:MAIN_COLOR2,
+    fontSize:15,
+    color: colors.secondary,
     padding: 3,
   },
   sologan :{
     fontWeight:"bold",
     fontSize:50,
-    color:MAIN_COLOR2,
+    color: colors.secondary,
     padding: 3,
   },
   inputView:{
     width:"80%",
-    backgroundColor:"#465881",
+    backgroundColor: colors.primary,
     borderRadius:25,
     height:50,
     marginBottom:20,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   inputViewRemark:{
     width:"90%",
-    backgroundColor: MAIN_COLOR3,
+    backgroundColor: colors.secondary,
     borderRadius:5,
     height:40,
     marginBottom:20,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   inputViewConst:{
     width:"90%",
-    backgroundColor: MAIN_COLOR3,
+    backgroundColor: colors.secondary,
     borderRadius:5,
     height:40,
     marginBottom:20,
@@ -110,13 +110,12 @@ const styles = StyleSheet.create({
   },
   // Login
   loginBtn:{
-    width:"80%",
-    backgroundColor:MAIN_COLOR1,
+    backgroundColor:colors.primary,
     borderRadius:50,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:20,
     marginBottom:10
   },
   loginText:{
@@ -137,6 +136,7 @@ const styles = StyleSheet.create({
 
 export {  
   styles,
+  colors,
   MAIN_COLOR1,
   MAIN_COLOR2,
   MAIN_COLOR3,

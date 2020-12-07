@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView from 'react-native-map-clustering';
 //import { MapView, Marker, PROVIDER_GOOGLE  } from 'expo'
 import { Button, Dialog, Portal, } from 'react-native-paper';
 import { StyleSheet, Text, View, Dimensions, ScrollView, FlatList } from 'react-native';

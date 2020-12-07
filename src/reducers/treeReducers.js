@@ -149,7 +149,7 @@ const treeReducers = (state = defaultState, action) => {
         return !(notMeetCode.includes(appl.last_action_code) )//appl.lv4 == 'MEET'
       })
       let initMeetPtp = initNotPaidMeet.filter((appl) => {
-        return appl.ptp_flag == 1
+        return appl.last_action_code === 'PTP'
       })
       let initMeetDif= initNotPaidMeet.filter((appl) => {
         return ['WAS', 'LST'].includes(appl.last_action_code) //appl.lv5 == 'DIF_FINANCE'

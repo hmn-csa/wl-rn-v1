@@ -1,117 +1,91 @@
-import React, { Component } from 'react';
+import React from "react"
+
 import {
   StyleSheet,
-  Text,
   View,
-  TextInput,
-  Button,
-  TouchableHighlight,
-  Alert,
   Image,
-  FlatList,
-  TouchableOpacity
-} from 'react-native';
-
-export default class Test extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {id:1, day:1, month: 'Sep'}, 
-        {id:2, day:2, month: 'Jan'}, 
-        {id:3, day:3, month: 'Aug'}, 
-        {id:4, day:4, month: 'Dec'}, 
-        {id:5, day:5, month: 'Jul'}, 
-        {id:6, day:6, month: 'Oct'}, 
-        {id:7, day:7, month: 'Sep'},
-        {id:8, day:8, month: 'Jan'},
-        {id:9, day:9, month: 'May'},
-      ],
-    };
-  }
-
-  eventClickListener = (viewId) => {
-    Alert.alert("alert", "event clicked");
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList 
-          enableEmptySections={true}
-          style={styles.eventList}
-          data={this.state.data}
-          keyExtractor= {(item) => {
-            return item.id;
-          }}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity onPress={() => this.eventClickListener("row")}>
-                <View style={styles.eventBox}>
-                  <View style={styles.eventDate}>
-                     <Text  style={styles.eventDay}>{item.day}</Text>
-                     <Text  style={styles.eventMonth}>{item.month}</Text>
-                  </View>
-                  <View style={styles.eventContent}>
-                    <Text  style={styles.eventTime}>10:00 am - 10:45 am</Text>
-                    <Text  style={styles.userName}>John Doe</Text>
-                    <Text  style={styles.description}>Lorem ipsum dolor sit amet, elit consectetur</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            )
-          }}/>
-      </View>
-    );
-  }
-}
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native'
 
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor: "#DCDCDC",
-  },
-  eventList:{
-    marginTop:20,
-  },
-  eventBox: {
-    padding:10,
-    marginTop:5,
-    marginBottom:5,
+  container: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#3D5AFE',
+    backgroundColor: '#0F1B37',
+    borderRadius: 4,
+    width: 120,
+    height: 100,
+    marginRight: 10,
+    flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
-  eventDate:{
+  wrapper: {
+    flex: 0.8,
     flexDirection: 'column',
   },
-  eventDay:{
-    fontSize:50,
-    color: "#0099FF",
-    fontWeight: "600",
+  header: {
+    flex: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  eventMonth:{
-    fontSize:16,
-    color: "#0099FF",
-    fontWeight: "600",
+  icon: {
+    flex: 0.5,
   },
-  eventContent: {
-    flex:1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginLeft:10,
-    backgroundColor: '#FFFFFF',
-    padding:10,
-    borderRadius:10
+  status: {
+    flex: 0.5,
+    alignItems: 'flex-end',
   },
-  description:{
-    fontSize:15,
-    color: "#646464",
+  content:{
+    flex: 0.5,
   },
-  eventTime:{
-    fontSize:18,
-    color:"#151515",
+  dot: {
+    backgroundColor: '#3FE77B',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
-  userName:{
-    fontSize:16,
-    color:"#151515",
+  text: {
+    color: '#FFF',
+    fontSize: 10,
+    letterSpacing: 0.29,
   },
-});
+  subText: {
+    color: '#B1BCFD',
+    fontSize: 10,
+    letterSpacing: 0.29,
+    paddingTop: 5,
+  }
+})
+
+export default function Test(props) {
+
+  return (
+    <View style={{flex: 1, flexDirection: 'row'}}>
+      <TouchableOpacity
+        style={{flex: 1, flexDirection: 'row'}}
+      >
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <View style={styles.header}>
+              <View style={styles.icon}>
+  
+              </View>
+              <View style={styles.status}>
+                <View style={styles.dot}/>
+              </View>
+            </View>
+            <View style={styles.content}>
+              <Text style={styles.text}>xxx</Text>
+              <Text style={styles.subText}>100 verions</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
+}

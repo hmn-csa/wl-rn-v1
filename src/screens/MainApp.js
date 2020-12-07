@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { enableScreens } from 'react-native-screens'
 //import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -15,13 +15,11 @@ import Dashboard from './Dashboard'
 import ProductCategories from './ProductCategories'
 import ListAppls from './ListAppls'
 import User from './User'
-// import Test from './test'
+//import Test from './test'
 import Maps from './Maps'
 import ListUptrail from './ListUptrail'
 
-import { MAIN_COLOR2 } from '../styles'
-
-import{ styles } from '../styles'
+import{ styles, colors } from '../styles'
 
 
 enableScreens()
@@ -42,7 +40,7 @@ function CategorieStack(props) {
         
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -68,7 +66,7 @@ function CategorieStack(props) {
         component={ProductCategories}
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -103,7 +101,7 @@ function PortStack(props) {
         component={ListAppls}  
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -146,7 +144,7 @@ function PortStack(props) {
         component={ListUptrail} 
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -160,7 +158,7 @@ function PortStack(props) {
         component={Remark} 
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -173,7 +171,7 @@ function PortStack(props) {
         component={Vsf} 
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -186,7 +184,7 @@ function PortStack(props) {
         component={Skip}
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -200,7 +198,7 @@ function PortStack(props) {
         component={Search} 
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -213,14 +211,14 @@ function PortStack(props) {
         component={Maps}
         options={{
           headerStyle: {
-            backgroundColor: MAIN_COLOR2,
+            backgroundColor: colors.secondary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           }
         }}
-      />  
+      /> 
       
     </Stack.Navigator>
   );
@@ -229,9 +227,15 @@ const buttonStyles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     padding: 2,
+    
   },
   button: {
     marginLeft: 2,
+    borderRadius: 10,
+    fontSize: 10,
+    fontWeight: 'bold', 
+    backgroundColor: colors.primary,
+    borderColor:colors.primary,
   },
 });
 
@@ -268,7 +272,7 @@ function MainApp () {
         })
         }
         tabBarOptions={{
-          activeTintColor: 'tomato',
+          activeTintColor: colors.secondary, //'tomato',
           inactiveTintColor: 'gray',
         }}
       >
@@ -276,7 +280,7 @@ function MainApp () {
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
-        <Tab.Screen name="User" component={User} />
+        <Tab.Screen name="User" component={User } />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -23,7 +23,7 @@ const initialState = {
     'case': 0,
     'value': 0,
     'applIds': []
-  }
+  },
 }
 
 const totalReducers = (state = initialState, action) => {
@@ -34,20 +34,22 @@ const totalReducers = (state = initialState, action) => {
       let appls = Object.values(action.data)
       let totalCase = appls.length
       // ======== todos ==========
-      let initPaidAppls = appls.filter((appl) => {
-        return appl.full_paid == 1
-      })
+      // let initPaidAppls = appls.filter((appl) => {
+      //   return appl.total_pay_amount > 0
+      // })
 
       let initPaidMtd = appls.filter((appl) => {
-        return appl.total_pay_amount > 0
+        return parseFloat(appl.total_pay_amount)> 0
       })
+
+      
       let paidMtdValue = initPaidMtd.map(function (appl){
         return appl.total_pay_amount
       }).reduce(function(sum, pay){
         return sum = sum+pay;
       },0);
       let initPaidTodayAppls = appls.filter((appl) => {
-        return appl.paid_today == 1
+        return appl.paid_today_amt > 0
       })
       let paidTodayValue = initPaidTodayAppls.map((appl) => {
         return appl.paid_today_amt 
@@ -57,7 +59,7 @@ const totalReducers = (state = initialState, action) => {
       
       // ptp_lag
       let initPtp = appls.filter((appl) => {
-        return appl.ptp_flag > 0
+        return appl.last_action_code === 'PTP'
       })
       state = {
         ...state, 
@@ -66,8 +68,8 @@ const totalReducers = (state = initialState, action) => {
           'applIds': appls.map(appl => appl.appl_id)
         },
         'paidAll': {
-          'value': initPaidAppls.length,
-          'applIds':  initPaidAppls.map(appl => appl.appl_id)
+          'value': initPaidMtd.length,
+          'applIds':  initPaidMtd.map(appl => appl.appl_id)
         }, 
         'paidMtd': {
           'case': initPaidMtd.length,
