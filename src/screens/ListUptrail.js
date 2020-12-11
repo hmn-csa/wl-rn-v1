@@ -49,7 +49,7 @@ function ListUptrail(props) {
   if (props.uptrails.fetching || uptrailStatus)
      return <View style={[{alignItems: 'center'}]}>
       <Text>Loading ... </Text>
-      <ActivityIndicator size={100}/> 
+      <ActivityIndicator size={100} color={colors.primary}/> 
     </View> 
    
   else if (props.uptrails.uptrails.length > 0)
@@ -62,6 +62,7 @@ function ListUptrail(props) {
       runtime={item.runtime} 
       code={item.code}
       appl_id={item.appl_id}
+      cust_name={item.cust_name}
       pay_amount={item.pay_amount}
       remark={item.remark}
       trust_address={item.trust_address}

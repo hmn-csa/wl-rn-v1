@@ -129,3 +129,27 @@ export const actChangeFollow = (content) => {
 		content,
 	};
 };
+
+// manager
+
+export const calManagerDash = (data) => {
+  return {
+    type: constAction.CAL_MANAGER_DASH,
+    data
+  }
+};
+
+export const setManagerDash = (data) => {
+  return {
+    type: constAction.SET_MANAGER_DASH,
+    data
+  }
+};
+
+export const apiStaffData = (config) => {
+  return {
+    type: constAction.MANAGER_DATA_REQUEST,
+    config
+  }
+};
+

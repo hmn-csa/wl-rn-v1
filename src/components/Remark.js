@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from "react-redux"
 import { styles as masterStyle, BACKGROUND_LOGIN, MAIN_COLOR2 } from '../styles'
-import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker'
 import * as ImagePicker from 'expo-image-picker';
 import { Button, TextInput, Paragraph, Dialog, Portal, RadioButton } from 'react-native-paper';
@@ -184,11 +183,12 @@ function Remark(props) {
     let config = {
       'token_value': props.token.token.access,
       'appl_id': props.vsf.activeApplId.appl_id,
+      'cust_name': props.vsf.activeApplId.cust_name,
       'code': code,
       'trust_address': address,
       'type_address': getAddressType(address),
       'remark': remark,
-      'payamount': payAmount,
+      'pay_amount': payAmount,
       'next_visit_time': reDate,
       'lat': location.coords.latitude,
       'lon': location.coords.longitude,

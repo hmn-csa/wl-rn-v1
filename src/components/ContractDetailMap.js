@@ -12,7 +12,7 @@ import {
 import { styles, colors } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
-import { color } from "react-native-reanimated"
+
 
 function ContractDetailMap(props) {
 
@@ -110,18 +110,9 @@ function ContractDetailMap(props) {
       const valuex =  parseFloat(paid, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
       const value = valuex.substring(0, valuex.length -2)
 
-      return <Text 
-      style={{
-        fontWeight:"bold",
-        fontSize:15,
-        color:colors.green,
-        }}>{value}</Text>
+      return <Text style={[showstyles.nameTxt,{color:colors.green}]}>{value}</Text>
     }
-    else return <Text 
-    style={{
-      fontWeight:"bold",
-      color:colors.secondary,
-      }}>{paid}</Text>
+    else return <Text style={[showstyles.nameTxt,{color:colors.secondary,}]}>{paid}</Text>
     
   }
 
@@ -156,22 +147,21 @@ function ContractDetailMap(props) {
       style={{
         backgroundColor: todoColor,
         padding: 5,
-        borderBottomWidth: 1,
-        borderTopWidth:2,
+        borderWidth: 1,
         borderColor:colors.lightGray,
         borderRadius:10
       }}
     >
       <View style={[styles.row]}>
         <View style={styles.box}>
-          <Text>appl id:</Text>
+          <Text style={showstyles.msgTxt}>Hợp đồng:</Text>
         </View>
         <View style={[styles.box, { flex: 3.5 }]}>
           <View style={[styles.row]}>
             <View style={[styles.box, { flex: 3 }]}>
-              <Text style={{fontWeight:"bold",}}>{content.appl_id}</Text>
+              <Text style={showstyles.nameTxt}>{content.appl_id}</Text>
             </View>
-            <View style={[styles.box, { flex: 0.5 }]}>
+            <View style={[styles.box, { flex: 1 }]}>
               {todoIcon(isTodo)}
             </View>
           </View>
@@ -180,14 +170,14 @@ function ContractDetailMap(props) {
 
       <View style={[styles.row]}>
         <View style={styles.box}>
-            <Text>cust name:</Text>
+          <Text style={showstyles.msgTxt}>Tên KH:</Text>
         </View>
         <View style={[styles.box, { flex:3.5 }]}>
           <View style={[styles.row]}>
             <View style={[styles.box, { flex: 3 }]}>
-              <Text>{content.cust_name}</Text>
+              <Text style={showstyles.nameTxt}>{content.cust_name}</Text>
             </View>
-            <View style={[styles.box, { flex: 0.5 }]}>
+            <View style={[styles.box, { flex: 1 }]}>
               {ptpIcon(content.last_action_code)}
             </View>
           </View>
@@ -196,7 +186,7 @@ function ContractDetailMap(props) {
       
       <View style={[styles.row]}>
         <View style={styles.box}>
-            <Text>paid:</Text>
+            <Text style={showstyles.msgTxt}>Thanh toán:</Text>
         </View>
         <View style={[styles.box, { flex:3.5 }]}>
           <View style={[styles.row]}>
@@ -213,10 +203,10 @@ function ContractDetailMap(props) {
       
       <View style={[styles.row]}>
         <View style={styles.box}>
-          <Text>address:</Text>
+          <Text style={showstyles.msgTxt}>Địa chỉ:</Text>
         </View>
         <View style={[styles.box, { flex: 3.5 }]}>
-          <Text>{content.reg_address}</Text>
+          <Text style={showstyles.msgTxt} >{content.reg_address}</Text>
         </View>
       </View>
 
@@ -315,7 +305,19 @@ const showstyles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
   },
-
+  nameTxt: {
+    marginLeft: 10,
+    fontWeight: '600',
+    color: '#222',
+    fontSize: 13,
+    width:190,
+  },
+  msgTxt: {
+    fontWeight: '400',
+    color: colors.textcolor,
+    fontSize: 11,
+    marginLeft: 10,
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractDetailMap);

@@ -27,11 +27,40 @@ function ListAppls(props) {
           )
       }
 
-      <Button  mode="outlined" onPress={handleMore}> more </Button>
+      <Button mode="outlined" onPress={handleMore}> more </Button>
     </ScrollView>
     )
   */
-  if (props.showlists.isTodoClass)return (
+  // const [more ,setMore ] = useState(false)
+  // const [len, setLen ] = useState(props.showlists.applIds.length)
+  
+  // useEffect(() => {    
+  //   setMore(false)  
+  //   console.log(more)
+  // }, [more]);
+
+  // const showmoreBtn = (len ,more) => {
+  //   if (len > 10)
+  //   return <Button mode="outlined" onPress={() => setMore(true)}> Xem Thêm </Button>
+  // }
+
+  // const showmore = () => {
+  //   if (more)
+  //   return <ScrollView >
+  //     {
+  //       props.showlists.applIds.slice(10, props.showlists.applIds.length-1).map(
+  //         appl =>  <ContractDetailMap 
+  //           key={appl}
+  //           contractId={appl}
+  //           navigation={props.navigation}
+  //         />
+  //       )
+  //     }
+  //   </ScrollView>
+  // }
+  
+  if (props.showlists.isTodoClass)
+    return (
     <ScrollView >
       {
         props.showlists.applIds.map( appl => 
@@ -42,6 +71,9 @@ function ListAppls(props) {
           />
         )
       }
+    {/* {showmore(more)}
+    {showmoreBtn(props.showlists.applIds.length, more)} */}
+    {/* <Button mode="outlined" onPress={() => setMore(true)}>Xem Thêm</Button> */}
     </ScrollView>
   )
 

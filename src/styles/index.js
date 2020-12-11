@@ -18,13 +18,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 2,
+    margin: 1
   },
   box: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    margin: 2
   },
 
   box2: {

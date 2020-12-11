@@ -54,3 +54,9 @@ export const CAL_CATE_DASH = "CAL_CATE_DASH"
 
 export const CHANGE_TODO = "CHANGE_TODO"
 export const CHANGE_FOLLOW = "CHANGE_FOLLOW"
+
+// manager
+export const SET_MANAGER_DASH = "SET_MANAGER_DASH"
+export const CAL_MANAGER_DASH = "CAL_MANAGER_DASH"
+
+export const MANAGER_DATA_REQUEST = "MANAGER_DATA_REQUEST"

@@ -1,30 +1,49 @@
-import {
-  View, Text, Image, TouchableOpacity, Alert, FlatList, StyleSheet
-} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View , FlatList, TouchableOpacity, Button, Alert} from 'react-native';
+import { connect } from "react-redux";
+import { calManagerDash } from "../actions/index"
 
-import { Button } from 'react-native-paper';
-import React, { useState, useEffect} from "react"
-import { connect } from "react-redux"
-
-import { actUpdateShowlist } from "../actions"
+import * as constAction from '../consts'
+import axios from "axios";
 import { colors } from '../styles'
 
-function ProductCategories(props) {
-  //console.log(props.data.categoryProduct)
-  const handleShow = (list) => {
-    props.navigation.navigate('Portfolio',  { screen: 'List' });
-    props.updateShowlist(list)
+function ManagerApp(props) {
+  
+
+  const getStaffData = async () => {
+    let config = {
+      method: 'post',
+      url: `${constAction.WORKLIST_API}/manager?type=info`,
+      headers: {
+        'Authorization': `Bearer ${props.token.token.access}`
+      },
+      data: {
+        'area': props.token.token.area,
+      }
+    }
+
+    try {
+      const response = await axios(config);
+      props.calManager(response.data)
+      } catch (error) {
+        console.error(error);
+      }
   }
+
+  useEffect(() => {
+    getStaffData()
+  }, []);
 
   const moneyFormat = (n) => {
     return  n.toLocaleString().split(".")[0]
   }
+                  
 
   return (
     <View style={[styles.container,]}>
 
       <FlatList 
-      data = {props.categoryProduct}
+      data = {props.staffs}
       horizontal={false}
       numColumns={2}
       renderItem={({item}) => {
@@ -78,24 +97,24 @@ function ProductCategories(props) {
       }}/>
     </View>
     )
-  
 }
-
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    categoryProduct: state.category.categoryProduct,
-    showlists: state.showlists
-  };
-};
+    token: state.token,
+    staffs: state.manager.staffs
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateShowlist: (content) => {
-      dispatch(actUpdateShowlist(content))
+    calManager: (data) => {
+      dispatch(calManagerDash(data))
     }
-  };
-};
+  }
+}
+
+
 
 const styles = StyleSheet.create({
   container:{
@@ -207,6 +226,6 @@ const styles = StyleSheet.create({
     margin: 2,
   },
 });    
- 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManagerApp);
 

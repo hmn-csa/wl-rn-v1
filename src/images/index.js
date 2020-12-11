@@ -1,0 +1,1 @@
+export const EMPTYAVATAR = require('./avatar.png'); 

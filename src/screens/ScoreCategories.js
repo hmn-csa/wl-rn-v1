@@ -9,7 +9,7 @@ import { connect } from "react-redux"
 import { actUpdateShowlist } from "../actions"
 import { colors } from '../styles'
 
-function ProductCategories(props) {
+function ScoreCategories(props) {
   //console.log(props.data.categoryProduct)
   const handleShow = (list) => {
     props.navigation.navigate('Portfolio',  { screen: 'List' });
@@ -24,7 +24,7 @@ function ProductCategories(props) {
     <View style={[styles.container,]}>
 
       <FlatList 
-      data = {props.categoryProduct}
+      data = {props.categoryBinscore}
       horizontal={false}
       numColumns={2}
       renderItem={({item}) => {
@@ -84,7 +84,7 @@ function ProductCategories(props) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    categoryProduct: state.category.categoryProduct,
+    categoryBinscore: state.category.categoryBinscore,
     showlists: state.showlists
   };
 };
@@ -208,5 +208,5 @@ const styles = StyleSheet.create({
   },
 });    
  
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreCategories);
 

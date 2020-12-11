@@ -7,6 +7,7 @@ import {decode as atob, encode as btoa} from 'base-64'
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export function* watcherSaga() {
   yield takeLatest(constAction.API_TOKEN_REQUEST, workerGetToken);
+  yield takeLatest(constAction.MANAGER_DATA_REQUEST, workerManagerGetData);
 }
 
 // function that makes the api request and returns a Promise for response
@@ -91,4 +92,45 @@ export function* workerGetData(token) {
   }
 }
 
+
+
+export function* workerManagerGetData(request) {
+  try {
+    let config = {
+      method: 'post',
+      url: `${constAction.WORKLIST_API}/portfolio-list/?staff_id=${request.config.staff_id}`,
+      headers: { 
+        'Authorization': `Bearer ${request.config.token}`
+      }
+    }
+    
+    const response = yield call(axios, config);
+    const data = response.data;
+    
+    // dispatch a success action to the store with the new content
+    yield put({ type: constAction.API_DATA_SUCCESS, content: response.data });
+
+    // dispatch INIT_DASHBOARD
+    //yield put({ type: constAction.INIT_DASHBOARD, content: data });
+    // yield put({ type: constAction.DATA_INIT_DASHBOARD });
+
+    // dispatch CAL-DASH
+    yield put({ type: constAction.CAL_TOTAL_DASH, data: response.data});
+    yield put({ type: constAction.CAL_TODO_DASH, data: response.data});
+    yield put({ type: constAction.CAL_CATE_DASH, data: response.data});
+    yield put({ type: constAction.CAL_TREE_DASH, data: response.data});
+    
+    // dispatch UPDATE_SHOWLIST
+    const allAppls =  Object.values(data).map(appl => appl.appl_id)
+    yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
+
+   
+
+
+  } catch (error) {
+    console.log(error)
+    // dispatch a failure action to the store with the error
+    yield put({ type: constAction.API_DATA_FAILURE, error });
+  }
+}
 

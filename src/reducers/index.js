@@ -9,6 +9,7 @@ import treeReducers from './treeReducers'
 import totalReducers from './totalReducers'
 import categoryReducers from './categoryReducers'
 import uptrailReducers from './uptrailReducers'
+import managerReducers from './managerReducers'
 
 const rootReducer  = combineReducers({
     token: tokenReducers,
@@ -19,7 +20,8 @@ const rootReducer  = combineReducers({
     treeCal: treeReducers,
     totalCal: totalReducers,
     category: categoryReducers,
-    uptrails: uptrailReducers
+    uptrails: uptrailReducers,
+    manager: managerReducers,
 })
 
 export default rootReducer

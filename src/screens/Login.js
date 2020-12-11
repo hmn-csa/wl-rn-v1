@@ -22,6 +22,7 @@ function Login(props) {
       let locationC = await Location.getCurrentPositionAsync({});
       props.locationSet(locationC.coords)
   }
+  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
@@ -54,7 +55,7 @@ function Login(props) {
     }
     else {
       await props.login(data)
-      if (props.token.token != null) 
+      if (props.token.token === undefined) 
         Alert.alert('username hoặc password không đúng')
     }
   };

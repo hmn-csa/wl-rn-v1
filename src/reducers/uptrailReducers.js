@@ -12,8 +12,8 @@ const initialState = {
 
 const uptrailReducers = (state = initialState, action) => {
 
-  switch(action.type) {
-
+  switch(action.type) { 
+    
     case constAction.API_UPTRAIL_REQUEST:
       return { ...state, fetching: true, error: null };
 

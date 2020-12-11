@@ -47,7 +47,8 @@ const totalReducers = (state = initialState, action) => {
         return appl.total_pay_amount
       }).reduce(function(sum, pay){
         return sum = sum+pay;
-      },0);
+      },0)
+
       let initPaidTodayAppls = appls.filter((appl) => {
         return appl.paid_today_amt > 0
       })

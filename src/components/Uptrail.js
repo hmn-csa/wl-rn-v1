@@ -1,8 +1,8 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList , StyleSheet, TouchableOpacity, ActivityIndicator
+  View, Text, Image, ScrollView, Alert, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator
 } from 'react-native'
-import { Button, Portal, Dialog} from 'react-native-paper';
-import React, { useState, useEffect} from "react"
+import { Button, Portal, Dialog } from 'react-native-paper';
+import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { styles, colors } from '../styles'
 import axios from "axios"
@@ -11,13 +11,13 @@ import { actGetUptrails, actUpdateShowlist } from "../actions/index"
 function ImageShow(props) {
   const [image, setimage] = useState(props.image)
   if (image !== null)
-  return (
-    <View style={[styles.row, {padding: 5, height: 160, width: 160}]}> 
-    <Image 
-    style={[styles.row, {height: 150, width: 150}]} 
-    source={{uri: image}}/>
-  </View>
-  ) 
+    return (
+      <View style={[styles.row, { padding: 5, height: 160, width: 160 }]}>
+        <Image
+          style={[styles.row, { height: 150, width: 150 }]}
+          source={{ uri: image }} />
+      </View>
+    )
   return (
     <View></View>
   )
@@ -30,14 +30,15 @@ function Uptrail(props) {
   const [runtime, setRuntime] = useState(props.runtime)
   const [code, setCode] = useState(props.code)
   const [appl_id, setAppl_id] = useState(props.appl_id)
+  const [cust_name, setCust_name] = useState(props.cust_name)
   const [pay_amount, setPayamount] = useState(props.pay_amount)
   const [remark, setRemark] = useState(props.remark)
   const [trust_address, setTrust_address] = useState(props.trust_address)
   const [next_visit_time, setnext_visit_time] = useState(props.next_visit_time)
 
-  const [image1, setimage1] = useState(props.image1  === null ? null : "data:image/png;base64," + props.image1)
-  const [image2, setimage2] = useState(props.image2  === null ? null :  "data:image/png;base64," + props.image2)
-  const [image3, setimage3] = useState(props.image3  === null ? null :  "data:image/png;base64," + props.image3)
+  const [image1, setimage1] = useState(props.image1 === null ? null : "data:image/png;base64," + props.image1)
+  const [image2, setimage2] = useState(props.image2 === null ? null : "data:image/png;base64," + props.image2)
+  const [image3, setimage3] = useState(props.image3 === null ? null : "data:image/png;base64," + props.image3)
 
 
   const [visible, setVisible] = useState(false);
@@ -45,135 +46,148 @@ function Uptrail(props) {
   const hideDialog = () => setVisible(false);
 
 
-  const splitTime = (t) => t.substring(0, 10) + " "+ t.substring(11, 19)
+  const splitTime = (t) => t.substring(0, 10) + " " + t.substring(11, 19)
 
   const payAmount = (n) => {
-    if(n != null) {
+    if (n != null) {
       const money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
-      return <Text style={[stylesTrail.description, {color:colors.green}]}>Hứa trả: {money.substring(0, money.length -2)} </Text>
+      return <Text style={[stylesTrail.nameTxt, { color: colors.green }]}>Hứa trả: {money.substring(0, money.length - 2)} </Text>
     }
   }
 
   const nextTime = (t) => {
-    if(t != null) 
+    if (t != null)
       return t.substring(0, 10)
   }
 
   const handleShow = (list) => {
     props.updateShowlist(list)
-    props.navigation.navigate('Portfolio',  { screen: 'List' })
+    props.navigation.navigate('Portfolio', { screen: 'List' })
   }
 
-  
+
   const reVisit = (next_visit_time) => {
-    if(next_visit_time != null) 
-      return  <View style={[styles.row]}>
-      <View style={styles.box}>
-        <Text>Ngày quay lại:</Text>
-      </View>
-      <View style={[styles.box, { flex: 3.5 }]}>
-        <View style={[styles.row]}>
-          <View style={[styles.box]}>
-            <Text style={{fontWeight:"bold",}}>{nextTime(next_visit_time)}</Text>
+    if (next_visit_time != null)
+      return <View style={[styles.row]}>
+        <View style={styles.box}>
+          <Text style={stylesTrail.msgTxt} >Ngày hẹn:</Text>
+        </View>
+        <View style={[styles.box, { flex: 4 }]}>
+          <View style={[styles.row]}>
+            <View style={[styles.box]}>
+              <Text style={[stylesTrail.msgTxt, { fontWeight: "bold", }]}>{nextTime(next_visit_time)}</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
   }
-  
+
+  const renCode = (code) => {
+    if (['PTP', 'OBT', 'WFP', 'TER'].includes(code))
+      return <Text
+        style={[stylesTrail.remarkCode, { color: colors.green, }]}>{code}</Text>
+    else return <Text
+      style={[stylesTrail.remarkCode, { color: colors.secondary, }]}>{code}</Text>
+  }
+
   const images = (image1, image2, image3) => {
-    if(image1 !== null || image2 !== null || image3 !== null)
-    return (
-      <Button
-        mode="contained"
-        style={buttonStyles.button} 
-        onPress={showDialog}>
-        Xem hình ảnh
-      </Button>
-    )
+    if (image1 !== null || image2 !== null || image3 !== null)
+      return (
+        <Button
+          mode="contained"
+          style={buttonStyles.button}
+          onPress={showDialog}>
+          Xem hình ảnh
+        </Button>
+      )
   }
- 
+
   return (
     <View style={{
-      padding: 5,
-      borderBottomWidth: 2,
-      borderRadius:10,
-      borderColor: colors.primary
+      backgroundColor: colors.white,
+      borderWidth: 1,
+      borderRadius: 15,
+      borderColor: colors.lightGray
     }}>
-        <View style={stylesTrail.eventBox}>
-          <View style={stylesTrail.eventDate}>
-            <Text  style={stylesTrail.eventDay}>{runtime.substring(8, 10)}</Text>
-            <Text  style={stylesTrail.eventMonth}>{runtime.substring(5,7)}</Text>
-            <Text  style={stylesTrail.remarkCode}>{code}</Text>
+
+      <TouchableOpacity
+        style={{padding: 5}}
+        onLongPress={() => handleShow([props.appl_id])}
+      >
+      
+        <View style={styles.row}>
+          <View style={styles.box}>
+            <Text style={stylesTrail.nameTxt}>{splitTime(runtime)}</Text>
           </View>
-          <View style={stylesTrail.eventContent}>
-            <Text style={stylesTrail.eventTime}>{splitTime(runtime)}</Text>
-            <Text style={stylesTrail.userName}>{appl_id}</Text>
-            {payAmount(pay_amount)}
+          <View style={[styles.box, {flex:0.2}]}>
+          {renCode(code)}
           </View>
         </View>
+        <View style={styles.row}>
+          <Text style={stylesTrail.nameTxt}>HĐ: {appl_id}</Text>
+          <Text style={stylesTrail.nameTxt}>{cust_name}</Text>
+        </View>
+        {/* <View style={styles.row}>
+          <Text style={stylesTrail.nameTxt}>{cust_name}</Text>
+          {payAmount(pay_amount)}
+        </View> */}
+        <View style={[styles.row,]}>
+        {payAmount(pay_amount)}
+        </View>
+     
 
-        <View style={[styles.row]}>
-          <View style={styles.box}>
-            <Text>ghi chú:</Text>
-          </View>
-          <View style={[styles.box, { flex: 3.5 }]}>
-            <View style={[styles.row]}>
-              <View style={[styles.box,]}>
-                <Text style={{fontWeight:"bold",}}>{remark}</Text>
-              </View>
+
+      <View style={[styles.row]}>
+        <View style={styles.box}>
+          <Text style={stylesTrail.msgTxt} >ghi chú:</Text>
+        </View>
+        <View style={[styles.box, { flex: 4}]}>
+          <View style={[styles.row]}>
+            <View style={[styles.box,]}>
+              <Text style={[stylesTrail.msgTxt,{ fontWeight: "bold", }]}>{remark}</Text>
             </View>
           </View>
         </View>
-        
-        <View style={[styles.row]}>
-          <View style={styles.box}>
-            <Text>Địa chỉ:</Text>
-          </View>
-          <View style={[styles.box, { flex: 3.5 }]}>
-            <View style={[styles.row]}>
-              <View style={[styles.box]}>
-                <Text style={{fontWeight:"bold",}}>{trust_address}</Text>
-              </View>
+      </View>
+
+      <View style={[styles.row]}>
+        <View style={styles.box}>
+          <Text style={stylesTrail.msgTxt}>Địa chỉ:</Text>
+        </View>
+        <View style={[styles.box, { flex: 4 }]}>
+          <View style={[styles.row]}>
+            <View style={[styles.box]}>
+              <Text style={stylesTrail.msgTxt}>{trust_address}</Text>
             </View>
           </View>
         </View>
+      </View>
 
-        {reVisit(next_visit_time)}
-        <View style={[styles.row]}>
-          <View style={[styles.box]}>
-            <Button 
+      {reVisit(next_visit_time)}
+      <View style={[styles.row]}>
+        {images(image1, image2, image3)}
+      </View>
+
+
+      <Portal style={[styles.container, { height: 600 }]}>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Content>
+            <View style={{ height: 600 }}>
+              <ImageShow image={image1}></ImageShow>
+              <ImageShow image={image2}></ImageShow>
+              <ImageShow image={image3}></ImageShow>
+            </View>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              style={buttonStyles.button}
               mode="contained"
-              style={buttonStyles.button} 
-              onPress={() => handleShow([props.appl_id])}>
-              Xem hợp đồng
-            </Button>
-          </View>
-
-          <View style={[styles.box]}>
-            {images(image1, image2, image3)}
-          </View>
-        </View>
-       
-        
-        
-        <Portal style={[styles.container, {height: 700}]}>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Content>
-              <View style={{height: 600}}> 
-                <ImageShow image={image1}></ImageShow>
-                <ImageShow image={image2}></ImageShow>
-                <ImageShow image={image3}></ImageShow>
-              </View>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button 
-                style={buttonStyles.button} 
-                mode="contained"
-                onPress={hideDialog}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
+              onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    
+      </TouchableOpacity>
     </View>
   )
 }
@@ -190,7 +204,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUptrails: (config) => {
       dispatch(actGetUptrails(config))
-    }, 
+    },
     updateShowlist: (content) => {
       dispatch(actUpdateShowlist(content))
     },
@@ -200,57 +214,69 @@ const mapDispatchToProps = (dispatch) => {
 
 
 const stylesTrail = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: "#DCDCDC",
   },
-  eventList:{
-    marginTop:20,
+  eventList: {
+    marginTop: 20,
+  },
+  nameTxt: {
+    marginLeft: 5,
+    fontWeight: '600',
+    color: '#222',
+    fontSize: 13,
+    width:190,
+  },
+  msgTxt: {
+    fontWeight: '400',
+    color: colors.textcolor,
+    fontSize: 11,
+    marginLeft: 5,
   },
   eventBox: {
-    padding:10,
-    marginTop:5,
-    marginBottom:5,
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
     flexDirection: 'row',
   },
-  eventDate:{
+  eventDate: {
     flexDirection: 'column',
   },
-  eventDay:{
-    fontSize:30,
-    color: colors.green,
+  eventDay: {
+    fontSize: 20,
+    color: colors.secondary,
     fontWeight: "600",
   },
-  eventMonth:{
-    fontSize:14,
-    color: colors.green,
+  eventMonth: {
+    fontSize: 14,
+    color: colors.secondary,
     fontWeight: "600",
   },
   eventContent: {
-    flex:1,
-    flexDirection: 'column',
+    flex: 1,
     alignItems: 'flex-start',
-    marginLeft:10,
     backgroundColor: '#FFFFFF',
-    padding:10,
-    borderRadius:10
+    padding: 10,
+    borderRadius: 10
   },
-  remarkCode:{
+  remarkCode: {
     fontWeight: "bold",
-    fontSize:25,
-    color: colors.green,
+    fontSize: 16,
+    textAlign: 'right'
   },
-  description:{
-    paddingTop: 10,
-    fontSize:15,
+  description: {
+    paddingBottom: 10,
+    MarginRight: 10,
+    fontSize: 15,
     color: "#646464",
   },
-  eventTime:{
-    fontSize:18,
-    color:"#151515",
+  eventTime: {
+    fontSize: 18,
+    color: "#151515",
   },
-  userName:{
-    fontSize:18,
-    color:"#151515",
+  userName: {
+    fontSize: 18,
+    color: "#151515",
     paddingTop: 10
   },
 });
@@ -259,15 +285,15 @@ const buttonStyles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     padding: 2,
-    
+
   },
   button: {
     marginLeft: 2,
     borderRadius: 10,
     fontSize: 10,
-    fontWeight: 'bold', 
-    backgroundColor: colors.primary,
-    borderColor:colors.primary,
+    fontWeight: 'bold',
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
   },
 });
 

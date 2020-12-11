@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TreeView from 'react-native-final-tree-view'
 import { Button } from 'react-native-paper';
 import { connect } from "react-redux"
-import { actUpdateShowlist } from "../actions"
+import { actUpdateShowlist, actSetTodoShowlist} from "../actions"
 import { styles, MAIN_COLOR2, colors } from '../styles'
 
 //ion-md-remove
@@ -16,14 +16,14 @@ function getIndicator(isExpanded, hasChildrenNodes) {
       style={{
         fontWeight:"bold",
         fontSize:20,
-        color:colors.secondary}}
+        color:colors.green}}
       name='ios-arrow-dropdown-circle' />
   } else {
     return <Ionicons  
       style={{
       fontWeight:"bold",
       fontSize:20,
-      color:colors.secondary}}
+      color:colors.green}}
       name='ios-arrow-dropright' />
   }
 }
@@ -31,6 +31,7 @@ function getIndicator(isExpanded, hasChildrenNodes) {
 function Tree(props) {
 
   const handleShow = list => {
+    props.setTodoShowlist(true)
     props.navigation.navigate('Portfolio',  { screen: 'List' });
     props.updateShowlist(list)
   }
@@ -106,7 +107,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateShowlist: (content) => {
       dispatch(actUpdateShowlist(content))
-    }
+    },
+    setTodoShowlist: (content) => {
+      dispatch(actSetTodoShowlist(content))
+    },
   };
 }
 

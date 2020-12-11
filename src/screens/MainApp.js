@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { enableScreens } from 'react-native-screens'
 //import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -7,241 +7,93 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 //import { createDrawerNavigator } from '@react-navigation/drawer'
 import { TransitionSpecs } from '@react-navigation/stack'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import * as Location from 'expo-location';
+import * as Device from 'expo-device';
+import { connect } from "react-redux";
+import axios from "axios";
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
 import { Remark, Vsf, Skip, Search } from '../components'
 import { Button } from 'react-native-paper';
 import Tree from './Tree'
 import Dashboard from './Dashboard'
 import ProductCategories from './ProductCategories'
+import ScoreCategories from './ScoreCategories'
 import ListAppls from './ListAppls'
 import User from './User'
 //import Test from './test'
-import Maps from './Maps'
+// import Maps from './Maps'
 import ListUptrail from './ListUptrail'
-
+import { actLocationSet } from "../actions/index"
+import * as constAction from '../consts'
 import{ styles, colors } from '../styles'
-
+import {CategorieStack, PortStack, DashboardStack} from './Stacks'
 
 enableScreens()
 
 
-// navigation.openDrawer();
-const Stack = createStackNavigator()
-function CategorieStack(props) {
-
-  return (
-    <Stack.Navigator
-      initialRouteName="Tree"
-      screenOptions={{ headerShown: true,}}
-    >
-      <Stack.Screen 
-        name="Tree" 
-        component={Tree} 
-        
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }, 
-          //headerRight: CategorieStackMenu,
-          headerRight: () => (
-            <View style={buttonStyles.buttons}>
-              <Button
-                mode="contained"
-                onPress={() => props.navigation.navigate('Categories', { screen: 'Product' })}
-                style={buttonStyles.button}
-              >
-                Product
-              </Button>
-          </View>
-          )
-        }}
-        
-      />
-      <Stack.Screen 
-        name="Product" 
-        component={ProductCategories}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          screenOptions: false,
-          headerRight: () => (
-            <View style={buttonStyles.buttons}>
-              <Button
-                  mode="contained"
-                  onPress={() => props.navigation.navigate('Categories', { screen: 'Tree' })}
-                  style={buttonStyles.button}
-              >
-                Tree
-              </Button>
-           
-          </View>
-          )
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-
-function PortStack(props) {
-  return (
-    
-      <Stack.Navigator >
-      <Stack.Screen 
-        name="List" 
-        component={ListAppls}  
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          
-          headerRight: () => (
-            <View style={buttonStyles.buttons}>
-               <Button
-                  mode="contained"
-                  onPress={() => props.navigation.navigate('Portfolio', { screen: 'Uptrail' })}
-                  style={buttonStyles.button}
-              >
-                Uptrail
-              </Button>
-
-              <Button
-                  mode="contained"
-                  onPress={() => props.navigation.navigate('Portfolio', { screen: 'Search' })}
-                  style={buttonStyles.button}
-              >
-                Search
-              </Button>
-              
-              <Button
-                mode="contained"
-                onPress={() => props.navigation.navigate('Portfolio', { screen: 'Maps' })}
-                style={buttonStyles.button}
-              >
-                Maps
-              </Button>
-            </View>
-           
-          )
-        }}
-      />
-
-      <Stack.Screen 
-        name="Uptrail" 
-        component={ListUptrail} 
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      />
-
-      <Stack.Screen 
-        name="Remark" 
-        component={Remark} 
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      />
-      <Stack.Screen 
-        name="Vsf" 
-        component={Vsf} 
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      />
-      <Stack.Screen 
-        name="Skip" 
-        component={Skip}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      />
-
-      <Stack.Screen 
-        name="Search" 
-        component={Search} 
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      />
-      <Stack.Screen 
-        name="Maps" 
-        component={Maps}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.secondary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          }
-        }}
-      /> 
-      
-    </Stack.Navigator>
-  );
-}
-const buttonStyles = StyleSheet.create({
-  buttons: {
-    flexDirection: 'row',
-    padding: 2,
-    
-  },
-  button: {
-    marginLeft: 2,
-    borderRadius: 10,
-    fontSize: 10,
-    fontWeight: 'bold', 
-    backgroundColor: colors.primary,
-    borderColor:colors.primary,
-  },
-});
-
-
 const Tab = createBottomTabNavigator();
-function MainApp () {
+function MainApp (props) {
+
+  const getLocation = async() => {
+    let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        // setErrorMsg('Permission to access location was denied');
+        alert('Vui lòng bật định vị và cấp quyền để tiếp tục');
+      }
+      let locationC = await Location.getCurrentPositionAsync({});
+      props.locationSet(locationC.coords)
+  }
+  
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        // setErrorMsg('Permission to access location was denied');
+        Alert.alert('Vui lòng bật định vị và cấp quyền để tiếp tục');
+      }
+      let locationC = await Location.getCurrentPositionAsync({});
+      props.locationSet(locationC.coords)
+    })();
+  }, []);
+
+  const upLocation = async() => {
+    if (props.token.token !== undefined|| props.token.token !== null) {
+      await getLocation()
+      let data = { 
+        lat: props.token.lat, 
+        lon: props.token.lon,
+        device_brand: Device.brand,
+        device_os: Device.osName,
+        device_name: Device.modelName,
+      }
+      
+      try {
+        let config = {
+          method: 'post',
+          url: `${constAction.WORKLIST_API}/checkin`,
+          headers: { 
+            'Authorization': `Bearer ${props.token.token.access}`
+          },
+          data : data
+        }
+        
+        const response =  await axios(config);
+        //console.log(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('This will run every second!');
+      upLocation()
+      console.log('hehe!');
+    }, 1 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
    
     <NavigationContainer style={styles.container}>
@@ -253,8 +105,7 @@ function MainApp () {
             let iconName;
 
             if (route.name === 'Dashboard') {
-              iconName = focused
-                ? 'ios-information-circle' : 'ios-information-circle-outline';
+              iconName = focused ? 'ios-stats' : 'ios-stats';
             } else if (route.name === 'Portfolio') {
               iconName = focused ? 'ios-list-box' : 'ios-list';
             } else if (route.name === 'User') {
@@ -268,7 +119,6 @@ function MainApp () {
             // You can return any component that you like here! <ion-icon name="folder-open-outline"></ion-icon>
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          
         })
         }
         tabBarOptions={{
@@ -276,7 +126,7 @@ function MainApp () {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Dashboard" component={Dashboard} />
+        <Tab.Screen name="Dashboard" component={DashboardStack} />
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
@@ -287,7 +137,25 @@ function MainApp () {
 }
 
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    token: state.token,
+  }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    locationSet: (content) => {
+      dispatch(actLocationSet(content))
+    }, 
+  }
+}
 
 
 
-export default MainApp;
+export default connect(mapStateToProps, mapDispatchToProps)(MainApp);
+
+
+
+// export default MainApp;

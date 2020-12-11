@@ -2,7 +2,8 @@ import * as constAction from "../consts/index";
 
 
 const initialState = {
-  categoryProduct: []
+  categoryProduct: [],
+  categoryBinscore: [],
 }
 
 const categoryReducers = (state = initialState, action) => {
@@ -16,7 +17,7 @@ const categoryReducers = (state = initialState, action) => {
       const groupBy = function(xs, key) {
         return xs.reduce(function(rv, x) {
           rv[x[key]] = rv[x[key]] || {paidamt:0, visited:0, case:0, paidcase:0, applIds: []} ;
-          rv[x[key]] = {...rv[x[key]], 
+          rv  [x[key]] = {...rv[x[key]], 
             paidamt:rv[x[key]].paidamt+x.total_pay_amount,
             paidcase:rv[x[key]].paidcase +x.full_paid,
             case:rv[x[key]].case+1,
@@ -39,7 +40,8 @@ const categoryReducers = (state = initialState, action) => {
       // ======== todos ==========
       state = {
         ...state, 
-        categoryProduct: groupByArray(appls, 'product_group')
+        categoryProduct: groupByArray(appls, 'product_group'),
+        categoryBinscore: groupByArray(appls, 'bin_value'),
       }
       return state;
 
