@@ -4,6 +4,8 @@ import * as constAction from "../consts/index";
 const initialState = {
   fetching: false,
   error: null,
+  active_staff: null,
+  active_infos :{ fc_name: 'họ tên'},
   userFetching: false,
   justFetching: false,
   userError: null,
@@ -13,7 +15,14 @@ const initialState = {
 const uptrailReducers = (state = initialState, action) => {
 
   switch(action.type) { 
-    
+    case constAction.UPTRAIL_CLEAR:
+      return initialState
+
+    case constAction.SET_ACTIVE_STAFF:
+      return { ...state, 
+        active_staff: action.content.staff_id, 
+        active_infos: action.content.info};
+
     case constAction.API_UPTRAIL_REQUEST:
       return { ...state, fetching: true, error: null };
 

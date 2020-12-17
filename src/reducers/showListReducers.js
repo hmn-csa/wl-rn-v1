@@ -1,8 +1,11 @@
 import * as constAction from "../consts/index";
 
-const showListReducers = (state = {applIds :[], isTodoClass: false}, action) => {
+const showListReducers = (state = {applIds :[], isTodoClass: true}, action) => {
 
   switch(action.type) {
+    case constAction.SHOWLIST_CLEAR:
+      state =  {applIds :[], isTodoClass: true}
+      return state;
 
     case constAction.UPDATE_SHOWLIST:
       state = {...state, applIds: action.content}

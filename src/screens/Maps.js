@@ -43,7 +43,6 @@ function Maps(props) {
 
   return (
     <View style={styles.container}>
-      <Text>{appl_id}</Text>
       <MapView  
         style={styles.mapStyle} 
         provider={PROVIDER_GOOGLE} 
@@ -59,7 +58,9 @@ function Maps(props) {
           <Marker  
             coordinate = {{latitude:appl.lat, longitude: appl.lon}}
             key={appl.appl_id}
+            description={appl.appl_id}
             onPress = {() => {setAppl_id(appl.appl_id); showDialog()}}
+            Color={'blue'}
             /> 
         )
       }

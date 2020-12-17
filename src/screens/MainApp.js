@@ -20,10 +20,11 @@ import ProductCategories from './ProductCategories'
 import ScoreCategories from './ScoreCategories'
 import ListAppls from './ListAppls'
 import User from './User'
+// import Test2 from './test2'
 //import Test from './test'
 // import Maps from './Maps'
 import ListUptrail from './ListUptrail'
-import { actLocationSet } from "../actions/index"
+import { actLocationSet,  actGetUptrails, actSetActiveStaff } from "../actions"
 import * as constAction from '../consts'
 import{ styles, colors } from '../styles'
 import {CategorieStack, PortStack, DashboardStack} from './Stacks'
@@ -87,11 +88,33 @@ function MainApp (props) {
   
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('This will run every second!');
       upLocation()
-      console.log('hehe!');
     }, 1 * 60 * 1000);
     return () => clearInterval(interval);
+  }, []);
+
+
+  useEffect(() => {
+    if (props.uptrails.justFetching === false) {
+      props.setActiveStaff(
+        { 
+          staff_id:props.token.token.staff_id, 
+          info: {
+            fc_name: props.token.token.fc_name
+          }
+        }
+      )
+      
+      props.getUptrails(
+        {
+          staff_id: props.token.token.staff_id, 
+          token: props.token.token.access, 
+          start: "", 
+          end: "" 
+        }
+      )
+    }
+    else console.log('ddax tai')
   }, []);
 
   return (
@@ -130,7 +153,7 @@ function MainApp (props) {
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
-        <Tab.Screen name="User" component={User } />
+        <Tab.Screen name="User" component={ User } />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -140,6 +163,7 @@ function MainApp (props) {
 const mapStateToProps = (state, ownProps) => {
   return {
     token: state.token,
+    uptrails: state.uptrails,
   }
 }
 
@@ -149,6 +173,12 @@ const mapDispatchToProps = (dispatch) => {
     locationSet: (content) => {
       dispatch(actLocationSet(content))
     }, 
+    setActiveStaff: (content) => {
+      dispatch(actSetActiveStaff(content))
+    },
+    getUptrails: (config) => {
+      dispatch(actGetUptrails(config))
+    },
   }
 }
 

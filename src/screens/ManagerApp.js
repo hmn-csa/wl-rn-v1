@@ -30,6 +30,8 @@ enableScreens()
 
 const Tab = createBottomTabNavigator();
 function MagagerApp () {
+
+
   return (
    
     <NavigationContainer style={styles.container}>
@@ -42,7 +44,7 @@ function MagagerApp () {
 
             if (route.name === 'Dashboard') {
               iconName = focused ? 'ios-stats' : 'ios-stats';
-            } else if (route.name === 'ManageStaff') {
+            } else if (route.name === 'Manager') {
               iconName = focused ? 'ios-home' : 'ios-home';
             } else if (route.name === 'Portfolio') {
               iconName = focused ? 'ios-list-box' : 'ios-list';
@@ -66,7 +68,7 @@ function MagagerApp () {
         }}
       >
         
-        <Tab.Screen name="ManageStaff" component={StafflistStack} />
+        <Tab.Screen name="Manager" component={StafflistStack} />
         <Tab.Screen name="Dashboard" component={DashboardStack} />
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />

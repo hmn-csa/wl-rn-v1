@@ -1,12 +1,12 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList, SectionList
+  View, Text, Image, ScrollView, Alert, FlatList, ActivityIndicator
 } from 'react-native'
 import { Button } from 'react-native-paper';
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
 import ContractDetail from '../components/ContractDetail'
 import ContractDetailMap from '../components/ContractDetailMap'
-import { styles } from '../styles'
+import { styles, colors } from '../styles'
 
 
 
@@ -59,7 +59,7 @@ function ListAppls(props) {
   //   </ScrollView>
   // }
   
-  if (props.showlists.isTodoClass)
+  if (props.showlists.isTodoClass & props.data !== null)
     return (
     <ScrollView >
       {
@@ -76,7 +76,7 @@ function ListAppls(props) {
     {/* <Button mode="outlined" onPress={() => setMore(true)}>Xem Thêm</Button> */}
     </ScrollView>
   )
-
+  else if (props.data !== null)
   return (
     <FlatList 
     data = {props.showlists.applIds}
@@ -86,13 +86,21 @@ function ListAppls(props) {
         contractId={appl_id}
         navigation={props.navigation}/>}
     />
-  ) 
+  )  
+  
+  else return (
+    <View style={[styles.container, {alignItems: 'center'}]}>
+      <Text>Loading ... </Text>
+      <ActivityIndicator size={100} color={colors.primary}/> 
+    </View>
+  )
 
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    showlists: state.showlists
+    showlists: state.showlists,
+    data: state.data.data
   };
 };
 

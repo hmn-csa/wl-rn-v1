@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import {
-  View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView
+  View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView, ActivityIndicator
 } from 'react-native'
 
 import { Button } from 'react-native-paper';
 
 import { connect } from "react-redux"
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { actUpdateShowlist, actSetTodoShowlist, actGetUptrails } from "../actions"
+import { actUpdateShowlist, actSetTodoShowlist, actGetUptrails, actSetActiveStaff } from "../actions"
 
 import { styles, colors } from '../styles'
 import { color } from 'react-native-reanimated';
+import { SHOWLIST_CLEAR } from '../consts';
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -18,11 +19,13 @@ import { color } from 'react-native-reanimated';
 function Dashboard(props) {
   //const navigation = useNavigation()
 
-  useEffect(() => {
-    if (props.uptrails.justFetching === false)
-      props.getUptrails({ token: props.token, start: "", end: "" })
-    else console.log('ddax tai')
-  }, []);
+  // useEffect(() => {
+  //   if (props.uptrails.justFetching === false) {
+  //     props.setActiveStaff({'staff_id':1})
+  //     props.getUptrails({ token: props.token, start: "", end: "" })
+  //   }
+  //   else console.log('ddax tai')
+  // }, [props.uptrails.active_staff]);
 
   const [loading, setLoading] = useState(false)
 
@@ -56,15 +59,31 @@ function Dashboard(props) {
       .replace(/\d(?=(\d{3})+\.)/g, '$&,').replace(/.0/g, '');
   }
   */
-
+  if (props.fetching || props.data === null) 
+  return (
+    <View style={[styles.container, {alignItems: 'center'}]}>
+      <Text>Loading data... </Text>
+      <ActivityIndicator size={100} color={colors.primary}/> 
+    </View>
+  )
+  
+  else 
   return (
     <View style={[styles.container, { paddingTop: 20 }]}>
       <View style={{ flex: 3 }}>
         {/* BEGIN Todos */}
         {/* <Text style={styles.header}>Todos</Text> */}
 
+      
+
         <TouchableOpacity
-          style={[cardStyles.container, { flex: 2 }]}>
+          style={[cardStyles.container, { flex: 2.5}]}>
+          <View style={[styles.row, { flex: 0.4 }]}>
+            <Text style={[cardStyles.Text, { color: colors.lightGray }]}>
+            {props.uptrails.active_staff} - {props.uptrails.active_infos.fc_name}
+            </Text>
+          </View>
+
 
           <View style={[styles.row, { flex: 0.4 }]}>
             <Text style={[cardStyles.Text, { color: colors.lightGray }]}>
@@ -281,7 +300,7 @@ function Dashboard(props) {
 
       </View>
 
-      <View style={{ flex: 0.238}}>
+      <View style={{ flex: 0.138}}>
 
       </View>
 
@@ -346,6 +365,7 @@ const cardStyles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    fetching: state.data.fetching,
     data: state.data.data,
     showlists: state.showlists.applIds,
     todoCal: state.todoCal,
@@ -363,6 +383,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setTodoShowlist: (content) => {
       dispatch(actSetTodoShowlist(content))
+    },
+    setActiveStaff: (content) => {
+      dispatch(actSetActiveStaff(content))
     },
     initDashboard: () => {
       dispatch(actInitDashboard())

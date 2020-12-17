@@ -33,7 +33,7 @@ export const actLocationSet = (content) => {
   }
 };
 
-// uptrail
+// ---------------- uptrail ---------------------//
 export const actGetUptrails = (config) => {
   return {
     type: constAction.API_UPTRAIL_REQUEST,
@@ -45,6 +45,13 @@ export const actUserUptrails = (config) => {
   return {
     type: constAction.USER_UPTRAIL_REQUEST,
     config
+  }
+};
+
+export const actSetActiveStaff = (content) => {
+  return {
+    type: constAction.SET_ACTIVE_STAFF,
+    content
   }
 };
 // 
@@ -130,8 +137,7 @@ export const actChangeFollow = (content) => {
 	};
 };
 
-// manager
-
+// =============== manager ================//
 export const calManagerDash = (data) => {
   return {
     type: constAction.CAL_MANAGER_DASH,
@@ -153,3 +159,51 @@ export const apiStaffData = (config) => {
   }
 };
 
+export const updateManagerDash = (data) => {
+  return {
+    type: constAction.UPDATE_MANAGER_DASH,
+    data
+  }
+};
+
+
+export const pullManagercount= () => {
+  return {
+    type: constAction.COUNT_MANAGER_PULL,
+  }
+};
+
+
+export const managerClearState= () => {
+  return {
+    type: constAction.MANAGER_CLEAR_STATE,
+  }
+};
+
+export const clearData = () => {
+  return {
+    type: constAction.DATA_CLEAR,
+  }
+};
+export const clearShowlist = () => {
+  return {
+    type: constAction.SHOWLIST_CLEAR,
+  }
+};
+export const clearUptrail = () => {
+  return {
+    type: constAction.UPTRAIL_CLEAR,
+  }
+};
+// =============== map ================//
+
+export const setMapStaff = (content) => {
+  return {
+    type: constAction.SET_MAP_STAFF,
+    content
+  }
+};
+
+
+
+// =============== clear ================//

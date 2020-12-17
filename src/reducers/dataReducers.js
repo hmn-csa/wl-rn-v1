@@ -13,6 +13,9 @@ const dataReducers = (state = initialState, action) => {
 
   switch(action.type) {
     // get data 
+    case constAction.DATA_CLEAR:
+      return initialState;
+
     case constAction.API_DATA_REQUEST:
       return { ...state, fetching: true, error: null };
 

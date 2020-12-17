@@ -11,8 +11,9 @@ import Dashboard from './Dashboard'
 import User from './User'
 import ManagerStaff from './ManagerStaff'
 
-//import Test from './test'
-// import Maps from './Maps'
+// import Test from './test'
+import Maps from './Maps'
+import CheckinMap from './CheckinMap'
 import ListUptrail from './ListUptrail'
 import{ styles, colors } from '../styles'
 
@@ -30,6 +31,7 @@ function DashboardStack(props) {
      <Stack.Screen 
         name="Dashboard" 
         component={Dashboard} 
+
         options={{
           headerStyle: {
             backgroundColor: colors.secondary,
@@ -37,9 +39,37 @@ function DashboardStack(props) {
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
-          }
+          }, 
+          //headerRight: CategorieStackMenu,
+          // headerRight: () => (
+          //   <View style={buttonStyles.buttons}>
+          //     <Button
+          //       mode="contained"
+          //       icon="file-tree"
+          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Tree' })}
+          //       style={buttonStyles.button}
+          //     >
+          //     </Button>
+          //     <Button
+          //       mode="contained"
+          //       icon="alpha-p-circle"
+          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Product' })}
+          //       style={buttonStyles.button}z
+          //     >
+          //     </Button>
+          //     <Button
+          //       icon="counter"
+          //       mode="contained"
+          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Score' })}
+          //       style={buttonStyles.button}
+          //     >
+          //     </Button>
+          // </View>
+          // )
         }}
       />
+
+    
 
    </Stack.Navigator>
   )
@@ -51,6 +81,7 @@ function StafflistStack(props) {
   return (
     <Stack.Navigator
     screenOptions={{ headerShown: true,}}
+    initialRouteName="ManageStaff"
     >
      <Stack.Screen 
         name="ManageStaff" 
@@ -66,6 +97,21 @@ function StafflistStack(props) {
         }}
       />
 
+      <Stack.Screen 
+        name="CheckinMap" 
+        component={CheckinMap} 
+        options={{
+          headerStyle: {
+            backgroundColor: colors.secondary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />    
+
+      
    </Stack.Navigator>
   )
 }
@@ -296,7 +342,7 @@ function PortStack(props) {
         }}
       />
       
-      {/* <Stack.Screen 
+      <Stack.Screen 
         name="Maps" 
         component={Maps}
         options={{
@@ -308,8 +354,7 @@ function PortStack(props) {
             fontWeight: 'bold',
           }
         }}
-      />  
-      */}
+      /> 
     </Stack.Navigator> 
     
   );
@@ -323,11 +368,20 @@ const buttonStyles = StyleSheet.create({
   button: {
     marginLeft: 1,
     borderRadius: 10,
-    fontSize: 10,
+    fontSize: 50,
     fontWeight: 'bold', 
     backgroundColor: colors.secondary,
-    borderColor:colors.white,
+    // borderColor:colors.white,
   },
+
+  nameTxt: {
+    marginLeft: 5,
+    fontWeight: '600',
+    color: '#222',
+    fontSize: 13,
+    width:190,
+  },
+
 });
 
 

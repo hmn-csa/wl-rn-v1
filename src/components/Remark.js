@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Image, ScrollView, View, Text,
+  Image, ScrollView, View, Text, Dimensions, TouchableOpacity,
   Platform, StyleSheet, Alert, ActivityIndicator
 } from 'react-native';
 import { connect } from "react-redux"
@@ -12,43 +12,46 @@ import * as Location from 'expo-location';
 import axios from "axios";
 
 
+import { EMPTYIMAGE } from '../images';
+
 import {
   actUpdateShowlist, calTodoDash, calTotalDash,
   calTreeDash, calCateDash, actChangeFollow,
   actUserUptrails
 } from "../actions"
-
+import * as consts from '../consts'
 import { colors } from '../styles'
 
+const { width, height } = Dimensions.get("window");
 
-const remarkCode = [
-  { label: 'PTP - Hứa thanh toán', value: 'PTP' },
-  { label: 'OBT - Đã thu được tiền', value: 'OBT' },
-  { label: 'WFP - Đã thanh toán chờ kiểm tra', value: 'WFP' },
-  { label: 'TER - Thanh lý', value: 'TER' },
+// const remarkCode = [
+//   { label: 'PTP - Hứa thanh toán', value: 'PTP' },
+//   { label: 'OBT - Đã thu được tiền', value: 'OBT' },
+//   { label: 'WFP - Đã thanh toán chờ kiểm tra', value: 'WFP' },
+//   { label: 'TER - Thanh lý', value: 'TER' },
 
-  { label: 'NAH - Không có nhà', value: 'NAH' },
-  { label: 'LEM - Để lại lời nhắn', value: 'LEM' },
+//   { label: 'NAH - Không có nhà', value: 'NAH' },
+//   { label: 'LEM - Để lại lời nhắn', value: 'LEM' },
 
-  { label: 'WAS - Chờ thu nhập, trợ cấp', value: 'WAS' },
-  { label: 'LST - Thất nghiệp, làm ăn thua lỗ', value: 'LST' },
+//   { label: 'WAS - Chờ thu nhập, trợ cấp', value: 'WAS' },
+//   { label: 'LST - Thất nghiệp, làm ăn thua lỗ', value: 'LST' },
 
-  { label: 'RTP - Từ chôí thanh toán', value: 'RTP' },
+//   { label: 'RTP - Từ chôí thanh toán', value: 'RTP' },
 
-  { label: 'RENT - Nhà thuê và đã dọn đi', value: 'RENT' },
-  { label: 'HOS - Nhà đã bán', value: 'HOS' },
+//   { label: 'RENT - Nhà thuê và đã dọn đi', value: 'RENT' },
+//   { label: 'HOS - Nhà đã bán', value: 'HOS' },
 
-  { label: 'WAU - Bỏ trốn, người thân không tìm thấy ', value: 'WAU' },
-  { label: 'NFH - Không tìm thấy nhà', value: 'NFH' },
-  { label: 'NIW - Không có thông tin tại nơi làm việc', value: 'NIW' },
-  { label: 'NLA - Không sống tại địa chỉ', value: 'NLA' },
+//   { label: 'WAU - Bỏ trốn, người thân không tìm thấy ', value: 'WAU' },
+//   { label: 'NFH - Không tìm thấy nhà', value: 'NFH' },
+//   { label: 'NIW - Không có thông tin tại nơi làm việc', value: 'NIW' },
+//   { label: 'NLA - Không sống tại địa chỉ', value: 'NLA' },
 
-  { label: 'GSF - Gian lận', value: 'GSF' },
-  { label: 'IGN1 - Chưa nhận khoản vay', value: 'IGN1' },
-  { label: 'IGN2 - Báo đã hủy hợp đồng', value: 'IGN2' },
-  { label: 'CGI - Đi tù/nghĩa vụ/cai nghiện/tâm thần', value: 'CGI' },
-  { label: 'DIE - Đã qua đời', value: 'DIE' },
-];
+//   { label: 'GSF - Gian lận', value: 'GSF' },
+//   { label: 'IGN1 - Chưa nhận khoản vay', value: 'IGN1' },
+//   { label: 'IGN2 - Báo đã hủy hợp đồng', value: 'IGN2' },
+//   { label: 'CGI - Đi tù/nghĩa vụ/cai nghiện/tâm thần', value: 'CGI' },
+//   { label: 'DIE - Đã qua đời', value: 'DIE' },
+// ];
 
 function Remark(props) {
   const [newAddress, setNewAddress] = useState(props.vsf.activeApplId.new_address)
@@ -67,6 +70,10 @@ function Remark(props) {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
+
+  const [images, setImages] = useState([]);
+  const [activateImage, setActivateImage] = useState({ uri: null });
+
 
   const [remark, setRemark] = useState('')
   const [address, setAddress] = useState('')
@@ -91,6 +98,9 @@ function Remark(props) {
   const showDialogAddress = () => setVisibleAddress(true);
   const hideDialogAddress = () => setVisibleAddress(false);
 
+  const [visibleImage, setVisibleImage] = useState(false);
+  const showDialogImage = () => setVisibleImage(true);
+  const hideDialogImage = () => setVisibleImage(false);
 
 
   useEffect(() => {
@@ -132,26 +142,52 @@ function Remark(props) {
 
   const pickImage2 = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: false,
-      // aspect: [4, 3],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 4],
       base64: true,
       quality: 0.1,
     });
     if (!result.cancelled) {
-      setImage2(result);
+      if (images.length < 3)
+        setImages([...images, result]);
+      else {
+        images.shift()
+        setImages([...images, result]);
+      }
+
     }
   };
+  // const pickImage3 = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: false,
+  //     // aspect: [4, 3],
+  //     base64: true,
+  //     quality: 0.1,
+  //   });
+  //   if (!result.cancelled) {
+  //     setImage3(result);
+  //   }
+  // };
+
   const pickImage3 = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: false,
-      // aspect: [4, 3],
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+
+      // allowsEditing: true,
+      aspect: [3, 4],
       base64: true,
       quality: 0.1,
     });
     if (!result.cancelled) {
-      setImage3(result);
+      if (images.length < 3)
+        setImages([...images, result]);
+      else {
+        images.shift()
+        setImages([...images, result]);
+      }
+
     }
   };
 
@@ -161,8 +197,8 @@ function Remark(props) {
 
     if (address == '')
       return Alert.alert('Vui lòng chọn địa chỉ viếng thăm')
-    if (remark == '')
-      return Alert.alert('Vui lòng nhập ghi chú')
+    // if (remark == '')
+    //   return Alert.alert('Vui lòng nhập ghi chú')
     if (code == null)
       return Alert.alert('Vui lòng chọn mã viếng thăm')
 
@@ -180,7 +216,13 @@ function Remark(props) {
       return 'orther_address';
     }
 
+    let imageSet = {}
+    for (let j = 0; j < images.length; j++) {
+      imageSet[`image${j+1}`] = "data:image/png;base64," + images[j].base64
+      //imageSet = {...imageSet , ...newImage}
+    }
     let config = {
+      ...imageSet, 
       'token_value': props.token.token.access,
       'appl_id': props.vsf.activeApplId.appl_id,
       'cust_name': props.vsf.activeApplId.cust_name,
@@ -192,9 +234,9 @@ function Remark(props) {
       'next_visit_time': reDate,
       'lat': location.coords.latitude,
       'lon': location.coords.longitude,
-      'image1': image1 === null ? null : image1.base64,
-      'image2': image2 === null ? null : image2.base64,
-      'image3': image3 === null ? null : image3.base64,
+      // 'image1': image1 === null ? null : "data:image/png;base64," + image1.base64,
+      // 'image2': image2 === null ? null : "data:image/png;base64," + image2.base64,
+      // 'image3': image3 === null ? null : "data:image/png;base64," + image3.base64,
     }
     try {
       console.log(config)
@@ -227,6 +269,38 @@ function Remark(props) {
     return money.substring(0, money.length - 2)
   }
 
+  const renImages = () => {
+    let showImages = [...images]
+    for (let j = 0; j < 3-images.length; j++) {
+      showImages.push(EMPTYIMAGE)
+    }
+    console.log(showImages)
+    return <View 
+      style={[masterStyle.row, styles.container, buttonStyles.buttons, { height: 120 }]}>
+      {
+        showImages.map((image, index) =>
+          <TouchableOpacity
+            style={[buttonStyles.button, {backgroundColor:null}]}
+            key={index}
+            onPress={() => {
+              setActivateImage(image)
+              showDialogImage()
+            }}>
+            <Image
+              source={image}
+              style={{  
+                width: 90,
+                height: 120 
+              }}
+              onLoadStart={() => <ActivityIndicator size={10} color='black' /> }
+            />
+          </TouchableOpacity>
+        )
+      }
+        
+        
+      </View>
+  }
 
   const loading = (status) => {
     if (status)
@@ -264,9 +338,9 @@ function Remark(props) {
 
         {/* Ket qua vieng tham */}
 
-        <Button 
+        <Button
           mode="contained"
-          onPress={showDialog} 
+          onPress={showDialog}
           style={[styles.container, buttonStyles.button]}  >
           Kết quả viếng thăm: {code}
         </Button>
@@ -275,11 +349,11 @@ function Remark(props) {
           <Text>Số tiền hứa/đã thanh toán: {moneyFormat(payAmount)}</Text>
         </View>
 
-        <Portal style={[masterStyle.container,]}>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Content>
-              <Button onPress={hideDialog}>Done</Button>
-              <ScrollView>
+        <Portal style={[masterStyle.container, {  height: height }]}>
+          <Dialog visible={visible} onDismiss={hideDialog} style={{ width: null, height: height}}>
+            <Dialog.Content style={{ width: null, height: height -60}}>
+              {/* <Button onPress={hideDialog}>Done</Button> */}
+              <ScrollView style={{ marginTop: 10}}>
                 <RadioButton.Group
                   onValueChange={
                     newValue => {
@@ -289,7 +363,7 @@ function Remark(props) {
                   }
                   value={code}>
                   {
-                    remarkCode.map(item =>
+                    consts.REMARK_CODE.map(item =>
                       <RadioButton.Item
                         key={item.value}
                         style={{ fontSize: 15 }}
@@ -307,7 +381,7 @@ function Remark(props) {
           </Dialog>
         </Portal>
 
-        <Portal style={[masterStyle.container,]}>
+        <Portal style={[masterStyle.container, { width: width, height: height }]}>
           <Dialog visible={visiblePayamount} onDismiss={hideDialogPayamount}>
             <Dialog.Content>
               <TextInput
@@ -322,7 +396,7 @@ function Remark(props) {
           </Dialog>
         </Portal>
 
-        <Button 
+        <Button
           mode="contained"
           onPress={showDialogAddress}
           style={[styles.container, buttonStyles.button]}  >
@@ -333,12 +407,12 @@ function Remark(props) {
         </View>
 
 
-        <Portal style={[masterStyle.container,]}>
+        <Portal style={[masterStyle.container, { width: width, height: height }]}>
           <Dialog visible={visibleAddress} onDismiss={hideDialogAddress}>
             <Dialog.Content>
               <ScrollView>
-                <RadioButton.Group 
-                onValueChange={newValue => setAddress(newValue)} value={address}>
+                <RadioButton.Group
+                  onValueChange={newValue => setAddress(newValue)} value={address}>
                   {
                     addressItems.map(item =>
                       <RadioButton.Item
@@ -366,7 +440,7 @@ function Remark(props) {
         <View style={styles.container} >
           <TextInput
             mode="flat"
-            style={{color: colors.primary}}
+            style={{ color: colors.primary }}
             label="Ghi chú"
             onChangeText={setRemark}
           />
@@ -397,7 +471,7 @@ function Remark(props) {
         />
 
 
-        <View style={[masterStyle.row, styles.container]}>
+        {/* <View style={[masterStyle.row, styles.container]}>
           <View style={[masterStyle.box, { 'flex': 1, width: 100, height: 100 }]} >
             <Button
               icon="camera"
@@ -416,7 +490,7 @@ function Remark(props) {
               mode="contained"
               style={buttonStyles.button}
               onPress={pickImage2}>
-              image2
+              chọn hình
           </Button>
             <View style={{ width: 100, height: 100 }}>
               {image2 && <Image source={{ uri: image2.uri }} style={{ width: 100, height: 100 }} />}
@@ -428,20 +502,62 @@ function Remark(props) {
               mode="contained"
               style={buttonStyles.button}
               onPress={pickImage3}>
-              image3
+              chụp mới
           </Button>
             <View style={{ width: 100, height: 100 }}>
               {image3 && <Image source={{ uri: image3.uri }} style={{ width: 100, height: 100 }} />}
             </View>
           </View>
+        </View> */}
+        
+        <View style={[buttonStyles.buttons]}>
+            <Button
+              icon="camera"
+              mode="contained"
+              style={buttonStyles.button}
+              onPress={pickImage2}>
+              chọn hình
+          </Button>
+            <Button
+              icon="camera"
+              mode="contained"
+              style={buttonStyles.button}
+              onPress={pickImage3}>
+              chụp mới
+          </Button>
         </View>
 
+        {renImages()}
+      
         <Button
           mode="contained"
-          style={[buttonStyles.button]}
+          style={[buttonStyles.button,]}
           onPress={handleCommit}>
           Xác nhận
-      </Button>
+        </Button>
+
+        <Portal style={[masterStyle.container, { width: width, height: height }]}>
+          <Dialog visible={visibleImage} onDismiss={hideDialogImage}>
+            <Dialog.Content>
+              <ScrollView>
+
+                <Image
+                  source={activateImage}
+                  style={{
+                    height: 400,
+                    flex: 1,
+                    width: null
+                  }}
+                  resizeMode="contain"
+                />
+
+              </ScrollView>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialogImage}>Close</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
       </View>
     )
@@ -493,15 +609,15 @@ const buttonStyles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     padding: 2,
-    
+
   },
   button: {
     marginLeft: 2,
     borderRadius: 10,
     fontSize: 10,
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
     color: colors.primary,
-    backgroundColor:colors.primary,
+    backgroundColor: colors.primary,
   },
 });
 

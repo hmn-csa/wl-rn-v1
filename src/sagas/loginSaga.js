@@ -8,6 +8,7 @@ import {decode as atob, encode as btoa} from 'base-64'
 export function* watcherSaga() {
   yield takeLatest(constAction.API_TOKEN_REQUEST, workerGetToken);
   yield takeLatest(constAction.MANAGER_DATA_REQUEST, workerManagerGetData);
+  yield takeLatest(constAction.MANAGER_CLEAR_STATE, workerManagerClearState);
 }
 
 // function that makes the api request and returns a Promise for response
@@ -134,3 +135,15 @@ export function* workerManagerGetData(request) {
   }
 }
 
+
+export function* workerManagerClearState(request) {
+  try {
+    
+    yield put({ type: constAction.DATA_CLEAR});
+    yield put({ type: constAction.UPTRAIL_CLEAR});
+    yield put({ type: constAction.SHOWLIST_CLEAR});
+
+  } catch (error) {
+    console.log(error)
+  }
+}

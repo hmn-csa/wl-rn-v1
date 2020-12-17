@@ -2,8 +2,12 @@ import * as constAction from "../consts/index";
 
 
 const initialState = {
-  staffs: [{key: 'user', paidamt:0, paidcase:0, case:0, visited:0}],
-  status: []
+  data: [],
+  status: [],
+  last_uptrail: null,
+  last_checkin: null,
+  data_done: false,
+  pullcnt: 0
 }
 
 const groupBy = function(xs, key) {
@@ -35,27 +39,87 @@ const groupByArray = (xs, key) => {
 const managerReducers = (state = initialState, action) => {
 
   switch(action.type) {
+    case constAction.COUNT_MANAGER_PULL:
+      return {...state, pullcnt: state.pullcnt+1, 
+        //last_uptrail: state.last_uptrail, last_checkin: state.last_checkin
+      }
 
     case constAction.SET_MANAGER_DASH:
 
       let rootInfo =  Object.values(action.data.info);
-      // let rootAppls = Object.values(action.data.data);
-      // let rootStaff = groupBy(rootAppls, 'staff_id');
-      // const rootStatus = []
-      // for (let i = 0; i < rootInfo.length; i++) {
-      //   let item = rootInfo[i]
-      //   rootStatus.push({...item, content: rootStaff[item.staff_id]})
-      // } 
-
-      // state = {...state, status: rootStatus}
       state = {...state, status: rootInfo}
       return state;
     // get data 
 
+    case constAction.UPDATE_MANAGER_DASH:
+      let updateInfos = Object.values(action.data.info)
+      let updateData = Object.values(action.data.data)
+      let oldStatus = [...state.status]
+      let oldData = [...state.data]
+      let oldlast_uptrail = state.last_uptrail
+      let oldlast_checkin = state.last_checkin
+
+      // update Checkin - uptrails
+      for (let j = 0; j < updateInfos.length; j++) {
+        // let item = infos[j]
+        let index = oldStatus.findIndex(p => p.staff_id == updateInfos[j].staff_id)
+        if (index === -1) continue
+
+        let newCheckin = [...updateInfos[j].checkin, ...oldStatus[index].checkin]
+        let newUptrail = [...updateInfos[j].uptrail, ...oldStatus[index].uptrail]
+
+        oldStatus[index] = {...oldStatus[index], 
+          checkin: newCheckin, 
+          uptrail: newUptrail
+        }
+
+        if (updateInfos[j].uptrail.length > 0) {
+          if (oldlast_uptrail === null) 
+            oldlast_uptrail = updateInfos[j].uptrail[0].runtime
+          else if (Date.parse(updateInfos[j].uptrail[0].runtime) > Date.parse(oldlast_uptrail))
+            oldlast_uptrail = updateInfos[j].uptrail[0].runtime
+        }
+       
+        if (updateInfos[j].checkin.length > 0) {
+          if (oldlast_checkin === null) 
+            oldlast_checkin = updateInfos[j].checkin[0].runtime
+          else if (Date.parse(updateInfos[j].checkin[0].runtime) > Date.parse(oldlast_checkin))
+            oldlast_checkin = updateInfos[j].checkin[0].runtime
+        }
+
+      } 
+
+      // update data:
+      let addData = []
+      for (let i = 0; i < updateData.length; i++) {
+        updateData[i]
+        let indexD = oldData.findIndex(p => p.staff_id == updateData[i].appl_id)
+        if (indexD !== -1) {
+          // update 
+          oldData[indexD] = {
+            ...oldData[indexD], 
+            ...updateData[i]
+          }
+        } else // add
+        addData.push(updateData[i])
+      }
+      oldData = [...oldData, ...addData]
+
+
+      return state = {...state, 
+        status: oldStatus,
+        data: oldData,
+        last_uptrail: oldlast_uptrail,
+        last_checkin: oldlast_checkin
+      };
+    
+      
     case constAction.CAL_MANAGER_DASH:
 
       let appls = Object.values(action.data.data)
- 
+      let last_uptrail = state.last_uptrail
+      let last_checkin = state.last_checkin
+
       let staffData = groupBy(appls, 'staff_id');
       const newState = []
 
@@ -73,18 +137,31 @@ const managerReducers = (state = initialState, action) => {
           checkin: infos[j].checkin, 
           uptrail: infos[j].uptrail
         }
+        // set last: 
+        if (infos[j].uptrail.length > 0) {
+          if (last_uptrail === null) 
+            last_uptrail = infos[j].uptrail[0].runtime
+          else if (Date.parse(infos[j].uptrail[0].runtime) > Date.parse(last_uptrail))
+            last_uptrail = infos[j].uptrail[0].runtime
+        }
+       
+        if (infos[j].checkin.length > 0) {
+          if (last_checkin === null) 
+            last_checkin = infos[j].checkin[0].runtime
+          else if (Date.parse(infos[j].checkin[0].runtime) > Date.parse(last_checkin))
+            last_checkin = infos[j].checkin[0].runtime
+        }
       } 
 
-
-      // for (const item of state) {
-      //   newState.push({...item, data: staffData[item.staff_id]})
-      // }
-      // ======== todos ==========
       state = {
         ...state, 
         status: newState,
+        data: appls, 
+        last_uptrail: last_uptrail,
+        last_checkin: last_checkin,
+        pullcnt: state.pullcnt+1,
+        data_done: true
       }
-
       return state;
 
     default:

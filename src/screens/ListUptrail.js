@@ -16,11 +16,26 @@ import Uptrail from '../components/Uptrail'
 
 function ListUptrail(props) {
 
-  // useEffect(() => {
-  //   if (props.uptrails.justFetching === false)
-  //   props.getUptrails({token: props.token})
-  //   else console.log('ddax tai')
-  // }, []);
+  useEffect(() => {
+    if (props.uptrails.justFetching === false)
+    props.getUptrails({
+      staff_id: props.uptrails.active_staff, 
+      token: props.token,
+      start: '',
+      end: ''
+    })
+    else console.log('ddax tai')
+  }, []);
+
+  // await props.getUptrails(
+    //   {
+    //     staff_id: staff_id, 
+    //     token: props.token.token.access, 
+    //     start: "", 
+    //     end: "" 
+    //   }
+    // )
+    
   const [reDate, setRedate] = useState(null)
   const [uptrailStatus, setUptrailStatus] = useState(false);
 
@@ -31,27 +46,33 @@ function ListUptrail(props) {
         if (Date.parse(reDate) < Date.parse(lastE.runtime.substring(0,10))) {
           console.log(reDate)
           setUptrailStatus(true)
-          await props.getUptrails({token: props.token, start:reDate, end: lastE.runtime.substring(0,19)})
+          await props.getUptrails(
+            {staff_id: props.uptrails.active_staff, token: props.token, start:reDate, end: lastE.runtime.substring(0,19)}
+            )
         }
       } else {
         setUptrailStatus(true)
-        await props.getUptrails({token: props.token, start:'', end: lastE.runtime.substring(0,19)})
+        await props.getUptrails(
+          {staff_id: props.uptrails.active_staff, token: props.token, start:'', end: lastE.runtime.substring(0,19)}
+          )
       }
     }
     else {
       setUptrailStatus(true)
-      await props.getUptrails({token: props.token, start:"", end: ""})
+      await props.getUptrails(
+        {staff_id: props.uptrails.active_staff, token: props.token, start:"", end: ""}
+        )
     }
     setUptrailStatus(false)
   }
   
   
   if (props.uptrails.fetching || uptrailStatus)
-     return <View style={[{alignItems: 'center'}]}>
+     return <View style={[styles.container, {alignItems: 'center'}]}>
       <Text>Loading ... </Text>
       <ActivityIndicator size={100} color={colors.primary}/> 
     </View> 
-   
+  
   else if (props.uptrails.uptrails.length > 0)
   return (
   <ScrollView>
@@ -107,12 +128,14 @@ function ListUptrail(props) {
     </View>
   </ScrollView>
   )
-  return (
-    <View style={[styles.container, {alignItems: 'center'}]}>
-      <Text>Loading ... </Text>
-      <ActivityIndicator size={100} /> 
-    </View>
-  )
+  else 
+    return (
+      <View style={[{alignItems: 'center'}]}>
+      <Text>không có Uptrail</Text>
+     
+    </View> 
+    )
+  
 };
 
 const mapStateToProps = (state, ownProps) => {

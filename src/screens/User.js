@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View , TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 import { connect } from "react-redux";
-import { actlogoutUser } from "../actions/index"
+import { actlogoutUser, clearUptrail, 
+  clearData, clearShowlist} from "../actions/index"
 
 
 
@@ -19,9 +20,10 @@ function User(props) {
         title='SIGOUT'
         onPress={outUsers}
       />
-
       </View>
-  );
+  )
+    
+  
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -34,6 +36,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => {
       dispatch(actlogoutUser())
+      dispatch(clearShowlist())
+      dispatch(clearUptrail())
+      dispatch(clearData())
     }
   }
 }

@@ -1,5 +1,6 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator
+  View, Text, Image, ScrollView, Alert, FlatList, 
+  StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions
 } from 'react-native'
 import { Button, Portal, Dialog } from 'react-native-paper';
 import React, { useState, useEffect } from "react"
@@ -7,6 +8,10 @@ import { connect } from "react-redux"
 import { styles, colors } from '../styles'
 import axios from "axios"
 import { actGetUptrails, actUpdateShowlist } from "../actions/index"
+
+const { width, height } = Dimensions.get("window");
+import * as consts from '../consts'
+
 
 function ImageShow(props) {
   const [image, setimage] = useState(props.image)
@@ -36,9 +41,13 @@ function Uptrail(props) {
   const [trust_address, setTrust_address] = useState(props.trust_address)
   const [next_visit_time, setnext_visit_time] = useState(props.next_visit_time)
 
-  const [image1, setimage1] = useState(props.image1 === null ? null : "data:image/png;base64," + props.image1)
-  const [image2, setimage2] = useState(props.image2 === null ? null : "data:image/png;base64," + props.image2)
-  const [image3, setimage3] = useState(props.image3 === null ? null : "data:image/png;base64," + props.image3)
+  // const [image1, setimage1] = useState(props.image1 === null ? null : "data:image/png;base64," + props.image1)
+  // const [image2, setimage2] = useState(props.image2 === null ? null : `data:image/png;base64,${props.image2}`)
+  // const [image3, setimage3] = useState(props.image3 === null ? null : "data:image/png;base64," + props.image3)
+
+  const [image1, setimage1] = useState((props.image1 === null || props.image1 === '') ? null :  props.image1)
+  const [image2, setimage2] = useState((props.image2 === null || props.image2 === '')  ? null : props.image2)
+  const [image3, setimage3] = useState((props.image3 === null || props.image3 === '')  ? null : props.image3)
 
 
   const [visible, setVisible] = useState(false);
@@ -46,10 +55,15 @@ function Uptrail(props) {
   const hideDialog = () => setVisible(false);
 
 
+  const [visibleImage, setVisibleImage] = useState(false);
+  const showDialogImage = () => setVisibleImage(true);
+  const hideDialogImage = () => setVisibleImage(false);
+  const [activateImage, setActivateImage] = useState({ uri: null });
+
   const splitTime = (t) => t.substring(0, 10) + " " + t.substring(11, 19)
 
   const payAmount = (n) => {
-    if (n != null) {
+    if (n != null & parseFloat(n, 10) > 0) {
       const money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
       return <Text style={[stylesTrail.nameTxt, { color: colors.green }]}>Hứa trả: {money.substring(0, money.length - 2)} </Text>
     }
@@ -90,15 +104,97 @@ function Uptrail(props) {
       style={[stylesTrail.remarkCode, { color: colors.secondary, }]}>{code}</Text>
   }
 
+  // const images = (image1, image2, image3) => {
+  //   if (image1 !== null || image2 !== null || image3 !== null)
+  //     return (
+  //       <Button
+  //         icon="camera"
+  //         mode="contained"
+          
+  //         style={buttonStyles.button}
+  //         onPress={showDialog}>
+  //       </Button>
+  //     )
+  // }
+
+//   <Button
+//   icon="camera"
+//   mode="contained"
+  
+//   style={buttonStyles.button}
+//   onPress={showDialog}>
+// </Button>
+
+// onPress={() => {
+//   setActivateImage(image)
+//   showDialogImage()
+// }}
+  const getCodeLabel = (code) => {
+    var result = consts.REMARK_CODE.filter(obj => {
+      return obj.value === code
+    })
+    return(result[0].label)
+  }
+
+
   const images = (image1, image2, image3) => {
     if (image1 !== null || image2 !== null || image3 !== null)
       return (
-        <Button
-          mode="contained"
-          style={buttonStyles.button}
-          onPress={showDialog}>
-          Xem hình ảnh
-        </Button>
+        <View style={[buttonStyles.buttons, {backgroundColor:null}]}>
+        
+        <TouchableOpacity
+            style={[buttonStyles.button, {backgroundColor:null}]}
+            onPress={() => {
+              setActivateImage({uri: image1})
+              showDialogImage()
+            }}
+            >
+            <Image
+              source={{uri: image1}}
+              style={{  
+                width: 45,
+                height: 60
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[buttonStyles.button, {backgroundColor:null}]}
+            onPress={() => {
+              setActivateImage({uri: image2})
+              showDialogImage()
+            }}
+            >
+            <Image
+              source={{uri: image2}}
+              style={{  
+                width: 45,
+                height: 60
+              }}
+              
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[buttonStyles.button, {backgroundColor:null}]}
+            onPress={() => {
+              setActivateImage({uri: image3})
+              showDialogImage()
+            }}
+            >
+            <Image
+              source={{uri: image3}}
+              style={{  
+                width: 45,
+                height: 60
+              }}
+              
+            />
+          </TouchableOpacity>
+
+
+        </View>
+       
       )
   }
 
@@ -136,6 +232,19 @@ function Uptrail(props) {
         </View>
      
 
+      
+      <View style={[styles.row]}>
+        <View style={styles.box}>
+          <Text style={stylesTrail.msgTxt}>Remark</Text>
+        </View>
+        <View style={[styles.box, { flex: 4}]}>
+          <View style={[styles.row]}>
+            <View style={[styles.box,]}>
+              <Text style={[stylesTrail.msgTxt,{ fontWeight: "bold", }]}>{getCodeLabel(code)}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
 
       <View style={[styles.row]}>
         <View style={styles.box}>
@@ -186,6 +295,32 @@ function Uptrail(props) {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+      
+
+
+      <Portal style={[{ width: width, height: height }]}>
+          <Dialog visible={visibleImage} onDismiss={hideDialogImage}>
+            <Dialog.Content>
+              <ScrollView>
+
+                <Image
+                  source={activateImage}
+                  style={{
+                    height: 400,
+                    flex: 1,
+                    width: null
+                  }}
+                  resizeMode="contain"
+                />
+
+              </ScrollView>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialogImage}>Close</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      
     
       </TouchableOpacity>
     </View>
@@ -266,7 +401,7 @@ const stylesTrail = StyleSheet.create({
   },
   description: {
     paddingBottom: 10,
-    MarginRight: 10,
+    marginRight: 10,
     fontSize: 15,
     color: "#646464",
   },

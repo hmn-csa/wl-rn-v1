@@ -21,7 +21,7 @@ export function* workerGetUptrail(request) {
   try {
     const config = {
       method: 'get',
-      url: `${constAction.WORKLIST_API}/uptrail?start=${request.config.start}&end=${request.config.end}`,
+      url: `${constAction.WORKLIST_API}/uptrail?staff_id=${request.config.staff_id}&start=${request.config.start}&end=${request.config.end}`,
       headers: {
         'Authorization': `Bearer ${request.config.token}`,
       },
