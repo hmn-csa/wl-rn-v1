@@ -7,18 +7,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 //import { createDrawerNavigator } from '@react-navigation/drawer'
 import { TransitionSpecs } from '@react-navigation/stack'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import * as Location from 'expo-location';
-import * as Device from 'expo-device';
-import { connect } from "react-redux";
-import axios from "axios";
-import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
-import { Remark, Vsf, Skip, Search } from '../components'
-import { Button } from 'react-native-paper';
-import Tree from './Tree'
-import Dashboard from './Dashboard'
-import ProductCategories from './ProductCategories'
-import ScoreCategories from './ScoreCategories'
-import ListAppls from './ListAppls'
+import * as Location from 'expo-location'
+import * as Device from 'expo-device'
+import { connect } from "react-redux"
+import axios from "axios"
 import User from './User'
 // import Test2 from './test2'
 //import Test from './test'
@@ -57,31 +49,38 @@ function MainApp (props) {
     })();
   }, []);
 
+  const [oldlat, setOldlat] = useState(props.token.lat)
+  const [oldlon, setOldlon] = useState(props.token.lon)
+
   const upLocation = async() => {
     if (props.token.token !== undefined|| props.token.token !== null) {
+
+      setOldlat(props.token.lat)
+      setOldlon(props.token.lon)
       await getLocation()
-      let data = { 
-        lat: props.token.lat, 
-        lon: props.token.lon,
-        device_brand: Device.brand,
-        device_os: Device.osName,
-        device_name: Device.modelName,
-      }
-      
-      try {
-        let config = {
-          method: 'post',
-          url: `${constAction.WORKLIST_API}/checkin`,
-          headers: { 
-            'Authorization': `Bearer ${props.token.token.access}`
-          },
-          data : data
+      if (props.token.lat !== oldlat || props.token.lon !== oldlon) {
+        let data = { 
+          lat: props.token.lat, 
+          lon: props.token.lon,
+          device_brand: Device.brand,
+          device_os: Device.osName,
+          device_name: Device.modelName,
         }
-        
-        const response =  await axios(config);
-        //console.log(response.data)
-      } catch (error) {
-        console.log(error)
+        try {
+          let config = {
+            method: 'post',
+            url: `${constAction.WORKLIST_API}/checkin`,
+            headers: { 
+              'Authorization': `Bearer ${props.token.token.access}`
+            },
+            data : data
+          }
+          
+          const response =  await axios(config);
+          //console.log(response.data)
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
   }
@@ -89,7 +88,7 @@ function MainApp (props) {
   useEffect(() => {
     const interval = setInterval(() => {
       upLocation()
-    }, 1 * 60 * 1000);
+    }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -114,7 +113,6 @@ function MainApp (props) {
         }
       )
     }
-    else console.log('ddax tai')
   }, []);
 
   return (
@@ -154,6 +152,7 @@ function MainApp (props) {
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
         <Tab.Screen name="User" component={ User } />
+        
       </Tab.Navigator>
     </NavigationContainer>
   );

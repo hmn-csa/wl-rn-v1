@@ -43,3 +43,8 @@ https://kipalog.com/posts/Su-dung-Redux-store-nhu-1-database
 https://ionicons.com/v4/cheatsheet.html
 
 https://materialdesignicons.com/
+
+
+# list 
+
+https://github.com/archriss/react-native-snap-carousel/#showcase

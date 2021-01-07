@@ -1,5 +1,5 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList, ActivityIndicator
+  View, Text, Image, ScrollView, Alert, FlatList, ActivityIndicator, SectionList
 } from 'react-native'
 import { Button } from 'react-native-paper';
 import React, { useState, useEffect} from "react"
@@ -7,7 +7,6 @@ import { connect } from "react-redux"
 import ContractDetail from '../components/ContractDetail'
 import ContractDetailMap from '../components/ContractDetailMap'
 import { styles, colors } from '../styles'
-
 
 
 function ListAppls(props) {
@@ -59,6 +58,8 @@ function ListAppls(props) {
   //   </ScrollView>
   // }
   
+
+  
   if (props.showlists.isTodoClass & props.data !== null)
     return (
     <ScrollView >
@@ -71,22 +72,25 @@ function ListAppls(props) {
           />
         )
       }
-    {/* {showmore(more)}
-    {showmoreBtn(props.showlists.applIds.length, more)} */}
-    {/* <Button mode="outlined" onPress={() => setMore(true)}>Xem Thêm</Button> */}
+ 
     </ScrollView>
   )
-  else if (props.data !== null)
-  return (
-    <FlatList 
-    data = {props.showlists.applIds}
-    renderItem={appl_id => 
-      <ContractDetail 
-        key={appl_id}
-        contractId={appl_id}
-        navigation={props.navigation}/>}
-    />
-  )  
+   else if (props.data !== null)
+    return (
+      <FlatList 
+      data = {props.showlists.applIds}
+      renderItem={appl_id => 
+        <ContractDetail 
+          key={appl_id}
+          contractId={appl_id}
+          navigation={props.navigation}/>}
+      />
+    )  
+
+
+  
+  
+
   
   else return (
     <View style={[styles.container, {alignItems: 'center'}]}>

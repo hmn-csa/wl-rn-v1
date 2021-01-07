@@ -14,7 +14,7 @@ import { color } from 'react-native-reanimated';
 import { SHOWLIST_CLEAR } from '../consts';
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-
+import { moneyFormat } from '../functions'
 
 function Dashboard(props) {
   //const navigation = useNavigation()
@@ -45,20 +45,7 @@ function Dashboard(props) {
     props.navigation.navigate('Portfolio', { screen: 'List' })
     props.updateShowlist(list)
   }
-
-  const moneyFormat = n => {
-    //return  n.toLocaleString().split(".")[0]
-    const money = parseFloat(n, 10).toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()
-    return money.substring(0, money.length - 2)
-  }
-
-  /*
-  const moneyFormat = amount => {
-    return Number(amount)
-      .toFixed(1)
-      .replace(/\d(?=(\d{3})+\.)/g, '$&,').replace(/.0/g, '');
-  }
-  */
+  
   if (props.fetching || props.data === null) 
   return (
     <View style={[styles.container, {alignItems: 'center'}]}>
@@ -129,7 +116,7 @@ function Dashboard(props) {
               onPress={() => handleShow(props.todoCal.todoPaid.applIds, true)}>
               <Text style={styles.indexLabel}>
                 <Ionicons name='ios-checkmark-circle' style={[styles.logo, { color: colors.green }]} />
-              HĐ đã thu
+              Đã thu
             </Text>
               <Text
                 style={styles.indexValueSmall}

@@ -10,8 +10,10 @@ import {
   actChangeTodoSaga, calTodoDash,
 } from "../actions"
 import { styles, colors } from '../styles'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from "axios";
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import axios from "axios"
+
+import { moneyFormat } from '../functions'
 
 function ContractDetail(props) {
 
@@ -198,7 +200,17 @@ function ContractDetail(props) {
           </View>
         </View>
       </View>
-      
+
+       
+      <View style={[styles.row]}>
+        <View style={styles.box}>
+          <Text style={showstyles.msgTxt}>Đư nợ gốc:</Text>
+        </View>
+        <View style={[styles.box, { flex: 3.5 }]}>
+          <Text style={showstyles.msgTxt} >{moneyFormat(content.principle_outstanding)}</Text>
+        </View>
+      </View>
+
       
       <View style={[styles.row]}>
         <View style={styles.box}>
