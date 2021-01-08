@@ -4,13 +4,19 @@ import * as constAction from "../consts/index";
 // reducer with initial state
 const initialState = {
   fetching: false,
-  token: null,
   error: null,
   lat: null,
   lon: null,
   device_brand: null,
   device_os: null,
-  device_name: null
+  device_name: null, 
+
+  // currrent user token
+  token: null,
+
+  // staff_user config
+  active_staff: null,
+  active_infos :{ fc_name: 'họ tên'},
 };
 
 export function tokenReducers(state = initialState, action) {
@@ -27,6 +33,11 @@ export function tokenReducers(state = initialState, action) {
       return { ...state, fetching: false, token: action.content, error: action.error };
     case constAction.TOKEN_REMOVE:
         return initialState;
+
+    case constAction.SET_ACTIVE_STAFF:
+      return { ...state, 
+        active_staff: action.content.staff_id, 
+        active_infos: action.content.info};
 
     case constAction.LOCATION_SET:
 

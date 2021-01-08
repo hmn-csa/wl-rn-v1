@@ -81,8 +81,14 @@ export const USER_UPTRAIL_SUCCESS = "USER_UPTRAIL_SUCCESS"
 export const USER_UPTRAIL_FAILURE = "USER_UPTRAIL_FAILURE"
 
 export const SET_ACTIVE_STAFF = "SET_ACTIVE_STAFF"
-
 export const UPTRAIL_CLEAR = "UPTRAIL_CLEAR"
+
+// ------------ Checkin -----------------//
+export const API_GETCHECKIN_REQUEST = "API_GETCHECKIN_REQUEST"
+export const API_GETCHECKIN_SUCCESS = "API_GETCHECKIN_SUCCESS"
+export const API_GETCHECKIN_FAILURE = "API_GETCHECKIN_FAILURE"
+
+
 
 // ------------- summary -----------------//
 export const CAL_TOTAL_DASH = "CAL_TOTAL_DASH"

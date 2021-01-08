@@ -19,8 +19,8 @@ function ListUptrail(props) {
   useEffect(() => {
     if (props.uptrails.justFetching === false)
     props.getUptrails({
-      staff_id: props.uptrails.active_staff, 
-      token: props.token,
+      staff_id: props.token.active_staff, 
+      token: props.token.token.access,
       start: '',
       end: ''
     })
@@ -140,7 +140,7 @@ function ListUptrail(props) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    token: state.token.token.access,
+    token: state.token,
     uptrails: state.uptrails,
   };
 };

@@ -18,10 +18,10 @@ const uptrailReducers = (state = initialState, action) => {
     case constAction.UPTRAIL_CLEAR:
       return initialState
 
-    case constAction.SET_ACTIVE_STAFF:
-      return { ...state, 
-        active_staff: action.content.staff_id, 
-        active_infos: action.content.info};
+    // case constAction.SET_ACTIVE_STAFF:
+    //   return { ...state, 
+    //     active_staff: action.content.staff_id, 
+    //     active_infos: action.content.info};
 
     case constAction.API_UPTRAIL_REQUEST:
       return { ...state, fetching: true, error: null };

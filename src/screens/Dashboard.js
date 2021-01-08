@@ -67,7 +67,7 @@ function Dashboard(props) {
           style={[cardStyles.container, { flex: 2.5}]}>
           <View style={[styles.row, { flex: 0.4 }]}>
             <Text style={[cardStyles.Text, { color: colors.lightGray }]}>
-            {props.uptrails.active_staff} - {props.uptrails.active_infos.fc_name}
+            {props.token.active_staff} - {props.token.active_infos.fc_name}
             </Text>
           </View>
 
@@ -359,7 +359,7 @@ const mapStateToProps = (state, ownProps) => {
     totalCal: state.totalCal,
     treeCal: state.treeCal,
     uptrails: state.uptrails,
-    token: state.token.token.access,
+    token: state.token,
   };
 };
 

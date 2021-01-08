@@ -13,9 +13,9 @@ import { connect } from "react-redux"
 import axios from "axios"
 import User from './User'
 // import Test2 from './test2'
-//import Test from './test'
+import Test from './test'
 // import Maps from './Maps'
-import ListUptrail from './ListUptrail'
+import CheckinMap from './CheckinMap2'
 import { actLocationSet,  actGetUptrails, actSetActiveStaff } from "../actions"
 import * as constAction from '../consts'
 import{ styles, colors } from '../styles'
@@ -112,6 +112,14 @@ function MainApp (props) {
           end: "" 
         }
       )
+
+      props.getCheckins(
+        {
+          staff_id: props.token.token.staff_id, 
+          token: props.token.token.access, 
+          date: "", 
+        }
+      )
     }
   }, []);
 
@@ -151,7 +159,8 @@ function MainApp (props) {
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
-        <Tab.Screen name="User" component={ User } />
+        <Tab.Screen name="Test" component={ Test } />
+        <Tab.Screen name="User" component={ CheckinMap } />
         
       </Tab.Navigator>
     </NavigationContainer>
@@ -170,6 +179,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     locationSet: (content) => {
+      
       dispatch(actLocationSet(content))
     }, 
     setActiveStaff: (content) => {
@@ -177,6 +187,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     getUptrails: (config) => {
       dispatch(actGetUptrails(config))
+    },
+
+    getCheckins: (config) => {
+      dispatch(
+        {
+          type: constAction.API_GETCHECKIN_REQUEST,
+          config
+        }
+      )
     },
   }
 }
