@@ -1,15 +1,30 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList, ActivityIndicator, SectionList
+  View, Text, Image, ScrollView, Alert, FlatList, ActivityIndicator, Dimensions
 } from 'react-native'
 import { Button } from 'react-native-paper';
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
 import ContractDetail from '../components/ContractDetail'
 import ContractDetailMap from '../components/ContractDetailMap'
+
+import Carousel from 'react-native-snap-carousel'
 import { styles, colors } from '../styles'
+
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = height / 4.5;
+
+
+const SliderWidth = Dimensions.get('screen').width;
 
 
 function ListAppls(props) {
+
+  function toObject(arr) {
+    var rv = [];
+    for (var i = 0; i < arr.length; ++i)
+      rv = [...rv, {appl_id: arr[i]}]
+    return rv;
+  }
 
   // console.log('show',props.showlists)style={ styles.container }
   /*
@@ -57,39 +72,64 @@ function ListAppls(props) {
   //     }
   //   </ScrollView>
   // }
+
+  const [showappls, setShowappls] = useState(toObject(props.showlists.applIds))
+  
+  
+  useEffect(() => {
+    setShowappls(toObject(props.showlists.applIds))
+  }, [props.showlists.applIds]);
   
 
-  
-  if (props.showlists.isTodoClass & props.data !== null)
+  const _renderItem = ({ item, index }) => {
     return (
-    <ScrollView >
-      {
-        props.showlists.applIds.map( appl => 
-          <ContractDetailMap 
-            key={appl}
-            contractId={appl}
-            navigation={props.navigation}
-          />
-        )
-      }
+      <ContractDetailMap
+        key={item.appl_id}
+        contractId={item.appl_id}
+        navigation={props.navigation}
+      />
+    );
+  };
+
+  
+
+  // return <View 
+  //   style={{ flexDirection: 'row'}}>
+  //   <Carousel
+  //     layout={'default'}
+  //     data={showappls}
+  //     sliderWidth={SliderWidth}
+  //     itemWidth={width * 0.9}
+  //     renderItem={_renderItem}
+  //     useScrollView={false}
+  //     activeSlideAlignment="center"
+  //   />
+  // </View>
+
+  
+  // if (props.showlists.isTodoClass & props.data !== null)
+  //   return (
+  //   <ScrollView >
+  //     {
+  //       showappls.map( appl => 
+  //         <ContractDetailMap 
+  //           key={appl}
+  //           contractId={appl}
+  //           navigation={props.navigation}
+  //         />
+  //       )
+  //     }
  
-    </ScrollView>
-  )
-   else if (props.data !== null)
+  //   </ScrollView>
+  // )
+  if (props.data !== null)
     return (
       <FlatList 
-      data = {props.showlists.applIds}
-      renderItem={appl_id => 
-        <ContractDetail 
-          key={appl_id}
-          contractId={appl_id}
-          navigation={props.navigation}/>}
+      data = {showappls}
+      keyExtractor={(appl) => appl}
+      renderItem={_renderItem}
       />
     )  
-
-
-  
-  
 
   
   else return (

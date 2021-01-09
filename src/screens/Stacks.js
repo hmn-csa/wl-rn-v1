@@ -12,7 +12,8 @@ import User from './User'
 import ManagerStaff from './ManagerStaff'
 
 
-// import Maps from './Maps'
+import applMap from './applMap'
+import CheckinMap from './CheckinMap2'
 // import CheckinMap from './CheckinMap'
 import ListUptrail from './ListUptrail'
 import{ styles, colors } from '../styles'
@@ -22,8 +23,58 @@ import{ styles, colors } from '../styles'
 // navigation.openDrawer();
 const Stack = createStackNavigator()
 
+
+
+function UserStack(props) {
+  return (
+    <Stack.Navigator
+    screenOptions={{ headerShown: true,}}
+    >
+     <Stack.Screen 
+        name="User" 
+        component={User} 
+        options={{
+          headerStyle: {
+            backgroundColor: colors.secondary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }, 
+          headerRight: () => (
+            <View style={buttonStyles.buttons}>
+              <Button
+                mode="contained"
+                icon="map"
+                onPress={() => props.navigation.navigate('User', { screen: 'checkinMap' })}
+                style={buttonStyles.button}
+              >
+              </Button>
+          </View>
+          )
+        }}
+      />
+
+    <Stack.Screen 
+        name="checkinMap" 
+        component={CheckinMap} 
+        options={{
+          headerStyle: {
+            backgroundColor: colors.secondary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
+    
+
+   </Stack.Navigator>
+  )
+}
+
 function DashboardStack(props) {
-  
   return (
     <Stack.Navigator
     screenOptions={{ headerShown: true,}}
@@ -67,8 +118,11 @@ function DashboardStack(props) {
           // </View>
           // )
         }}
+
+        
       />
 
+    
     
 
    </Stack.Navigator>
@@ -342,9 +396,9 @@ function PortStack(props) {
         }}
       />
       
-      {/* <Stack.Screen 
+      <Stack.Screen 
         name="Maps" 
-        component={Maps}
+        component={applMap}
         options={{
           headerStyle: {
             backgroundColor: colors.secondary,
@@ -354,7 +408,7 @@ function PortStack(props) {
             fontWeight: 'bold',
           }
         }}
-      />  */}
+      /> 
     </Stack.Navigator> 
     
   );
@@ -389,5 +443,7 @@ export {
   DashboardStack,
   CategorieStack,
   PortStack,
+  UserStack,
   StafflistStack,
+
 }

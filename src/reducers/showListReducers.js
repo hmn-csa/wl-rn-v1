@@ -1,6 +1,6 @@
 import * as constAction from "../consts/index";
 
-const showListReducers = (state = {applIds :[], isTodoClass: true}, action) => {
+const showListReducers = (state = {applIds :[], applids: [{'appl_id': null}],isTodoClass: true}, action) => {
 
   switch(action.type) {
     case constAction.SHOWLIST_CLEAR:
@@ -8,7 +8,7 @@ const showListReducers = (state = {applIds :[], isTodoClass: true}, action) => {
       return state;
 
     case constAction.UPDATE_SHOWLIST:
-      state = {...state, applIds: action.content}
+      state = {...state, applIds: action.content,}
       return state;
 
     case constAction.SET_TODO_SHOWLIST:

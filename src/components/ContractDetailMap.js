@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import {
-  View, Text, Image, Button, StyleSheet, Alert, Linking, Platform
+  View, Text, Image, Button, StyleSheet, Alert, Linking, Platform, Dimensions
 } from 'react-native'
 
 import {
@@ -13,17 +13,27 @@ import { styles, colors } from '../styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
 
-
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = height / 4.5;
 import { moneyFormat } from '../functions'
 
 function ContractDetailMap(props) {
+
+  //const [contractId, setcontractId] = useState(props.contractId)
 
   const [contractId, setcontractId] = useState(props.contractId)
   const [content, setContent] = useState(props.data[contractId])
   const [isTodo, setTodoContent] = useState(props.data[contractId].todo_flag)
   const [todoColor, setTodoColor] = useState(props.data[contractId].todo_flag === 1 ? 'white' : '#f7f7f7')
   const [todoIconColor, setTodoIconColor] = useState(props.data[contractId].todo_flag === 1 ? colors.secondary : 'black')
-
+  
+  
+  // useEffect(() => {
+  //   setContent(props.data[contractId])
+  //   setTodoContent(props.data[contractId].todo_flag)
+  //   setTodoColor(props.data[contractId].todo_flag === 1 ? 'white' : '#f7f7f7')
+  //   setTodoIconColor(props.data[contractId].todo_flag === 1 ? colors.secondary : 'black')
+  // }, []);
   
   //const [token, setToken] = useState(props.token)
   //console.log(token.token.access)
@@ -143,15 +153,18 @@ function ContractDetailMap(props) {
         color:'orange',
         textAlign: 'right'}}>Followed</Text>
   }
-  
+  if (props.data[contractId] === undefined) 
+    return <View></View>
   return (
     <View
+      
       style={{
         backgroundColor: todoColor,
         padding: 5,
         borderWidth: 1,
         borderColor:colors.lightGray,
-        borderRadius:10
+        borderRadius:10,
+        height: CARD_HEIGHT,
       }}
     >
       <View style={[styles.row]}>

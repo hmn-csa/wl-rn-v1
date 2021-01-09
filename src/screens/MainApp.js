@@ -19,7 +19,7 @@ import CheckinMap from './CheckinMap2'
 import { actLocationSet,  actGetUptrails, actSetActiveStaff } from "../actions"
 import * as constAction from '../consts'
 import{ styles, colors } from '../styles'
-import {CategorieStack, PortStack, DashboardStack} from './Stacks'
+import {CategorieStack, PortStack, DashboardStack, UserStack} from './Stacks'
 
 enableScreens()
 
@@ -159,8 +159,7 @@ function MainApp (props) {
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
         {/* <Tab.Screen name="History" component={ListUptrail} /> */}
-        <Tab.Screen name="Test" component={ Test } />
-        <Tab.Screen name="User" component={ CheckinMap } />
+        <Tab.Screen name="User" component={ UserStack } />
         
       </Tab.Navigator>
     </NavigationContainer>
