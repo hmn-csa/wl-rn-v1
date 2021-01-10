@@ -59,19 +59,19 @@ const todoReducers = (state = initialState, action) => {
         ...state, 
         'todoCase':{
           'case': todoAppls.length,
-          'applIds': todoAppls.map(appl => appl.appl_id)
+          'applIds': todoAppls//.map(appl => appl.appl_id)
         },
         'todoFollowed': {
           'case': todoFollowedAppls.length,
-          'applIds': todoFollowedAppls.map(appl => appl.appl_id)
+          'applIds': todoFollowedAppls//.map(appl => appl.appl_id)
         },
         'todoPaid': {
           'case': todoPaidAppls.length,
-          'applIds': todoPaidAppls.map(appl => appl.appl_id)
+          'applIds': todoPaidAppls//.map(appl => appl.appl_id)
         },
         'todoPtp': {
           'case': todoPtpAppls.length,
-          'applIds': todoPtpAppls.map(appl => appl.appl_id)
+          'applIds': todoPtpAppls//.map(appl => appl.appl_id)
         },
         'todoBptp':{
           'case': 0,
@@ -79,7 +79,7 @@ const todoReducers = (state = initialState, action) => {
         },
         'todoRevisit':{
           'case': reVisitAppls.length,
-          'applIds': reVisitAppls.map(appl => appl.appl_id)
+          'applIds': reVisitAppls//.map(appl => appl.appl_id)
         },
       }
       return state;

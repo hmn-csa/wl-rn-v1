@@ -24,7 +24,7 @@ function ContractDetailMap(props) {
   const [contractId, setcontractId] = useState(props.contractId)
   const [content, setContent] = useState(props.data[contractId])
   const [isTodo, setTodoContent] = useState(props.data[contractId].todo_flag)
-  const [todoColor, setTodoColor] = useState(props.data[contractId].todo_flag === 1 ? 'white' : '#f7f7f7')
+  const [todoColor, setTodoColor] = useState(props.data[contractId].todo_flag === 1 ? '#fff5f5': 'white')
   const [todoIconColor, setTodoIconColor] = useState(props.data[contractId].todo_flag === 1 ? colors.secondary : 'black')
   
   
@@ -58,7 +58,7 @@ function ContractDetailMap(props) {
   
       setTodoContent(responseTodo)
       props.changeTodo({ appl_id: content.appl_id, todo_flag: responseTodo })
-      setTodoColor(responseTodo === 1 ? 'white' : '#f7f7f7')
+      setTodoColor(responseTodo === 1 ? '#fff5f5': 'white')
       setTodoIconColor(responseTodo === 1 ? colors.secondary : 'black')
       props.calTodoDash(props.data)
       } catch (error) {

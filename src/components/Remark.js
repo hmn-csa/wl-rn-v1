@@ -64,6 +64,7 @@ function Remark(props) {
     addressItems.push({ label: newAddress, value: newAddress })
 
   const [uptrailStatus, setUptrailStatus] = useState(false);
+  const [cust_name, setcust_name] = useState(props.vsf.activeApplId.cust_name)
   // Location 
   const [location, setLocation] = useState(null);
 
@@ -143,10 +144,12 @@ function Remark(props) {
   const pickImage2 = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      
       allowsEditing: true,
       aspect: [3, 4],
       base64: true,
       quality: 0.1,
+
     });
     if (!result.cancelled) {
       if (images.length < 3)
@@ -158,6 +161,7 @@ function Remark(props) {
 
     }
   };
+  
   // const pickImage3 = async () => {
   //   let result = await ImagePicker.launchImageLibraryAsync({
   //     mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -225,7 +229,7 @@ function Remark(props) {
       ...imageSet, 
       'token_value': props.token.token.access,
       'appl_id': props.vsf.activeApplId.appl_id,
-      'cust_name': props.vsf.activeApplId.cust_name,
+      'cust_name': cust_name,
       'code': code,
       'trust_address': address,
       'type_address': getAddressType(address),

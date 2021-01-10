@@ -71,6 +71,13 @@ export const API_VSF_SUCCESS = "API_VSF_SUCCESS"
 export const API_VSF_FAILURE = "API_VSF_FAILURE"
 export const APPLID_VSF_ACTIVE = "APPLID_VSF_ACTIVE"
 
+
+// ----------- Payment ---------------//
+export const API_PAYMENT_REQUEST = "API_PAYMENT_REQUEST"
+export const API_PAYMENT_SUCCESS = "API_PAYMENT_SUCCESS"
+export const API_PAYMENT_FAILURE = "API_PAYMENT_FAILURE"
+
+
 // ------------ uptrail -----------------//
 export const API_UPTRAIL_REQUEST = "API_UPTRAIL_REQUEST"
 export const API_UPTRAIL_SUCCESS = "API_UPTRAIL_SUCCESS"

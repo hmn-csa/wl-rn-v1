@@ -80,11 +80,8 @@ export function* workerGetData(token) {
     yield put({ type: constAction.CAL_TREE_DASH, data: response.data});
     
     // dispatch UPDATE_SHOWLIST
-    const allAppls =  Object.values(data).map(appl => appl.appl_id)
-    yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
-
-   
-
+    // const allAppls =  Object.values(data).map(appl => appl.appl_id)
+    yield put({ type: constAction.UPDATE_SHOWLIST, content: Object.values(data)});
 
   } catch (error) {
     console.log(error)
@@ -122,11 +119,9 @@ export function* workerManagerGetData(request) {
     yield put({ type: constAction.CAL_TREE_DASH, data: response.data});
     
     // dispatch UPDATE_SHOWLIST
-    const allAppls =  Object.values(data).map(appl => appl.appl_id)
-    yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
-
-   
-
+    // const allAppls =  Object.values(data).map(appl => appl.appl_id)
+    // yield put({ type: constAction.UPDATE_SHOWLIST, content: allAppls});
+    yield put({ type: constAction.UPDATE_SHOWLIST, content: Object.values(data)});
 
   } catch (error) {
     console.log(error)

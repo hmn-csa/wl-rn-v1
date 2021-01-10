@@ -27,7 +27,7 @@ export function* workerGetUptrail(request) {
       },
     };
 
-    console.log(config)
+    // console.log(config)
 
     const response = yield call(axios, config);
     //const data = response.data;
@@ -76,8 +76,6 @@ export function* workerUserUptrail(request) {
     yield put({ type: constAction.USER_UPTRAIL_SUCCESS, content: dataContent});
 
     // dispatch CAL-DASH
-  
-
 
   } catch (error) {
     console.log(error)

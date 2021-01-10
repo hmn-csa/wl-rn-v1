@@ -4,7 +4,7 @@ import MapView from 'react-native-map-clustering';
 //import { MapView, Marker, PROVIDER_GOOGLE  } from 'expo'
 import { Button, Dialog, Portal, } from 'react-native-paper';
 import {
-  StyleSheet, Text, View, Dimensions, TouchableOpacity,
+  StyleSheet, Text, View,TouchableOpacity, Dimensions,
   ScrollView, FlatList
 } from 'react-native'
 import { connect } from "react-redux"
@@ -42,8 +42,10 @@ function applMap(props) {
 
   const mapRef = useRef(null);
   const carouselRef = useRef(null);
+
+  const showlists = props.showlists.applIds.map(appl => appl.appl_id)
   const listAppls = Object.values(props.data).filter((appl) => {
-    return props.showlists.applIds.includes(appl.appl_id)
+    return showlists.includes(appl.appl_id)
   })
 
   const listLat = listAppls.map(appl => appl.lat)

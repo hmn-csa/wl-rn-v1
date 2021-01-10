@@ -11,6 +11,8 @@ import { watcherSetTodo } from './todoSaga'
 import { watcherGetVsf } from './vsfSaga'
 import { watcherSagaUptrail} from './uptrailSaga'
 import { watcherSagaCheckin } from './checkinSaga'
+import { watcherSagaPayment } from './paymentSaga'
+
 
 // Redux Saga: Root Saga
 export function* rootSaga () {
@@ -20,6 +22,7 @@ export function* rootSaga () {
     fork(watcherGetVsf),
     fork(watcherSagaUptrail),
     fork(watcherSagaCheckin),
+    fork(watcherSagaPayment),
   ]);
 };
 

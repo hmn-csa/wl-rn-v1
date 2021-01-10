@@ -11,9 +11,10 @@ import Dashboard from './Dashboard'
 import User from './User'
 import ManagerStaff from './ManagerStaff'
 
-
+import ListPayment from './ListPayment'
 import applMap from './applMap'
 import CheckinMap from './CheckinMap2'
+
 // import CheckinMap from './CheckinMap'
 import ListUptrail from './ListUptrail'
 import{ styles, colors } from '../styles'
@@ -50,12 +51,36 @@ function UserStack(props) {
                 style={buttonStyles.button}
               >
               </Button>
+
+              <Button
+                mode="contained"
+                icon="map"
+                onPress={() => props.navigation.navigate('User', { screen: 'ListPayment' })}
+                style={buttonStyles.button}
+              >
+              </Button>
+  
           </View>
           )
         }}
       />
 
     <Stack.Screen 
+      name="ListPayment" 
+      component={ListPayment} 
+      options={{
+        headerStyle: {
+          backgroundColor: colors.secondary,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        }
+      }}
+    />
+    
+
+     <Stack.Screen 
         name="checkinMap" 
         component={CheckinMap} 
         options={{
@@ -91,32 +116,7 @@ function DashboardStack(props) {
           headerTitleStyle: {
             fontWeight: 'bold',
           }, 
-          //headerRight: CategorieStackMenu,
-          // headerRight: () => (
-          //   <View style={buttonStyles.buttons}>
-          //     <Button
-          //       mode="contained"
-          //       icon="file-tree"
-          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Tree' })}
-          //       style={buttonStyles.button}
-          //     >
-          //     </Button>
-          //     <Button
-          //       mode="contained"
-          //       icon="alpha-p-circle"
-          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Product' })}
-          //       style={buttonStyles.button}z
-          //     >
-          //     </Button>
-          //     <Button
-          //       icon="counter"
-          //       mode="contained"
-          //       onPress={() => props.navigation.navigate('Dashboard', { screen: 'Score' })}
-          //       style={buttonStyles.button}
-          //     >
-          //     </Button>
-          // </View>
-          // )
+         
         }}
 
         
@@ -151,7 +151,7 @@ function StafflistStack(props) {
         }}
       />
 
-      {/* <Stack.Screen 
+      <Stack.Screen 
         name="CheckinMap" 
         component={CheckinMap} 
         options={{
@@ -163,7 +163,7 @@ function StafflistStack(props) {
             fontWeight: 'bold',
           }
         }}
-      />     */}
+      />    
 
       
    </Stack.Navigator>

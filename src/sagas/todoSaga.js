@@ -26,11 +26,11 @@ export function* workerSetTodo(request) {
         'todo_value': request.config.todo_value
       }
     }
-    console.log(config)
+    //console.log(config)
     const response = yield call(axios, config);
     const data = response.data;
     
-    console.log(data)
+    //console.log(data)
     
     yield put({ type: constAction.API_TODO_SUCCESS, content: {
         'appl_id': request.config.appl_id,

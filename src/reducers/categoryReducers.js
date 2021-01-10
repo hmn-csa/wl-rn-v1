@@ -22,7 +22,7 @@ const categoryReducers = (state = initialState, action) => {
             paidcase:rv[x[key]].paidcase +x.full_paid,
             case:rv[x[key]].case+1,
             visited:rv[x[key]].visited +x.followed,
-            applIds:  rv[x[key]].applIds.concat([x.appl_id])
+            applIds: rv[x[key]].applIds.concat([{appl_id: x.appl_id, cust_name: x.cust_name }])
           };
           return rv;
         }, {});

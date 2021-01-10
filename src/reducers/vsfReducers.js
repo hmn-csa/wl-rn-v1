@@ -7,10 +7,10 @@ const initialState = {
   error: null,
   vsfs: [],
   activeApplId: {
-    'appl_id': '',
-    'reg_address': '',
-    'cust_name': '',
-    'act_mobile': '',
+    appl_id: '',
+    reg_address: '',
+    cust_name: '',
+    act_mobile: '',
   }
 };
 

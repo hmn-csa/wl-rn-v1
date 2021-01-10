@@ -11,6 +11,7 @@ import categoryReducers from './categoryReducers'
 import uptrailReducers from './uptrailReducers'
 import managerReducers from './managerReducers'
 import mapReducers from './mapReducers'
+import paymentReducers from './paymentReducers'
 
 const rootReducer  = combineReducers({
     token: tokenReducers,
@@ -22,8 +23,9 @@ const rootReducer  = combineReducers({
     totalCal: totalReducers,
     category: categoryReducers,
     uptrails: uptrailReducers,
+    payments: paymentReducers,
     manager: managerReducers,
-    map: mapReducers
+    map: mapReducers,
 })
 
 export default rootReducer

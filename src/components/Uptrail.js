@@ -1,5 +1,5 @@
 import {
-  View, Text, Image, ScrollView, Alert, FlatList, 
+  View, Text, Image, ScrollView, Alert, FlatList,
   StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions
 } from 'react-native'
 import { Button, Portal, Dialog } from 'react-native-paper';
@@ -45,9 +45,9 @@ function Uptrail(props) {
   // const [image2, setimage2] = useState(props.image2 === null ? null : `data:image/png;base64,${props.image2}`)
   // const [image3, setimage3] = useState(props.image3 === null ? null : "data:image/png;base64," + props.image3)
 
-  const [image1, setimage1] = useState((props.image1 === null || props.image1 === '') ? null :  props.image1)
-  const [image2, setimage2] = useState((props.image2 === null || props.image2 === '')  ? null : props.image2)
-  const [image3, setimage3] = useState((props.image3 === null || props.image3 === '')  ? null : props.image3)
+  const [image1, setimage1] = useState((props.image1 === null || props.image1 === '') ? null : props.image1)
+  const [image2, setimage2] = useState((props.image2 === null || props.image2 === '') ? null : props.image2)
+  const [image3, setimage3] = useState((props.image3 === null || props.image3 === '') ? null : props.image3)
 
 
   const [visible, setVisible] = useState(false);
@@ -110,48 +110,48 @@ function Uptrail(props) {
   //       <Button
   //         icon="camera"
   //         mode="contained"
-          
+
   //         style={buttonStyles.button}
   //         onPress={showDialog}>
   //       </Button>
   //     )
   // }
 
-//   <Button
-//   icon="camera"
-//   mode="contained"
-  
-//   style={buttonStyles.button}
-//   onPress={showDialog}>
-// </Button>
+  //   <Button
+  //   icon="camera"
+  //   mode="contained"
 
-// onPress={() => {
-//   setActivateImage(image)
-//   showDialogImage()
-// }}
+  //   style={buttonStyles.button}
+  //   onPress={showDialog}>
+  // </Button>
+
+  // onPress={() => {
+  //   setActivateImage(image)
+  //   showDialogImage()
+  // }}
   const getCodeLabel = (code) => {
     var result = consts.REMARK_CODE.filter(obj => {
       return obj.value === code
     })
-    return(result[0].label)
+    return (result[0].label)
   }
 
 
   const images = (image1, image2, image3) => {
     if (image1 !== null || image2 !== null || image3 !== null)
       return (
-        <View style={[buttonStyles.buttons, {backgroundColor:null}]}>
-        
-        <TouchableOpacity
-            style={[buttonStyles.button, {backgroundColor:null}]}
+        <View style={[buttonStyles.buttons, { backgroundColor: null }]}>
+
+          <TouchableOpacity
+            style={[buttonStyles.button, { backgroundColor: null }]}
             onPress={() => {
-              setActivateImage({uri: image1})
+              setActivateImage({ uri: image1 })
               showDialogImage()
             }}
-            >
+          >
             <Image
-              source={{uri: image1}}
-              style={{  
+              source={{ uri: image1 }}
+              style={{
                 width: 45,
                 height: 60
               }}
@@ -159,42 +159,42 @@ function Uptrail(props) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[buttonStyles.button, {backgroundColor:null}]}
+            style={[buttonStyles.button, { backgroundColor: null }]}
             onPress={() => {
-              setActivateImage({uri: image2})
+              setActivateImage({ uri: image2 })
               showDialogImage()
             }}
-            >
+          >
             <Image
-              source={{uri: image2}}
-              style={{  
+              source={{ uri: image2 }}
+              style={{
                 width: 45,
                 height: 60
               }}
-              
+
             />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[buttonStyles.button, {backgroundColor:null}]}
+            style={[buttonStyles.button, { backgroundColor: null }]}
             onPress={() => {
-              setActivateImage({uri: image3})
+              setActivateImage({ uri: image3 })
               showDialogImage()
             }}
-            >
+          >
             <Image
-              source={{uri: image3}}
-              style={{  
+              source={{ uri: image3 }}
+              style={{
                 width: 45,
                 height: 60
               }}
-              
+
             />
           </TouchableOpacity>
 
 
         </View>
-       
+
       )
   }
 
@@ -207,16 +207,16 @@ function Uptrail(props) {
     }}>
 
       <TouchableOpacity
-        style={{padding: 5}}
-        onLongPress={() => handleShow([props.appl_id])}
+        style={{ padding: 5 }}
+        onLongPress={() => handleShow([{ appl_id: props.appl_id, cust_name: props.cust_name }])}
       >
-      
+
         <View style={styles.row}>
           <View style={styles.box}>
             <Text style={stylesTrail.nameTxt}>{splitTime(runtime)}</Text>
           </View>
-          <View style={[styles.box, {flex:0.2}]}>
-          {renCode(code)}
+          <View style={[styles.box, { flex: 0.2 }]}>
+            {renCode(code)}
           </View>
         </View>
         <View style={styles.row}>
@@ -228,77 +228,77 @@ function Uptrail(props) {
           {payAmount(pay_amount)}
         </View> */}
         <View style={[styles.row,]}>
-        {payAmount(pay_amount)}
+          {payAmount(pay_amount)}
         </View>
-     
 
-      
-      <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text style={stylesTrail.msgTxt}>Remark</Text>
-        </View>
-        <View style={[styles.box, { flex: 4}]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box,]}>
-              <Text style={[stylesTrail.msgTxt,{ fontWeight: "bold", }]}>{getCodeLabel(code)}</Text>
+
+
+        <View style={[styles.row]}>
+          <View style={styles.box}>
+            <Text style={stylesTrail.msgTxt}>Remark</Text>
+          </View>
+          <View style={[styles.box, { flex: 4 }]}>
+            <View style={[styles.row]}>
+              <View style={[styles.box,]}>
+                <Text style={[stylesTrail.msgTxt, { fontWeight: "bold", }]}>{getCodeLabel(code)}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text style={stylesTrail.msgTxt} >ghi chú:</Text>
-        </View>
-        <View style={[styles.box, { flex: 4}]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box,]}>
-              <Text style={[stylesTrail.msgTxt,{ fontWeight: "bold", }]}>{remark}</Text>
+        <View style={[styles.row]}>
+          <View style={styles.box}>
+            <Text style={stylesTrail.msgTxt} >ghi chú:</Text>
+          </View>
+          <View style={[styles.box, { flex: 4 }]}>
+            <View style={[styles.row]}>
+              <View style={[styles.box,]}>
+                <Text style={[stylesTrail.msgTxt, { fontWeight: "bold", }]}>{remark}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <View style={[styles.row]}>
-        <View style={styles.box}>
-          <Text style={stylesTrail.msgTxt}>Địa chỉ:</Text>
-        </View>
-        <View style={[styles.box, { flex: 4 }]}>
-          <View style={[styles.row]}>
-            <View style={[styles.box]}>
-              <Text style={stylesTrail.msgTxt}>{trust_address}</Text>
+        <View style={[styles.row]}>
+          <View style={styles.box}>
+            <Text style={stylesTrail.msgTxt}>Địa chỉ:</Text>
+          </View>
+          <View style={[styles.box, { flex: 4 }]}>
+            <View style={[styles.row]}>
+              <View style={[styles.box]}>
+                <Text style={stylesTrail.msgTxt}>{trust_address}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      {reVisit(next_visit_time)}
-      <View style={[styles.row]}>
-        {images(image1, image2, image3)}
-      </View>
-
-
-      <Portal style={[styles.container, { height: 600 }]}>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Content>
-            <View style={{ height: 600 }}>
-              <ImageShow image={image1}></ImageShow>
-              <ImageShow image={image2}></ImageShow>
-              <ImageShow image={image3}></ImageShow>
-            </View>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              style={buttonStyles.button}
-              mode="contained"
-              onPress={hideDialog}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      
+        {reVisit(next_visit_time)}
+        <View style={[styles.row]}>
+          {images(image1, image2, image3)}
+        </View>
 
 
-      <Portal style={[{ width: width, height: height }]}>
+        <Portal style={[styles.container, { height: 600 }]}>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Content>
+              <View style={{ height: 600 }}>
+                <ImageShow image={image1}></ImageShow>
+                <ImageShow image={image2}></ImageShow>
+                <ImageShow image={image3}></ImageShow>
+              </View>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button
+                style={buttonStyles.button}
+                mode="contained"
+                onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+
+
+
+        <Portal style={[{ width: width, height: height }]}>
           <Dialog visible={visibleImage} onDismiss={hideDialogImage}>
             <Dialog.Content>
               <ScrollView>
@@ -320,8 +320,8 @@ function Uptrail(props) {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-      
-    
+
+
       </TouchableOpacity>
     </View>
   )
@@ -360,7 +360,7 @@ const stylesTrail = StyleSheet.create({
     fontWeight: '600',
     color: '#222',
     fontSize: 13,
-    width:190,
+    width: 190,
   },
   msgTxt: {
     fontWeight: '400',

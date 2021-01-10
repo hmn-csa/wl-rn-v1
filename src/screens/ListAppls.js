@@ -4,83 +4,44 @@ import {
 import { Button } from 'react-native-paper';
 import React, { useState, useEffect} from "react"
 import { connect } from "react-redux"
-import ContractDetail from '../components/ContractDetail'
+
 import ContractDetailMap from '../components/ContractDetailMap'
 
 import Carousel from 'react-native-snap-carousel'
 import { styles, colors } from '../styles'
 
+import SearchInput, { createFilter } from 'react-native-search-filter';
+const KEYS_TO_FILTERS = ['appl_id', 'cust_name'];
+
+
+
+
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = height / 4.5;
-
-
 const SliderWidth = Dimensions.get('screen').width;
+
+
 
 
 function ListAppls(props) {
 
-  function toObject(arr) {
-    var rv = [];
-    for (var i = 0; i < arr.length; ++i)
-      rv = [...rv, {appl_id: arr[i]}]
-    return rv;
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filtered, setFiltered] = useState(props.showlists.applIds)
+  const hangleSearch = (value) => {
+    try { 
+      setSearchTerm(value)
+      if (value != null || value != '') {
+        setFiltered(
+          Object.values(props.showlists.applIds).filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+        )
+      }
+    } catch(err) {
+      setFiltered(props.showlists.applIds)
+    }
   }
 
-  // console.log('show',props.showlists)style={ styles.container }
-  /*
-  return (
-    <ScrollView >
-      {
-        props.showlists.applIds.slice(0, 40).map(
-          appl => 
-            <ContractDetail 
-              key={appl}
-              contractId = {appl}
-              navigation={props.navigation}
-            />
-          )
-      }
-
-      <Button mode="outlined" onPress={handleMore}> more </Button>
-    </ScrollView>
-    )
-  */
-  // const [more ,setMore ] = useState(false)
-  // const [len, setLen ] = useState(props.showlists.applIds.length)
-  
-  // useEffect(() => {    
-  //   setMore(false)  
-  //   console.log(more)
-  // }, [more]);
-
-  // const showmoreBtn = (len ,more) => {
-  //   if (len > 10)
-  //   return <Button mode="outlined" onPress={() => setMore(true)}> Xem Thêm </Button>
-  // }
-
-  // const showmore = () => {
-  //   if (more)
-  //   return <ScrollView >
-  //     {
-  //       props.showlists.applIds.slice(10, props.showlists.applIds.length-1).map(
-  //         appl =>  <ContractDetailMap 
-  //           key={appl}
-  //           contractId={appl}
-  //           navigation={props.navigation}
-  //         />
-  //       )
-  //     }
-  //   </ScrollView>
-  // }
-
-  const [showappls, setShowappls] = useState(toObject(props.showlists.applIds))
-  
-  
-  useEffect(() => {
-    setShowappls(toObject(props.showlists.applIds))
-  }, [props.showlists.applIds]);
-  
-
+ 
   const _renderItem = ({ item, index }) => {
     return (
       <ContractDetailMap
@@ -91,20 +52,72 @@ function ListAppls(props) {
     );
   };
 
-  
+  if (searchTerm) 
+  return (
+    <View >
+      <SearchInput 
+      onChangeText={(value) =>  hangleSearch(value)} 
+      style={{ 
+          flexDirection: 'row', 
+          padding: 10,
+          borderColor: '#CCC',
+          borderWidth: 1}}
+      placeholder="Nhập tên (có dấu) hoặc appl_id xxx"
+      onSubmitEditing={(value) =>  hangleSearch(value)} 
+      />
+    <View 
+      style={{ flexDirection: 'row'}}>
+      <Carousel
+        layout={'default'}
+        vertical={true}
+        data={filtered}
+        sliderWidth={SliderWidth}
+        itemWidth={width * 0.9}
+        itemHeight={CARD_HEIGHT}
+        sliderHeight={height}
+        renderItem={_renderItem}
+        useScrollView={false}
+        activeSlideAlignment="start"
+        currentIndex={0}
+        
+      />
+    </View>
+  </View>
+  )
 
-  // return <View 
-  //   style={{ flexDirection: 'row'}}>
-  //   <Carousel
-  //     layout={'default'}
-  //     data={showappls}
-  //     sliderWidth={SliderWidth}
-  //     itemWidth={width * 0.9}
-  //     renderItem={_renderItem}
-  //     useScrollView={false}
-  //     activeSlideAlignment="center"
-  //   />
-  // </View>
+  if (props.data !== null)
+  return(
+    <View >
+       <SearchInput 
+        onChangeText={(value) =>  hangleSearch(value)} 
+        style={{ 
+          backgroundColor: 'white',
+          flexDirection: 'row', 
+          padding: 10,
+          borderColor: '#CCC',
+          borderWidth: 1}}
+        placeholder="Nhập tên (có dấu) hoặc appl_id"
+        onSubmitEditing={(value) =>  hangleSearch(value)} 
+        />
+      <View 
+        style={{ flexDirection: 'row'}}>
+        <Carousel
+          layout={'default'}
+          vertical={true}
+          data={props.showlists.applIds}
+          sliderWidth={SliderWidth}
+          itemWidth={width * 0.9}
+          itemHeight={CARD_HEIGHT}
+          sliderHeight={height}
+          renderItem={_renderItem}
+          useScrollView={false}
+          activeSlideAlignment="start"
+          currentIndex={0}
+          
+        />
+      </View>
+    </View>
+  )
 
   
   // if (props.showlists.isTodoClass & props.data !== null)
@@ -119,17 +132,16 @@ function ListAppls(props) {
   //         />
   //       )
   //     }
- 
   //   </ScrollView>
   // )
-  if (props.data !== null)
-    return (
-      <FlatList 
-      data = {showappls}
-      keyExtractor={(appl) => appl}
-      renderItem={_renderItem}
-      />
-    )  
+  // if (props.data !== null)
+  //   return (
+  //     <FlatList 
+  //     data = {showappls}
+  //     keyExtractor={(appl) => appl}
+  //     renderItem={_renderItem}
+  //     />
+  //   )  
 
   
   else return (

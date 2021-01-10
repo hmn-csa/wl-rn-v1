@@ -11,11 +11,12 @@ import * as Location from 'expo-location'
 import * as Device from 'expo-device'
 import { connect } from "react-redux"
 import axios from "axios"
-import User from './User'
+// import ListPayment from './ListPayment'
+// import User from './User'
 // import Test2 from './test2'
-import Test from './test'
-// import Maps from './Maps'
-import CheckinMap from './CheckinMap2'
+// import Test from './test'
+// // import Maps from './Maps'
+// import CheckinMap from './CheckinMap2'
 import { actLocationSet,  actGetUptrails, actSetActiveStaff } from "../actions"
 import * as constAction from '../consts'
 import{ styles, colors } from '../styles'
@@ -158,7 +159,6 @@ function MainApp (props) {
         <Tab.Screen name="Dashboard" component={DashboardStack} />
         <Tab.Screen name="Categories" component={CategorieStack} />
         <Tab.Screen name="Portfolio" component={PortStack} />
-        {/* <Tab.Screen name="History" component={ListUptrail} /> */}
         <Tab.Screen name="User" component={ UserStack } />
         
       </Tab.Navigator>

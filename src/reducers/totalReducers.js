@@ -66,25 +66,25 @@ const totalReducers = (state = initialState, action) => {
         ...state, 
         'totalCase':{
           'case': totalCase,
-          'applIds': appls.map(appl => appl.appl_id)
+          'applIds': appls//.map(appl => appl.appl_id)
         },
         'paidAll': {
           'value': initPaidMtd.length,
-          'applIds':  initPaidMtd.map(appl => appl.appl_id)
+          'applIds':  initPaidMtd//.map(appl => appl.appl_id)
         }, 
         'paidMtd': {
           'case': initPaidMtd.length,
           'value': paidMtdValue,
-          'applIds':  initPaidMtd.map(appl => appl.appl_id)
+          'applIds':  initPaidMtd//.map(appl => appl.appl_id)
         },
         'ptpCase':{
           'case': initPtp.length,
-          'applIds': initPtp.map(appl => appl.appl_id)
+          'applIds': initPtp//.map(appl => appl.appl_id)
         },
         'paidToday': {
           'case': initPaidTodayAppls.length,
           'value': paidTodayValue,
-          'applIds':  initPaidTodayAppls.map(appl => appl.appl_id)
+          'applIds':  initPaidTodayAppls//.map(appl => appl.appl_id)
         },
       }
       return state;
