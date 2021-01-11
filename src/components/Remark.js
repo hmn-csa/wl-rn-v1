@@ -24,35 +24,6 @@ import { colors } from '../styles'
 
 const { width, height } = Dimensions.get("window");
 
-// const remarkCode = [
-//   { label: 'PTP - Hứa thanh toán', value: 'PTP' },
-//   { label: 'OBT - Đã thu được tiền', value: 'OBT' },
-//   { label: 'WFP - Đã thanh toán chờ kiểm tra', value: 'WFP' },
-//   { label: 'TER - Thanh lý', value: 'TER' },
-
-//   { label: 'NAH - Không có nhà', value: 'NAH' },
-//   { label: 'LEM - Để lại lời nhắn', value: 'LEM' },
-
-//   { label: 'WAS - Chờ thu nhập, trợ cấp', value: 'WAS' },
-//   { label: 'LST - Thất nghiệp, làm ăn thua lỗ', value: 'LST' },
-
-//   { label: 'RTP - Từ chôí thanh toán', value: 'RTP' },
-
-//   { label: 'RENT - Nhà thuê và đã dọn đi', value: 'RENT' },
-//   { label: 'HOS - Nhà đã bán', value: 'HOS' },
-
-//   { label: 'WAU - Bỏ trốn, người thân không tìm thấy ', value: 'WAU' },
-//   { label: 'NFH - Không tìm thấy nhà', value: 'NFH' },
-//   { label: 'NIW - Không có thông tin tại nơi làm việc', value: 'NIW' },
-//   { label: 'NLA - Không sống tại địa chỉ', value: 'NLA' },
-
-//   { label: 'GSF - Gian lận', value: 'GSF' },
-//   { label: 'IGN1 - Chưa nhận khoản vay', value: 'IGN1' },
-//   { label: 'IGN2 - Báo đã hủy hợp đồng', value: 'IGN2' },
-//   { label: 'CGI - Đi tù/nghĩa vụ/cai nghiện/tâm thần', value: 'CGI' },
-//   { label: 'DIE - Đã qua đời', value: 'DIE' },
-// ];
-
 function Remark(props) {
   const [newAddress, setNewAddress] = useState(props.vsf.activeApplId.new_address)
   const addressItems = [
